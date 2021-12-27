@@ -1,7 +1,7 @@
 class Solution {
 public:
     int countGoodSubstrings(string s) {
-       int len=s.size();
+        int len=s.size();
         int count=0,max_c=0,k=3;
         unordered_map<char,int> mp;
         for(int i=0;i<k;i++) mp[s[i]]++;
