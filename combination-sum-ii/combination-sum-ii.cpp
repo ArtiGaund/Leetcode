@@ -7,7 +7,7 @@ public:
         backtrack(candidates,target,0);
         return res;
     }
-    void backtrack(vector<int> &nums,int target,int start)
+    void backtrack(vector<int> &nums,int target,int index)
     {
         if(target==0)
         {
@@ -15,9 +15,9 @@ public:
             return;
         }
         if(target<0) return;
-        for(int i=start;i<nums.size();i++)
+        for(int i=index;i<nums.size();i++)
         {
-            if(i>start and nums[i]==nums[i-1]) continue;
+            if(i>index and nums[i]==nums[i-1]) continue;
             cur.push_back(nums[i]);
             backtrack(nums,target-nums[i],i+1);
             cur.pop_back();
