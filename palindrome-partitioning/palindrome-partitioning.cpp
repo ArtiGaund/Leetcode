@@ -3,33 +3,33 @@ public:
     vector<vector<string>> res;
     vector<string> cur;
     vector<vector<string>> partition(string s) {
-        backtrack(0,s);
+        backtrack(s,0);
         return res;
     }
-    void backtrack(int start,string &s)
+    void backtrack(string s,int index)
     {
-        if(start==s.size())
+        if(index==s.size())
         {
             res.push_back(cur);
             return;
         }
-        for(int i=start;i<s.size();i++)
+        for(int i=index;i<s.size();i++)
         {
-            if(ispalindrome(s,start,i))
+            if(ispalindrome(s,index,i))
             {
-                cur.push_back(s.substr(start,i-start+1));
-                backtrack(i+1,s);
+                cur.push_back(s.substr(index,i-index+1));
+                backtrack(s,i+1);
                 cur.pop_back();
             }
         }
     }
-    bool ispalindrome(string s,int low,int high)
+    bool ispalindrome(string s,int start,int end)
     {
-        while(low<=high)
+        while(start<=end)
         {
-            if(s[low]!=s[high]) return false;
-            low++;
-            high--;
+            if(s[start]!=s[end]) return false;
+            start++;
+            end--;
         }
         return true;
     }
