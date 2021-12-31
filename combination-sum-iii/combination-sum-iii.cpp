@@ -1,23 +1,24 @@
 class Solution {
 public:
+    vector<vector<int>> res;
+    vector<int> cur;
     vector<vector<int>> combinationSum3(int k, int n) {
-        vector<vector<int>> res;
-        vector<int> cur;
-        backtrack(cur,res,k,n,1);
+        backtrack(k,n,1);
         return res;
     }
-    void backtrack(vector<int> &v,vector<vector<int>> &res,int k,int n,int begin)
+    void backtrack(int k,int target,int index)
     {
-        if(k==0 and n==0)
+        if(target==0)
         {
-            res.push_back(v);
+            if(cur.size()==k) 
+                res.push_back(cur);
             return;
         }
-        for(int i=begin;i<10 and i<=n;i++)
+        for(int i=index;i<=9;i++)
         {
-            v.push_back(i);
-            backtrack(v,res,k-1,n-i,i+1);
-            v.pop_back();
+            cur.push_back(i);
+            backtrack(k,target-i,i+1);
+            cur.pop_back();
         }
     }
 };
