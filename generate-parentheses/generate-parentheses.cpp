@@ -1,28 +1,29 @@
 class Solution {
 public:
+    vector<string> res;
+    string cur;
     vector<string> generateParenthesis(int n) {
-        vector<string> res;
-        string cur="";
-        backtrack(res,cur,0,0,n);
+        int open=0,close=0;
+        backtrack(open,close,n);
         return res;
     }
-    void backtrack(vector<string> &res,string cur,int open,int close,int max)
+    void backtrack(int open,int close,int n)
     {
-        if(open==max and close==max)
+        if(open==n and close==n)
         {
             res.push_back(cur);
             return;
         }
-        if(open<max)
+        if(open<n)
         {
             cur.push_back('(');
-            backtrack(res,cur,open+1,close,max);
+            backtrack(open+1,close,n);
             cur.pop_back();
         }
-        if(open>close)
+        if(close<open)
         {
             cur.push_back(')');
-            backtrack(res,cur,open,close+1,max);
+            backtrack(open,close+1,n);
             cur.pop_back();
         }
     }
