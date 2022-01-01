@@ -1,29 +1,20 @@
 class Solution {
 public:
-    vector<vector<int>> v;
-    vector<int> temp;
+    int res=0;
     int subsetXORSum(vector<int>& nums) {
-        backtrack(nums,0);
-        int res=0;
-        for(int i=0;i<v.size();i++)
-        {
-            int sum=0;
-            for(int j=0;j<v[i].size();j++)
-                sum^=v[i][j];
-            res+=sum;
-        }
+        backtrack(nums,0,0);
         return res;
     }
-    void backtrack(vector<int> &nums,int start)
+    void backtrack(vector<int> &nums,int start,int sum)
     {
         if(start==nums.size())
         {
-            v.push_back(temp);
+            res+=sum;
             return;
         }
-        temp.push_back(nums[start]);
-        backtrack(nums,start+1);
-        temp.pop_back();
-        backtrack(nums,start+1);
+        backtrack(nums,start+1,sum);
+        sum^=nums[start];
+        backtrack(nums,start+1,sum);
+        return;
     }
 };
