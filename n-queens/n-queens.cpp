@@ -1,37 +1,41 @@
 class Solution {
 public:
+    
     vector<vector<string>> solveNQueens(int n) {
         vector<vector<string>> res;
-        vector<string> board(n,string(n,'.'));
-        backtrack(res,board,n,0);
+        vector<string> b(n,string(n,'.'));
+        backtrack(b,0,n,res);
         return res;
     }
-    void backtrack(vector<vector<string>> &res,vector<string> &board,int n,int col)
+    void backtrack(vector<string> &b,int col,int n,vector<vector<string>> &res)
     {
         if(col==n)
         {
-            res.push_back(board);
+            res.push_back(b);
             return;
         }
         for(int row=0;row<n;row++)
         {
-            if(isValid(board,row,col))
+            if(isValid(b,row,col,n))
             {
-                board[row][col]='Q';
-                backtrack(res,board,n,col+1);
-                board[row][col]='.';
+                b[row][col]='Q';
+                backtrack(b,col+1,n,res);
+                b[row][col]='.';
             }
         }
     }
-    bool isValid(vector<string> &board,int row,int col)
+    bool isValid(vector<string> b,int row,int col,int n)
     {
-        int n=board.size();
-        for(int x=1;x<=col;x++)  //cheack horizontal
-            if(board[row][col-x]=='Q') return false;
-        for(int x=1;row-x>=0 and col-x>=0;x++)     //check diagonal
-            if(board[row-x][col-x]=='Q') return false;
+        // horizontal check
+        for(int x = 1; x <= col; x++){
+            if(b[row][col-x] == 'Q') return false;
+        }
+        // diagonals cheack
+        for(int x = 1; row-x >= 0 && col-x >= 0; x++){
+            if(b[row-x][col-x] == 'Q') return false;
+        }
         for(int x=1;row+x<n and col-x>=0;x++)
-            if(board[row+x][col-x]=='Q') return false;
+            if(b[row+x][col-x]=='Q') return false;
         return true;
     }
 };
