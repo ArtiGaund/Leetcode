@@ -1,6 +1,6 @@
 class Solution {
 public:
-    set<string> res;
+    unordered_set<string> res;
     map<int,int> flag;
     string s;
     int numTilePossibilities(string tiles) {
