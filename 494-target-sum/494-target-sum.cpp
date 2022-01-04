@@ -18,8 +18,8 @@ public:
             if(target==0) res++;
             return;
         }
-        if(sum[pos]<abs(target)) return;
-        dfs(nums,sum,target+nums[pos],pos+1);
+        if(sum[pos]<target) return;
         dfs(nums,sum,target-nums[pos],pos+1);
+        dfs(nums,sum,target+nums[pos],pos+1);
     }
 };
