@@ -11,27 +11,27 @@
  */
 class Solution {
 public:
-    bool isSubtree(TreeNode* s, TreeNode* t) {
-        stack<TreeNode*> st;
-        st.push(s);
-        while(!st.empty())
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        stack<TreeNode*> s;
+        s.push(root);
+        while(!s.empty())
         {
-            TreeNode *cur=st.top();
-            st.pop();
-            if(cur->val==t->val)
+            TreeNode* cur=s.top();
+            s.pop();
+            if(cur->val==subRoot->val)
             {
-                if(isIdentical(cur,t)) return true;
+                if(isIdentical(cur,subRoot)) return true;
             }
-            if(cur->right) st.push(cur->right);
-            if(cur->left) st.push(cur->left);
+            if(cur->right) s.push(cur->right);
+            if(cur->left) s.push(cur->left);
         }
         return false;
     }
-    bool isIdentical(TreeNode *s,TreeNode* t)
+    bool isIdentical(TreeNode *root,TreeNode *sub)
     {
         stack<TreeNode*> s1,s2;
-        s1.push(s);
-        s2.push(t);
+        s1.push(root);
+        s2.push(sub);
         while(!s1.empty() and !s2.empty())
         {
             TreeNode *cur1=s1.top();
