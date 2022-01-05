@@ -19,12 +19,11 @@ public:
         dfs(root);
         return res;
     }
-    void dfs(TreeNode* root,int partialSum=0,int pos=1)
+    void dfs(TreeNode *root,int partialSum=0,int pos=1)
     {
-        partialSum+=root->val; //update partial sum with cur node
-        for(int i=0;i<pos;i++) if(seen[i]==partialSum-sum) res++; //check if we already found an 
-                                                                    // internal summing up to that
-        seen[pos]=partialSum; //updating seen
+        partialSum+=root->val;
+        for(int i=0;i<pos;i++) if(seen[i]==partialSum-sum) res++;
+        seen[pos]=partialSum;
         if(root->left) dfs(root->left,partialSum,pos+1);
         if(root->right) dfs(root->right,partialSum,pos+1);
     }
