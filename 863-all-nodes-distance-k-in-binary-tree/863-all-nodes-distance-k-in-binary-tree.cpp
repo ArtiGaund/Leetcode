@@ -13,50 +13,49 @@ public:
     // 2) find target node through backward traversal to put parents in stack
     // 3) find each level parent, call the fun implemented in first step with correct dis k-level- 
     // -1 and correct sub child
-    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
-        stack<TreeNode *> sta;
-        while(root&&root->val!=target->val) {
-            sta.push(root);
-            if(root->left) root = root->left;
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+       stack<TreeNode*> s;
+        while(root and root->val!=target->val)
+        {
+            s.push(root);
+            if(root->left) root=root->left;
             else if(root->right) root=root->right;
-            else {
-                sta.pop();
-                while(!sta.empty() && (sta.top()->right==NULL||sta.top()->right==root)) {
-                    root = sta.top();
-                    sta.pop();
+            else
+            {
+                s.pop();
+                while(!s.empty() and (s.top()->right==nullptr or s.top()->right==root))
+                {
+                    root=s.top();
+                    s.pop();
                 }
-                if(!sta.empty())root = sta.top()->right;
+                if(!s.empty()) root=s.top()->right;
             }
         }
-        
-        vector<int> ret = distKChild(target, K);
-        
-        int cnt = 1;
-        while(!sta.empty()&&cnt<K) {
-            TreeNode *node = sta.top();
-            sta.pop();
-            vector<int> vec;
-            if(node->left==root) {
-                vec = distKChild(node->right, K-cnt-1);
-            } else {
-                vec = distKChild(node->left, K-cnt-1);
-            }
-            root = node;
-            ret.insert(ret.end(), vec.begin(), vec.end());
-            cnt++;
+        vector<int> res=disKChild(target,k);
+        int c=1;
+        while(!s.empty() and c<k)
+        {
+            TreeNode *cur=s.top();
+            s.pop();
+            vector<int> v;
+            if(cur->left==root) v=disKChild(cur->right,k-c-1);
+            else v=disKChild(cur->left,k-c-1);
+            root=cur;
+            res.insert(res.end(),v.begin(),v.end());
+            c++;
         }
-        if(cnt==K&&!sta.empty()) ret.push_back(sta.top()->val);
-        return ret;
+        if(c==k and !s.empty()) res.push_back(s.top()->val);
+        return res;
     }
-    
-    vector<int> distKChild(TreeNode *node, int K) {
-        if(!node) return vector<int>();
-        if(K==0) return vector<int>(1, node->val);
-        vector<int> left = distKChild(node->left, K-1);
-        vector<int> right = distKChild(node->right, K-1);
-        vector<int> ret;
-        if(left.size()>0) ret.insert(ret.end(), left.begin(), left.end());
-        if(right.size()>0) ret.insert(ret.end(), right.begin(), right.end());
-        return ret;
+    vector<int> disKChild(TreeNode *root,int k)
+    {
+        if(root==nullptr) return {};
+        if(k==0) return {root->val};
+        vector<int> left=disKChild(root->left,k-1);
+        vector<int> right=disKChild(root->right,k-1);
+        vector<int> res;
+        if(left.size()>0) res.insert(res.end(),left.begin(),left.end());
+        if(right.size()>0) res.insert(res.end(),right.begin(),right.end());
+        return res;
     }
 };
