@@ -9,12 +9,8 @@
  */
 class Solution {
 public:
-    // 1) implement function that gets all child with dis k from target
-    // 2) find target node through backward traversal to put parents in stack
-    // 3) find each level parent, call the fun implemented in first step with correct dis k-level- 
-    // -1 and correct sub child
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-       stack<TreeNode*> s;
+        stack<TreeNode*> s;
         while(root and root->val!=target->val)
         {
             s.push(root);
