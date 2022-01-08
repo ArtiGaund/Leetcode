@@ -11,18 +11,18 @@
  */
 class Solution {
 public:
-   int widthOfBinaryTree(TreeNode* root) {
-        vector<long long int> lefts; // left most nodes at each level;
-        unsigned long long maxwidth = 0;
-        dfs(root, 1, 0, lefts, maxwidth);
-        return maxwidth;
+    int widthOfBinaryTree(TreeNode* root) {
+        vector<long long int> left;
+        unsigned long long int widthmax=0;
+        dfs(root,1,0,left,widthmax);
+        return widthmax;
     }
-private:
-    void dfs(TreeNode* node,unsigned long long id,unsigned long long depth, vector<long long int>& lefts, unsigned long long& maxwidth) {
-        if (!node) return;
-        if (depth >= lefts.size()) lefts.push_back(id);  // add left most node
-        maxwidth = max(maxwidth, id + 1 - lefts[depth]);
-        dfs(node->left, id * 2, depth + 1, lefts, maxwidth);
-        dfs(node->right, id * 2 + 1, depth + 1, lefts, maxwidth);
+    void dfs(TreeNode *root,unsigned long long int index,unsigned long long int depth,vector<long long int> &left,unsigned long long int &widthmax)
+    {
+        if(root==nullptr) return;
+        if(depth>=left.size()) left.push_back(index);
+        widthmax=max(widthmax,index+1-left[depth]);
+        dfs(root->left,2*index,depth+1,left,widthmax);
+        dfs(root->right,2*index+1,depth+1,left,widthmax);
     }
 };
