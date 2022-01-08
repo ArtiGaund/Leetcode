@@ -21,10 +21,10 @@ public:
     TreeNode *constructTree(vector<int> &pre,int left,int right)
     {
         if(left>right) return nullptr;
-        int rootval=pre[index++];
-        TreeNode *root=new TreeNode(rootval);
-        root->left=constructTree(pre,left,mp[rootval]-1);
-        root->right=constructTree(pre,mp[rootval]+1,right);
+        int rootVal=pre[index++];
+        TreeNode* root=new TreeNode(rootVal);
+        root->left=constructTree(pre,left,mp[rootVal]-1);
+        root->right=constructTree(pre,mp[rootVal]+1,right);
         return root;
     }
 };
