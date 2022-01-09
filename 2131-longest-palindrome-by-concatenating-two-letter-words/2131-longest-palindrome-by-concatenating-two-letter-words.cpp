@@ -2,11 +2,11 @@ class Solution {
 public:
     int longestPalindrome(vector<string>& words) {
         unordered_map<string,int> mp;
-        int unpaired=0; // to count word who don't have mirror or have same letter
+        int unpaired=0;
         int ans=0;
         for(string w:words)
         {
-            if(w[0]==w[1]) // word size is 2 and both letter are same
+            if(w[0]==w[1])
             {
                 if(mp[w]>0)
                 {
@@ -32,7 +32,7 @@ public:
                 else mp[w]++;
             }
         }
-        if(unpaired>0) ans+=2; //if have unpaired word add one to the ans
+        if(unpaired>0) ans+=2;
         return ans;
     }
 };
