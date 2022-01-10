@@ -15,15 +15,12 @@ public:
         vector<int> res;
         if(root==nullptr) return res;
         stack<TreeNode*> s;
-        // s.push(root);
-        // TreeNode *curr=root;
-       while(root!=NULL||!s.empty())
+        while(root or !s.empty())
         {
-            while(root!=NULL)
+            while(root)
             {
                 res.push_back(root->val);
-                if(root->right!=NULL)
-                    s.push(root->right);
+                if(root->right) s.push(root->right);
                 root=root->left;
             }
             if(!s.empty())
