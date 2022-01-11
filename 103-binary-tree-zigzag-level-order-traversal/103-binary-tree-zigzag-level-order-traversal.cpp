@@ -16,26 +16,22 @@ public:
         if(root==nullptr) return res;
         queue<TreeNode*> q;
         q.push(root);
-        bool flag=true;
+        bool left=true;
         while(!q.empty())
         {
             int size=q.size();
-            vector<int> temp;
+            vector<int> temp(size);
             for(int i=0;i<size;i++)
             {
                 TreeNode *cur=q.front();
                 q.pop();
-                temp.push_back(cur->val);
+                if(left) temp[i]=cur->val;
+                else temp[size-i-1]=cur->val;
                 if(cur->left) q.push(cur->left);
                 if(cur->right) q.push(cur->right);
             }
-            if(flag) res.push_back(temp);
-            else
-            {
-                reverse(temp.begin(),temp.end());
-                res.push_back(temp);
-            }
-            flag=!flag;
+            res.push_back(temp);
+            left=!left;
         }
         return res;
     }
