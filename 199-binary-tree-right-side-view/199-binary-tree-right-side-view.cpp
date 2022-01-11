@@ -12,8 +12,8 @@
 class Solution {
 public:
     vector<int> rightSideView(TreeNode* root) {
-        if(root==nullptr) return {};
         vector<int> res;
+        if(root==nullptr) return res;
         queue<TreeNode*> q;
         q.push(root);
         while(!q.empty())
