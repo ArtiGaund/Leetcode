@@ -15,8 +15,8 @@ public:
         if(root==nullptr) return root;
         queue<TreeNode*> q;
         q.push(root);
-        TreeNode *leftmost=nullptr; //left deepest node
-        TreeNode *rightmost=nullptr; // right deepest node
+        TreeNode *leftmost=nullptr;
+        TreeNode *rightmost=nullptr;
         while(!q.empty())
         {
             int size=q.size();
@@ -32,7 +32,7 @@ public:
         }
         return findLCA(root,leftmost->val,rightmost->val);
     }
-    TreeNode *findLCA(TreeNode* root,int x,int y)
+    TreeNode *findLCA(TreeNode *root,int x,int y)
     {
         if(root==nullptr) return root;
         if(root->val==x or root->val==y) return root;
