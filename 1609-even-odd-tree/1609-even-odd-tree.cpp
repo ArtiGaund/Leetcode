@@ -19,21 +19,21 @@ public:
         {
             int size=q.size();
             int prev=level%2==0?0:INT_MAX;
-            for(int i=0;i<size;i++)
+            while(size--)
             {
-                auto node=q.front();
+                auto cur=q.front();
                 q.pop();
                 if(level%2==0)
                 {
-                    if(node->val%2==0 or node->val<=prev) return false;
+                    if(cur->val%2==0 or cur->val<=prev) return false;
                 }
                 else
                 {
-                    if(node->val%2 or node->val>=prev) return false;
+                    if(cur->val%2 or cur->val>=prev) return false;
                 }
-                prev=node->val;
-                if(node->left) q.push(node->left);
-                if(node->right) q.push(node->right);
+                prev=cur->val;
+                if(cur->left) q.push(cur->left);
+                if(cur->right) q.push(cur->right);
             }
             level++;
         }
