@@ -34,8 +34,7 @@ public:
             for(auto it:s)
                 mp[it.first].push_back(it.second);
         }
-        for(auto it:mp)
-            res.push_back(it.second);
+        for(auto it:mp) res.push_back(it.second);
         return res;
     }
 };
