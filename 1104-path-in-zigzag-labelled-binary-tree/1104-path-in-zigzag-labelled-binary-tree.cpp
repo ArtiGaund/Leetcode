@@ -2,7 +2,7 @@ class Solution {
 public:
     vector<int> pathInZigZagTree(int label) {
         deque<int> q;
-        vector<int> parent(1000002,-1); //parent array
+        vector<int> par(1000002,-1);
         q.push_back(1);
         int f1=1,br=0,cur=2;
         while(!br)
@@ -11,7 +11,7 @@ public:
             for(int i=0;i<size;i++)
             {
                 int x;
-                if(f1)
+                if(f1) //even level
                 {
                     x=q.back();
                     q.pop_back();
@@ -26,7 +26,7 @@ public:
                     q.push_back(cur+1);
                 }
                 cur+=2;
-                parent[cur-2]=parent[cur-1]=x;
+                par[cur-2]=par[cur-1]=x;
                 if(cur>label)
                 {
                     br++;
@@ -36,11 +36,10 @@ public:
             f1=1-f1;
         }
         vector<int> res;
-        int y=label;
-        while(y!=-1)
+        while(label!=-1)
         {
-            res.push_back(y);
-            y=parent[y];
+            res.push_back(label);
+            label=par[label];
         }
         reverse(res.begin(),res.end());
         return res;
