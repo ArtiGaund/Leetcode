@@ -11,20 +11,19 @@
  */
 class Solution {
 public:
-    vector<string> res;
     vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> res;
         if(root==nullptr) return res;
-        dfs(root,to_string(root->val));
-        return res;
-    }
-    void dfs(TreeNode *root,string str)
-    {
-        if(root->left==nullptr and root->right==nullptr)
+        stack<pair<TreeNode*,string>> s;
+        s.push({root,""});
+        while(!s.empty())
         {
-            res.push_back(str);
-            return;
+            pair<TreeNode*,string> cur=s.top();
+            s.pop();
+            if(cur.first->left==nullptr and cur.first->right==nullptr) res.push_back(cur.second+to_string(cur.first->val));
+            if(cur.first->right) s.push({cur.first->right,cur.second+to_string(cur.first->val)+"->"});
+            if(cur.first->left) s.push({cur.first->left,cur.second+to_string(cur.first->val)+"->"});
         }
-        if(root->left) dfs(root->left,str+"->"+to_string(root->left->val));
-        if(root->right) dfs(root->right,str+"->"+to_string(root->right->val));
+        return res;
     }
 };
