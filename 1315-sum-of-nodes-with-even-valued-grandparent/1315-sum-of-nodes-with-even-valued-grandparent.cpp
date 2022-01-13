@@ -13,31 +13,31 @@ class Solution {
 public:
     int sumEvenGrandparent(TreeNode* root) {
         if(root==nullptr) return 0;
-        queue<TreeNode*> q,even;
+        queue<TreeNode*> q;
         q.push(root);
         int sum=0;
         while(!q.empty())
         {
-            TreeNode *cur=q.front();
-            q.pop();
-            if(cur->val%2==0) even.push(cur);
-            while(!even.empty())
+            auto cur=q.front();
+            if(cur->left)
             {
-                TreeNode *temp=even.front();
-                even.pop();
-                if(temp->left)
+                q.push(cur->left);
+                if(cur->val%2==0)
                 {
-                    sum+=(temp->left->left?temp->left->left->val:0);
-                    sum+=(temp->left->right?temp->left->right->val:0);
-                }
-                if(temp->right)
-                {
-                    sum+=(temp->right->left?temp->right->left->val:0);
-                    sum+=(temp->right->right?temp->right->right->val:0);
+                    sum+=(cur->left->left?cur->left->left->val:0);
+                    sum+=(cur->left->right?cur->left->right->val:0);
                 }
             }
-            if(cur->left) q.push(cur->left);
-            if(cur->right) q.push(cur->right);
+            if(cur->right)
+            {
+                q.push(cur->right);
+                if(cur->val%2==0)
+                {
+                    sum+=(cur->right->left?cur->right->left->val:0);
+                    sum+=(cur->right->right?cur->right->right->val:0);
+                }
+            }
+            q.pop();
         }
         return sum;
     }
