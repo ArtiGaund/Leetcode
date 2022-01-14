@@ -11,32 +11,29 @@
  */
 class Solution {
 public:
-    int res=0;
     int pseudoPalindromicPaths (TreeNode* root) {
-        if(root==nullptr) return 0;
-        vector<int> v(10);
-        dfs(root,v);
-        return res;
-    }
-    void dfs(TreeNode* root,vector<int> &v)
-    {
-        if(root==nullptr) return;
-        v[root->val]++;
-        if(root->left==nullptr and root->right==nullptr)
+        int res=0,path=0;
+        deque<pair<TreeNode*,int>> dq;
+        dq.push_back({root,0});
+        while(!dq.empty())
         {
-            if(check(v)) res++;
-            v[root->val]--;
-            return;
+            TreeNode* cur=dq.front().first;
+            path=dq.front().second;
+            dq.pop_front();
+            if(cur)
+            {
+                path=path^(1<<cur->val);
+                if(cur->left==nullptr and cur->right==nullptr)
+                {
+                    if((path&(path-1))==0) res++;
+                }
+                else
+                {
+                    if(cur->right) dq.push_back({cur->right,path});
+                    if(cur->left) dq.push_back({cur->left,path});
+                }
+            }
         }
-        if(root->left) dfs(root->left,v);
-        if(root->right) dfs(root->right,v);
-        v[root->val]--;
-    }
-    bool check(vector<int> v)
-    {
-        int odd=0;
-        for(int i:v)
-            odd+=i&1;
-        return (odd==0 or odd==1);
+        return res;
     }
 };
