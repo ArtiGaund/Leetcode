@@ -15,13 +15,13 @@ public:
         if(root==nullptr) return 0;
         stack<TreeNode*> s;
         s.push(root);
-        int res=0,sum=0;
+        int res=0;
         while(!s.empty())
         {
             TreeNode *cur=s.top();
             s.pop();
             if(cur->left==nullptr and cur->right==nullptr) res+=cur->val;
-            if(cur->right)
+            if(cur->right) 
             {
                 cur->right->val+=cur->val*10;
                 s.push(cur->right);
