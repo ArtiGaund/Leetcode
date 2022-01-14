@@ -13,13 +13,13 @@ class Solution {
 public:
     int pseudoPalindromicPaths (TreeNode* root) {
         int res=0,path=0;
-        deque<pair<TreeNode*,int>> dq;
-        dq.push_back({root,0});
+        stack<pair<TreeNode*,int>> dq;
+        dq.push({root,0});
         while(!dq.empty())
         {
-            TreeNode* cur=dq.front().first;
-            path=dq.front().second;
-            dq.pop_front();
+            TreeNode* cur=dq.top().first;
+            path=dq.top().second;
+            dq.pop();
             if(cur)
             {
                 path=path^(1<<cur->val);
@@ -29,8 +29,8 @@ public:
                 }
                 else
                 {
-                    if(cur->right) dq.push_back({cur->right,path});
-                    if(cur->left) dq.push_back({cur->left,path});
+                    if(cur->right) dq.push({cur->right,path});
+                    if(cur->left) dq.push({cur->left,path});
                 }
             }
         }
