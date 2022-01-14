@@ -13,27 +13,25 @@ class Solution {
 public:
     int sumRootToLeaf(TreeNode* root) {
         if(root==nullptr) return 0;
-        int rootToLeaf=0,curNo=0;
-        deque<pair<TreeNode*,int>> dq;
-        dq.push_back({root,0});
-        while(!dq.empty())
+        stack<pair<TreeNode*,int>> s;
+        s.push({root,0});
+        int res=0,curNo=0;
+        while(!s.empty())
         {
-            pair<TreeNode*,int> p=dq.front();
-            dq.pop_front();
-            root=p.first;
-            curNo=p.second;
-            if(root)
+            TreeNode *cur=s.top().first;
+            curNo=s.top().second;
+            s.pop();
+            if(cur)
             {
-                curNo=(curNo<<1)|root->val;
-                if(root->left==nullptr and root->right==nullptr)
-                    rootToLeaf+=curNo;
+                curNo=(curNo<<1)|cur->val;
+                if(cur->left==nullptr and cur->right==nullptr) res+=curNo;
                 else
                 {
-                    if(root->right) dq.push_back({root->right,curNo});
-                    if(root->left) dq.push_back({root->left,curNo});
+                    if(cur->right) s.push({cur->right,curNo});
+                    if(cur->left) s.push({cur->left,curNo});
                 }
             }
         }
-        return rootToLeaf;
+        return res;
     }
 };
