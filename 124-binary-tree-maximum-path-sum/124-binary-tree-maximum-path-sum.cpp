@@ -13,19 +13,19 @@ class Solution {
 public:
     int maxPathSum(TreeNode* root) {
         if(root==nullptr) return 0;
-        int max_sum=INT_MIN;
-        dfs(root,max_sum);
-        return max_sum;
+        int maxsum=INT_MIN;
+        dfs(root,maxsum);
+        return maxsum;
     }
-    int dfs(TreeNode* root,int &max_sum)
+    int dfs(TreeNode *root,int &maxsum)
     {
         if(root==nullptr) return 0;
-        int maxLeft=dfs(root->left,max_sum);
-        int maxRight=dfs(root->right,max_sum);
-        maxLeft=max(maxLeft,0);
-        maxRight=max(maxRight,0);
-        int sum=maxLeft+maxRight+root->val;
-        max_sum=max(max_sum,sum);
-        return max(maxLeft,maxRight)+root->val;
+        int left=dfs(root->left,maxsum);
+        int right=dfs(root->right,maxsum);
+        left=max(left,0);
+        right=max(right,0);
+        int sum=left+right+root->val;
+        maxsum=max(maxsum,sum);
+        return max(left,right)+root->val;
     }
 };
