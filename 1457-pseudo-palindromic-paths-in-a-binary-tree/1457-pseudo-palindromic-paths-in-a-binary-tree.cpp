@@ -35,8 +35,8 @@ public:
     bool check(vector<int> v)
     {
         int odd=0;
-        for(int it:v)
-            odd+=it&1;
-        return (odd==0 or odd==1); 
+        for(int i:v)
+            odd+=i&1;
+        return (odd==0 or odd==1);
     }
 };
