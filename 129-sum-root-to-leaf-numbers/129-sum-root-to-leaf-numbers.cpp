@@ -12,13 +12,26 @@
 class Solution {
 public:
     int sumNumbers(TreeNode* root) {
-        return pathSum(root,0);
-    }
-    int pathSum(TreeNode* root,int sum)
-    {
         if(root==nullptr) return 0;
-        sum=sum*10+root->val;
-        if(root->left==nullptr and root->right==nullptr) return sum;
-        return pathSum(root->left,sum)+pathSum(root->right,sum);
+        stack<TreeNode*> s;
+        s.push(root);
+        int res=0,sum=0;
+        while(!s.empty())
+        {
+            TreeNode *cur=s.top();
+            s.pop();
+            if(cur->left==nullptr and cur->right==nullptr) res+=cur->val;
+            if(cur->right)
+            {
+                cur->right->val+=cur->val*10;
+                s.push(cur->right);
+            }
+            if(cur->left)
+            {
+                cur->left->val+=cur->val*10;
+                s.push(cur->left);
+            }
+        }
+        return res;
     }
 };
