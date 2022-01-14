@@ -11,19 +11,22 @@
  */
 class Solution {
 public:
-    int res=0;
     int sumOfLeftLeaves(TreeNode* root) {
-        dfs(root,-1);
-        return res;
-    }
-    void dfs(TreeNode* root,int dir)
-    {
-        if(root==nullptr) return;
-        if(root->left==nullptr and root->right==nullptr)
+        if(root==nullptr) return 0;
+        stack<pair<TreeNode*,bool>> s;
+        s.push({root,false});
+        int res=0;
+        while(!s.empty())
         {
-            if(dir==0) res+=root->val;
+            TreeNode *cur=s.top().first;
+            bool isLeaf=s.top().second;
+            s.pop();
+                if(cur->left==nullptr and cur->right==nullptr and isLeaf) res+=cur->val;
+             if(cur->right) s.push({cur->right,false});
+                if(cur->left) s.push({cur->left,true});
+               
+            
         }
-        dfs(root->left,0); // 0 for left
-        dfs(root->right,1); //1 for right
+        return res;
     }
 };
