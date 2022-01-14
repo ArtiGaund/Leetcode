@@ -11,21 +11,38 @@
  */
 class Solution {
 public:
-    string res="";
     string smallestFromLeaf(TreeNode* root) {
-        if(root==nullptr) return res;
-        dfs(root,"");
-        return res;
-    }
-    void dfs(TreeNode *root,string temp)
-    {
-        temp=(char)(root->val+'a')+temp;
-        if(root->left==nullptr and root->right==nullptr)
+        if(root==nullptr) return "";
+        stack<pair<TreeNode*,bool>> s;
+        string temp="",res="";
+        s.push({root,false});
+        while(!s.empty())
         {
-            if(res=="") res=temp;
-            else res=min(res,temp);
+            TreeNode *cur=s.top().first;
+            bool vis=s.top().second;
+            s.pop();
+            if(vis)
+            {
+                if(cur->left==nullptr and cur->right==nullptr)
+                {
+                    if(res.empty())
+                        res.insert(res.begin(),temp.rbegin(),temp.rend());
+                    else
+                    {
+                        string rev(temp.rbegin(),temp.rend());;
+                        res=min(rev,res);
+                    }
+                }
+                temp.pop_back();
+            }
+            else
+            {
+                temp.push_back('a'+cur->val);
+                s.push({cur,true});
+                if(cur->right) s.push({cur->right,false});
+                if(cur->left) s.push({cur->left,false});
+            }
         }
-        if(root->left) dfs(root->left,temp);
-        if(root->right) dfs(root->right,temp);
+        return res;
     }
 };
