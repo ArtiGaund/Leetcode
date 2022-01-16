@@ -11,19 +11,23 @@
  */
 class Solution {
 public:
-    int diff=INT_MAX;
-    TreeNode* prev=nullptr;
     int getMinimumDifference(TreeNode* root) {
         if(root==nullptr) return 0;
-        dfs(root);
+        stack<TreeNode*> s;
+        int diff=INT_MAX,prev=-100001;
+        while(root or !s.empty())
+        {
+            while(root)
+            {
+                s.push(root);
+                root=root->left;
+            }
+            root=s.top();
+            s.pop();
+            diff=min(diff,root->val-prev);
+            prev=root->val;
+            root=root->right;
+        }
         return diff;
-    }
-    void dfs(TreeNode *root)
-    {
-        if(root==nullptr) return;
-        if(root->left) dfs(root->left);
-        if(prev) diff=min(diff,abs(prev->val-root->val));
-        prev=root;
-        if(root->right) dfs(root->right);
     }
 };
