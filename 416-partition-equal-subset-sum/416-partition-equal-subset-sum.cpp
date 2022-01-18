@@ -1,23 +1,18 @@
 class Solution {
 public:
     bool canPartition(vector<int>& nums) {
+        int sum=accumulate(nums.begin(),nums.end(),0);
+        if(sum%2) return false;
         int n=nums.size();
-        int sum=0;
-        for(int a:nums) sum+=a;
-        if(sum%2!=0) return false;
-        sum/=2;
-        vector<vector<bool>> dp(n,vector<bool>(sum+1));
-        for(int i=0;i<n;i++) dp[i][0]=true;
-        for(int j=0;j<=sum;j++) 
-            dp[0][j]=(nums[0]==j?true:false);
-        for(int i=1;i<n;i++)
-        {
-            for(int j=1;j<=sum;j++)
-            {
-                if(dp[i-1][j]) dp[i][j]=dp[i-1][j];
-                else if(j>=nums[i]) dp[i][j]=dp[i-1][j-nums[i]];
-            }
-        }
-        return dp[n-1][sum];
+        int halfsum=sum/2;
+        vector<vector<int>> dp(n,vector<int>(halfsum+1,-1));
+        return solve(nums,dp,halfsum,0);
+    }
+    bool solve(vector<int> &v,vector<vector<int>> &dp,int sum,int i)
+    {
+        if(sum==0) return true;
+        if(i>=v.size() or sum<0) return false;
+        if(dp[i][sum]!=-1) return dp[i][sum];
+        return dp[i][sum]=(solve(v,dp,sum-v[i],i+1) or solve(v,dp,sum,i+1));
     }
 };
