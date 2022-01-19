@@ -1,25 +1,22 @@
 class Solution {
 public:
-    int res=0;
     int findTargetSumWays(vector<int>& nums, int target) {
-        if(nums.size()==0) return 0;
-        int n=nums.size();
-        vector<int> sum(n);
-        sum[n-1]=nums[n-1];
-        for(int i=n-2;i>=0;i--)
-            sum[i]=sum[i+1]+nums[i];
-        dfs(nums,sum,target,0);
-        return res;
+        int sum=accumulate(nums.begin(),nums.end(),0);
+        if(sum<abs(target) or (sum+target)%2==1) return 0; //if odd
+        return targetSum(nums,(sum+target)/2);
     }
-    void dfs(vector<int> &nums,vector<int> &sum,int target,int pos)
+    int targetSum(vector<int> &v,int sum)
     {
-        if(pos==nums.size())
+        int n=v.size();
+       vector<int> dp(sum+1,0);
+        dp[0]=1;
+        for(int a:v)
         {
-            if(target==0) res++;
-            return;
+            for(int j=sum;j>=a;j--)
+            {
+                    dp[j]+=dp[j-a];
+            }
         }
-        if(sum[pos]<target) return;
-        dfs(nums,sum,target-nums[pos],pos+1);
-        dfs(nums,sum,target+nums[pos],pos+1);
+        return dp[sum];
     }
 };
