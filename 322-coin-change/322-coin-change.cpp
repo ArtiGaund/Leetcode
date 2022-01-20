@@ -1,18 +1,26 @@
 class Solution {
 public:
-    int dp[10000+1][12+1];
     int coinChange(vector<int>& coins, int amount) {
-        memset(dp,-1,sizeof(dp));
-        int mincoin=solve(coins,amount,coins.size());
-        return (mincoin==INT_MAX-1?-1:mincoin);
+        int n=coins.size();
+        vector<vector<int>> dp(n,vector<int>(amount+1,-1));
+        int res=solve(coins,dp,amount,0);
+        return (res==INT_MAX?-1:res);
     }
-    int solve(vector<int> &coins,int amount,int n)
+    int solve(vector<int> &v,vector<vector<int>> &dp,int amount,int i)
     {
-        if(n==0 or amount==0) return (amount==0?0:INT_MAX-1);
-        if(dp[amount][n]!=-1) return dp[amount][n];
-        if(coins[n-1]>amount)
-            return dp[amount][n]=0+solve(coins,amount-0,n-1);
-        else
-            return dp[amount][n]=min(0+solve(coins,amount-0,n-1),1+solve(coins,amount-coins[n-1],n));
+        if(amount==0) return 0;
+        if(i>=v.size() or v.size()==0) return INT_MAX;
+        if(dp[i][amount]==-1)
+        {
+            int sum1=INT_MAX;
+            if(v[i]<=amount)
+            {
+                int res=solve(v,dp,amount-v[i],i);
+                if(res!=INT_MAX) sum1=res+1;
+            }
+            int sum2=solve(v,dp,amount,i+1);
+            dp[i][amount]=min(sum1,sum2);
+        }
+        return dp[i][amount];
     }
 };
