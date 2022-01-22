@@ -2,7 +2,7 @@ class Solution {
 public:
     int findLength(vector<int>& A, vector<int>& B) {
         int n=A.size(),m=B.size();
-        vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+        vector<vector<int>> dp(2,vector<int>(m+1,0));
         int maxlen=0;
         for(int i=1;i<=n;i++)
         {
@@ -10,9 +10,12 @@ public:
             {
                 if(A[i-1]==B[j-1])
                 {
-                    dp[i][j]=1+dp[i-1][j-1];
-                    maxlen=max(maxlen,dp[i][j]);
+                    dp[i%2][j]=1+dp[(i-1)%2][j-1];
+                    if(maxlen<dp[i%2][j])
+                        maxlen=dp[i%2][j];
                 }
+                else
+                    dp[i%2][j]=0;
             }
         }
         return maxlen;
