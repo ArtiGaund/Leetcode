@@ -2,13 +2,13 @@ class Solution {
 public:
     int minInsertions(string s) {
         if(s.size()==0) return 0;
-        return s.size()-findLPS(s);
+        return s.size()-LPS(s);
     }
-    int findLPS(string s)
+    int LPS(string s)
     {
         int n=s.size();
         vector<vector<int>> dp(n,vector<int>(n));
-        for(int i=0;i<n;i++)
+        for(int i=0;i<n;i++) //all subsequence of len 1 is palindrome
             dp[i][i]=1;
         for(int i=n-1;i>=0;i--)
         {
