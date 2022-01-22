@@ -4,7 +4,7 @@ public:
         int n=s.size();
         vector<vector<bool>> dp(n,vector<bool>(n));
         for(int i=0;i<n;i++) dp[i][i]=true;
-        for(int i=n-1;i>=0;i--)
+        for(int i=s.size()-1;i>=0;i--)
         {
             for(int j=i+1;j<n;j++)
             {
@@ -21,8 +21,10 @@ public:
             int mincut=n;
             for(int j=n-1;j>=i;j--)
             {
-                if(dp[i][j]) 
+                if(dp[i][j])
+                {
                     mincut=(j==n-1?0:min(mincut,1+cut[j+1]));
+                }
             }
             cut[i]=mincut;
         }
