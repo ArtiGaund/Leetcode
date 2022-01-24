@@ -9,14 +9,13 @@ class Solution{
 	{
 	    // code here
 	    int n=nums.size();
-	    vector<int> a(n,1);
-	    vector<int> b(n,1);
+	    vector<int> lds(n,1),ldsrev(n,1);
 	    for(int i=0;i<n;i++)
 	    {
 	        for(int j=i-1;j>=0;j--)
 	        {
 	            if(nums[j]<nums[i])
-	                a[i]=max(a[i],a[j]+1);
+	                lds[i]=max(lds[i],lds[j]+1);
 	        }
 	    }
 	    for(int i=n-1;i>=0;i--)
@@ -24,12 +23,12 @@ class Solution{
 	        for(int j=i+1;j<n;j++)
 	        {
 	            if(nums[j]<nums[i])
-	                b[i]=max(b[i],b[j]+1);
+	                ldsrev[i]=max(ldsrev[i],ldsrev[j]+1);
 	        }
 	    }
 	    int maxlen=0;
 	    for(int i=0;i<n;i++)
-	        maxlen=max(maxlen,a[i]+b[i]-1);
+	        maxlen=max(maxlen,lds[i]+ldsrev[i]-1);
 	   return maxlen;
 	}
 };
