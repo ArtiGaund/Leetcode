@@ -2,21 +2,18 @@ class Solution {
 public:
     int change(int amount, vector<int>& coins) {
         int n=coins.size();
-        vector<vector<int>> dp(n,vector<int>(amount+1,-1));
-        return solve(dp,amount,coins,0);
+        vector<vector<int>> dp(n,vector<int>(amount+1));
+        for(int i=0;i<n;i++) dp[i][0]=1;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=1;j<=amount;j++)
+            {
+                if(i>0) dp[i][j]=dp[i-1][j];
+                if(j>=coins[i])
+                    dp[i][j]+=dp[i][j-coins[i]];
+            }
+        }
+        return dp[n-1][amount];
     }
-    int solve(vector<vector<int>> &dp,int amount,vector<int> &coins,int i)
-    {
-        if(amount==0) return 1;
-        if(coins.size()==0 or i>=coins.size()) return 0;
-        if(dp[i][amount]!=-1) return dp[i][amount];
-        
-            int sum1=0;
-            if(coins[i]<=amount)
-                sum1=solve(dp,amount-coins[i],coins,i);
-            int sum2=solve(dp,amount,coins,i+1);
-            dp[i][amount]=sum1+sum2;
-        
-        return dp[i][amount];
-    }
+    
 };
