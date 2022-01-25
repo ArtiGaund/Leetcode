@@ -11,16 +11,20 @@ class Solution{
 public:
     bool isSubsetSum(int N, int arr[], int sum){
         // code here 
-        vector<bool> dp(sum+1,false);
-        dp[0]=true;
-        for(int i=0;i<N;i++)
+        vector<vector<bool>> dp(N,vector<bool>(sum+1));
+        for(int i=0;i<N;i++) dp[i][0]=true;
+        for(int j=1;j<=sum;j++)
+            dp[0][j]=(arr[0]==j?true:false);
+        for(int i=1;i<N;i++)
         {
-            for(int j=sum;j>=arr[i];j--)
+            for(int j=1;j<=sum;j++)
             {
-                if(dp[j-arr[i]]) dp[j]=true;
+                if(dp[i-1][j]) dp[i][j]=dp[i-1][j];
+                else if(j>=arr[i])
+                    dp[i][j]=dp[i-1][j-arr[i]];
             }
         }
-        return dp[sum];
+        return dp[N-1][sum];
     }
 };
 
