@@ -12,12 +12,13 @@ public:
     int solve(vector<int> &nums,int start,int end)
     {
         if(start==end) return nums[start];
-        int n=nums.size();
-        vector<int> dp(n);
-        dp[start]=nums[start];
-        dp[start+1]=max(nums[start],nums[start+1]);
-        for(int i=start+2;i<=end;i++)
-            dp[i]=max(dp[i-1],dp[i-2]+nums[i]);
-        return dp[end];
+        int prev=0,cur=0;
+        for(int i=start;i<=end;i++)
+        {
+            int temp=max(prev+nums[i],cur);
+            prev=cur;
+            cur=temp;
+        }
+        return cur;
     }
 };
