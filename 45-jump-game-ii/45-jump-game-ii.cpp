@@ -3,25 +3,12 @@ public:
     int jump(vector<int>& nums) {
         int n=nums.size();
         vector<int> dp(n,0);
-        return solve(dp,nums,0);
-    }
-    int solve(vector<int> &dp,vector<int> &nums,int i)
-    {
-        if(i==nums.size()-1) //reach end of nums
-            return 0;
-        if(nums[i]==0) //cannot move forward
-            return INT_MAX;
-        if(dp[i]!=0) return dp[i]; //already processed
-        int total=INT_MAX;
-        int start=i+1;
-        int end=i+nums[i];
-        while(start<nums.size() and start<=end)
+        for(int i=1;i<n;i++) dp[i]=INT_MAX;
+        for(int start=0;start<n-1;start++)
         {
-            int minjump=solve(dp,nums,start++); //jump 1 and recursive
-            if(minjump!=INT_MAX)
-                total=min(total,minjump+1);
+            for(int end=start+1;end<=start+nums[start] and end<n;end++)
+                dp[end]=min(dp[end],dp[start]+1);
         }
-        dp[i]=total;
-        return dp[i];
+        return dp[n-1];
     }
 };
