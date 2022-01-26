@@ -2,13 +2,26 @@ class Solution {
 public:
     int jump(vector<int>& nums) {
         int n=nums.size();
-        vector<int> dp(n);
-        for(int i=1;i<n;i++) dp[i]=INT_MAX;
-        for(int start=0;start<n;start++)
+        vector<int> dp(n,0);
+        return solve(dp,nums,0);
+    }
+    int solve(vector<int> &dp,vector<int> &nums,int i)
+    {
+        if(i==nums.size()-1) //reach end of nums
+            return 0;
+        if(nums[i]==0) //cannot move forward
+            return INT_MAX;
+        if(dp[i]!=0) return dp[i]; //already processed
+        int total=INT_MAX;
+        int start=i+1;
+        int end=i+nums[i];
+        while(start<nums.size() and start<=end)
         {
-            for(int end=start+1;end<n and end<=start+nums[start];end++)
-                dp[end]=min(dp[end],dp[start]+1);
+            int minjump=solve(dp,nums,start++); //jump 1 and recursive
+            if(minjump!=INT_MAX)
+                total=min(total,minjump+1);
         }
-        return dp[n-1];
+        dp[i]=total;
+        return dp[i];
     }
 };
