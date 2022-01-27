@@ -28,7 +28,7 @@ public:
             Node *prev=nullptr;
             for(int i=0;i<size;i++)
             {
-                Node* cur=q.front();
+                Node *cur=q.front();
                 q.pop();
                 if(prev!=nullptr) prev->next=cur;
                 prev=cur;
