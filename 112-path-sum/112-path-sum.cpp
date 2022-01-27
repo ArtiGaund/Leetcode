@@ -13,7 +13,26 @@ class Solution {
 public:
     bool hasPathSum(TreeNode* root, int targetSum) {
         if(root==nullptr) return false;
-        if(root->val==targetSum and root->left==nullptr and root->right==nullptr) return true;
-        return (hasPathSum(root->left,targetSum-root->val) or hasPathSum(root->right,targetSum-root->val));
+        stack<pair<TreeNode*,int>> s;
+        s.push({root,0});
+        while(root and !s.empty())
+        {
+            auto p=s.top();
+            s.pop();
+            if(p.first->left and p.first->right)
+            {
+                s.push({p.first->left,p.second+p.first->val});
+                s.push({p.first->right,p.second+p.first->val});
+            }
+            else if(p.first->left) 
+                s.push({p.first->left,p.second+p.first->val});
+            else if(p.first->right)
+                s.push({p.first->right,p.second+p.first->val});
+            else
+            {
+                if(p.second+p.first->val==targetSum) return true;
+            }
+        }
+        return false;
     }
 };
