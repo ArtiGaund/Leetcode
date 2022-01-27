@@ -23,15 +23,17 @@ public:
             vector<int> temp(size);
             for(int i=0;i<size;i++)
             {
-                TreeNode *cur=q.front();
+                TreeNode* cur=q.front();
                 q.pop();
+                //insert according to direction
                 if(left) temp[i]=cur->val;
                 else temp[size-i-1]=cur->val;
                 if(cur->left) q.push(cur->left);
                 if(cur->right) q.push(cur->right);
+                
             }
             res.push_back(temp);
-            left=!left;
+            left=!left; //reverse the direction
         }
         return res;
     }
