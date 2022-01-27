@@ -15,20 +15,20 @@ public:
         if(root==nullptr) return 0;
         queue<TreeNode*> q;
         q.push(root);
-        int minDepth=0;
+        int depth=0;
         while(!q.empty())
         {
-            minDepth++;
+            depth++;
             int size=q.size();
             for(int i=0;i<size;i++)
             {
                 TreeNode *cur=q.front();
                 q.pop();
-                if(cur->left==nullptr and cur->right==nullptr) return minDepth;
+                if(cur->left==nullptr and cur->right==nullptr) return depth;
                 if(cur->left) q.push(cur->left);
                 if(cur->right) q.push(cur->right);
             }
         }
-        return minDepth;
+        return depth;
     }
 };
