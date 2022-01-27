@@ -1,5 +1,5 @@
 # Maximum sum leaf to root path
-## Medium 
+##  Medium 
 <div class="problem-statement">
                 <p></p><p><span style="font-size:18px">Given a Binary Tree, find the maximum sum path from a leaf to root.</span></p>
 
