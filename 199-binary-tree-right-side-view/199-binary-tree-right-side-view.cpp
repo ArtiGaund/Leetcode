@@ -23,7 +23,8 @@ public:
             {
                 TreeNode* cur=q.front();
                 q.pop();
-                if(i==size-1) res.push_back(cur->val);
+                if(i==size-1)
+                    res.push_back(cur->val);
                 if(cur->left) q.push(cur->left);
                 if(cur->right) q.push(cur->right);
             }
