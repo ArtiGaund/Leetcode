@@ -1,12 +1,11 @@
 class Solution {
 public:
     int maxDistance(vector<vector<int>>& grid) {
-        int row=grid.size();
-        int col=grid[0].size();
+        int n=grid.size();
         queue<pair<int,int>> q,q1;
-        for(int i=0;i<row;i++)
+        for(int i=0;i<n;i++)
         {
-            for(int j=0;j<col;j++)
+            for(int j=0;j<n;j++)
             {
                 if(grid[i][j]==1)
                 {
@@ -27,7 +26,7 @@ public:
                 q.pop();
                 int i=p.first;
                 int j=p.second;
-                if(i>=0 and i<row and j>=0 and j<col and grid[i][j]==0)
+                if(i>=0 and i<n and j>=0 and j<n and grid[i][j]==0)
                 {
                     grid[i][j]=step;
                     q1.push({i-1,j});
