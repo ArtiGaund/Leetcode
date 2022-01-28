@@ -9,11 +9,12 @@ public:
         {
             for(int j=0;j<col;j++)
             {
-                if(grid[i][j]==2) q.push({i,j});
+                if(grid[i][j]==2)
+                    q.push({i,j});
                 else if(grid[i][j]==1) fresh++;
             }
         }
-        int c=0;
+        int time=0;
         vector<pair<int,int>> dir={{1,0},{0,1},{-1,0},{0,-1}};
         while(!q.empty())
         {
@@ -31,14 +32,13 @@ public:
                     if(x>=0 and x<row and y>=0 and y<col and grid[x][y]==1)
                     {
                         grid[x][y]=2;
-                        fresh--;
                         q.push({x,y});
+                        fresh--;
                     }
                 }
             }
-            if(!q.empty())
-                c++;
+            if(!q.empty()) time++;
         }
-        return (fresh==0?c:-1);
+        return fresh==0?time:-1;
     }
 };
