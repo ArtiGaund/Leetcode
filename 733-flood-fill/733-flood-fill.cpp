@@ -1,32 +1,32 @@
 class Solution {
 public:
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
-       if(image.size()==0) return image;
+        if(image.size()==0) return image;
         int row=image.size();
         int col=image[0].size();
         int old=image[sr][sc];
-        image[sr][sc]=newColor;
-        queue<pair<int,int>> q; //to store the boundaries of visited vertix
+        queue<pair<int,int>> q;
         q.push({sr-1,sc});
-         q.push({sr+1,sc});
-         q.push({sr,sc-1});
-         q.push({sr,sc+1});
-        vector<vector<bool>> vis(row,vector<bool>(col,false)); //for checking visited cell
-        vis[sr][sc]=true;
+        q.push({sr+1,sc});
+        q.push({sr,sc-1});
+        q.push({sr,sc+1});
+        image[sr][sc]=newColor;
+        vector<vector<bool>> vis(row,vector<bool>(col,false));
+        vis[sr][col]=true;
         while(!q.empty())
         {
             auto p=q.front();
             q.pop();
-            int l=p.first;
-            int r=p.second;
-            if(l>=0 and l<row and r>=0 and r<col and !vis[l][r] and image[l][r]==old) // check for 
+            int x=p.first;
+            int y=p.second;
+            if(x>=0 and x<row and y>=0 and y<col and !vis[x][y] and image[x][y]==old)
             {
-                image[l][r]=newColor;
-                vis[l][r]=true;
-                 q.push({l-1,r});
-                 q.push({l+1,r});
-                 q.push({l,r-1});
-                 q.push({l,r+1});
+                vis[x][y]=true;
+                image[x][y]=newColor;
+                q.push({x-1,y});
+                q.push({x+1,y});
+                q.push({x,y-1});
+                q.push({x,y+1});
             }
         }
         return image;
