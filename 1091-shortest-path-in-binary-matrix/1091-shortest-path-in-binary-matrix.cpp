@@ -7,8 +7,6 @@ public:
         if(grid[0][0]==1 or grid[row-1][col-1]==1) return -1;
         queue<pair<int,int>> q;
         q.push({0,0});
-        // vector<vector<bool>> vis(row,vector<bool>(col,false));
-        // vis[0][0]=true;
         grid[0][0]=1;
         vector<pair<int,int>> dir={{-1,-1},{0,-1},{-1,0},{1,1},{1,0},{0,1},{1,-1},{-1,1}};
         int ans=0;
@@ -30,7 +28,6 @@ public:
                     if(x>=0 and x<row and y>=0 and y<col and grid[x][y]==0)
                     {
                         grid[x][y]=1;
-                        // vis[x][y]=true;
                         q.push({x,y});
                     }
                 }
