@@ -1,21 +1,19 @@
 class Solution {
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        // BFS using queue
-        if(mat.size()==0) return mat;
         int row=mat.size();
         int col=mat[0].size();
-        queue<pair<int,int>> q; //to store the boundaries
+        queue<pair<int,int>> q;
         for(int i=0;i<row;i++)
         {
             for(int j=0;j<col;j++)
             {
-                if(mat[i][j]==0) //store boundaries of cell which contain 0
+                if(mat[i][j]==0)
                 {
                     q.push({i-1,j});
                     q.push({i+1,j});
-                     q.push({i,j-1});
-                     q.push({i,j+1});
+                    q.push({i,j-1});
+                    q.push({i,j+1});
                 }
             }
         }
@@ -29,16 +27,16 @@ public:
             {
                 auto p=q.front();
                 q.pop();
-                int l=p.first;
-                int r=p.second;
-                if(l>=0 and l<row and r>=0 and r<col and !vis[l][r] and mat[l][r]==1)
+                int x=p.first;
+                int y=p.second;
+                if(x>=0 and x<row and y>=0 and y<col and !vis[x][y] and mat[x][y]==1)
                 {
-                    vis[l][r]=true;
-                    mat[l][r]=step;
-                     q.push({l-1,r});
-                     q.push({l+1,r});
-                     q.push({l,r-1});
-                     q.push({l,r+1});
+                    vis[x][y]=true;
+                    mat[x][y]=step;
+                    q.push({x-1,y});
+                    q.push({x+1,y});
+                    q.push({x,y-1});
+                    q.push({x,y+1});
                 }
             }
         }
