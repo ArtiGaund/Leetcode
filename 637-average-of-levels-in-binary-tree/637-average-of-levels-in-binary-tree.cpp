@@ -28,7 +28,8 @@ public:
                 if(cur->left) q.push(cur->left);
                 if(cur->right) q.push(cur->right);
             }
-            res.push_back(sum/size);
+            double avg=sum/size;
+            res.push_back(avg);
         }
         return res;
     }
