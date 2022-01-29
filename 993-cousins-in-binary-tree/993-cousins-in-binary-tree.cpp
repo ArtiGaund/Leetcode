@@ -12,13 +12,14 @@
 class Solution {
 public:
     bool isCousins(TreeNode* root, int x, int y) {
+        if(root==nullptr) return false;
         queue<TreeNode*> q;
         q.push(root);
         q.push(nullptr);
         int found=0;
         while(!q.empty())
         {
-            TreeNode *cur=q.front();
+            TreeNode* cur=q.front();
             q.pop();
             if(cur==nullptr)
             {
