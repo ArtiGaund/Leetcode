@@ -1,27 +1,31 @@
 class Solution {
 public:
-    long long minimumDifference(vector<int>& A) {
-        priority_queue<int> L; // storing the smallest N digits in the first part
-        priority_queue<int,vector<int>, greater<>> R; // storing the greatest N digits in the right part
-        long N = A.size() / 3, left = 0, right = 0, ans = LLONG_MAX;
-        vector<long> tmp(A.size());
-        for (int i = A.size() - 1; i >= N; --i) { // calculate the greatest N digits in the right part
-            R.push(A[i]);
-            right += A[i];
-            if (R.size() > N) {
-                right -= R.top();
+    long long minimumDifference(vector<int>& nums) {
+        priority_queue<int> L; //store smallest N digits in the first part
+        priority_queue<int,vector<int>,greater<>> R; //store greatest N digit in sec part
+        long n=nums.size()/3,left=0,right=0,ans=LLONG_MAX;
+        vector<long> temp(nums.size()); 
+        for(int i=nums.size()-1;i>=n;i--)
+        {
+            R.push(nums[i]);
+            right+=nums[i];
+            if(R.size()>n)
+            {
+                right-=R.top();
                 R.pop();
             }
-            if (R.size() == N) tmp[i] = right; // `tmp[i]` is the maximum sum of `N` digits in `A[i:]`
+            if(R.size()==n) temp[i]=right; //max sum
         }
-        for (int i = 0; i < A.size() - N; ++i) {
-            L.push(A[i]);
-            left += A[i];
-            if (L.size() > N) {
-                left -= L.top();
+        for(int i=0;i<nums.size()-n;i++)
+        {
+                L.push(nums[i]);
+                left+=nums[i];
+            if(L.size()>n)
+            {
+                left-=L.top();
                 L.pop();
             }
-            if (L.size() == N) ans = min(ans, left - tmp[i + 1]);
+            if(L.size()==n) ans=min(ans,left-temp[i+1]);
         }
         return ans;
     }
