@@ -10,28 +10,28 @@ class Solution
 	vector<int> topoSort(int V, vector<int> adj[]) 
 	{
 	    // code here
-	    stack<int> st;
+	    stack<int> s;
 	    vector<bool> vis(V,false);
 	    for(int i=0;i<V;i++)
 	    {
-	        if(!vis[i]) findTopoSort(i,st,vis,adj);
+	        if(!vis[i]) findTopoSort(i,s,vis,adj);
 	    }
 	    vector<int> res;
-	    while(!st.empty())
+	    while(!s.empty())
 	    {
-	        res.push_back(st.top());
-	        st.pop();
+	        res.push_back(s.top());
+	        s.pop();
 	    }
 	    return res;
 	}
-	void findTopoSort(int node,stack<int> &st,vector<bool> &vis,vector<int> adj[])
+	void findTopoSort(int node,stack<int> &s,vector<bool> &vis,vector<int> adj[])
 	{
 	    vis[node]=true;
 	    for(auto it:adj[node])
 	    {
-	        if(!vis[it]) findTopoSort(it,st,vis,adj);
+	        if(!vis[it]) findTopoSort(it,s,vis,adj);
 	    }
-	    st.push(node);
+	    s.push(node);
 	}
 };
 
