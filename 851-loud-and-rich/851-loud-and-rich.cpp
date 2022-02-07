@@ -4,24 +4,29 @@ public:
         int n=quiet.size();
         vector<int> adj[n];
         for(auto e:richer)
-            adj[e[1]].push_back(e[0]);
-        vector<int> res(n,-1);
-        for(int node=0;node<n;node++)
-            dfs(node,adj,res,quiet);
-        return res;
-    }
-    int dfs(int node,vector<int> adj[],vector<int> &res,vector<int> q)
-    {
-        if(res[node]==-1)
+            adj[e[0]].push_back(e[1]);
+        vector<int> indegree(n,0);
+        for(int i=0;i<n;i++)
+            for(auto it:adj[i]) indegree[it]++;
+        vector<int> res(n,INT_MAX);
+        queue<int> q;
+        for(int i=0;i<n;i++)
         {
-            res[node]=node;
+            res[i]=i;
+            if(indegree[i]==0) q.push(i);
+        }
+        while(!q.empty())
+        {
+            int node=q.front();
+            q.pop();
             for(auto it:adj[node])
             {
-                int cad=dfs(it,adj,res,q);
-                if(q[cad]<q[res[node]])
-                    res[node]=cad;
+                if(res[it]==INT_MAX or quiet[res[it]]>quiet[res[node]])
+                    res[it]=res[node];
+                indegree[it]--;
+                if(indegree[it]==0) q.push(it);
             }
         }
-        return res[node];
+        return res;
     }
 };
