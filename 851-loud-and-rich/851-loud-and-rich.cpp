@@ -3,30 +3,25 @@ public:
     vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
         int n=quiet.size();
         vector<int> adj[n];
-        for(auto e:richer)
-            adj[e[0]].push_back(e[1]);
-        vector<int> indegree(n,0);
-        for(int i=0;i<n;i++)
-            for(auto it:adj[i]) indegree[it]++;
-        vector<int> res(n,INT_MAX);
-        queue<int> q;
-        for(int i=0;i<n;i++)
+        for(auto e:richer) 
+            adj[e[1]].push_back(e[0]);
+        vector<int> res(n,-1);
+        for(int node=0;node<n;node++)
+            dfs(node,adj,res,quiet);
+        return res;
+    }
+    int dfs(int node,vector<int> adj[],vector<int> &res,vector<int> quiet)
+    {
+        if(res[node]==-1)
         {
-            res[i]=i;
-            if(indegree[i]==0) q.push(i);
-        }
-        while(!q.empty())
-        {
-            int node=q.front();
-            q.pop();
+            res[node]=node;
             for(auto it:adj[node])
             {
-                if(res[it]==INT_MAX or quiet[res[it]]>quiet[res[node]])
-                    res[it]=res[node];
-                indegree[it]--;
-                if(indegree[it]==0) q.push(it);
+                int cad=dfs(it,adj,res,quiet);
+                if(quiet[cad]<quiet[res[node]])
+                    res[node]=cad;
             }
         }
-        return res;
+        return res[node];
     }
 };
