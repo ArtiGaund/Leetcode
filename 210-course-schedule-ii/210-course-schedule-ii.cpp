@@ -6,29 +6,32 @@ public:
         // if(pre.size()==0) return {0};
         for(auto it:pre)
             adj[it[1]].push_back(it[0]);
-        vector<int> indegree(n,0);
+        stack<int> s;
+        vector<bool> todo(n,0),done(n,0);
         for(int i=0;i<n;i++)
         {
-            for(auto it:adj[i]) indegree[it]++;
+            if(!todo[i] and !acyclic(i,todo,done,adj,s))
+                return {};
         }
-        queue<int> q;
-        for(int i=0;i<n;i++)
-            if(indegree[i]==0)
-                q.push(i);
-        vector<int> res(n);
-        int i=0;
-        while(!q.empty())
+        vector<int> res;
+        while(!s.empty())
         {
-            int node=q.front();
-            q.pop();
-            res[i++]=node;
-            for(auto it:adj[node])
-            {
-                indegree[it]--;
-                if(indegree[it]==0) q.push(it);
-            }
+            res.push_back(s.top());
+            s.pop();
         }
-        if(i==n) return res;
-        return {};
+        return res;
+    }
+    bool acyclic(int node,vector<bool> &todo,vector<bool> &done,vector<int> adj[],stack<int> &s)
+    {
+        if(todo[node]) return false;
+        if(done[node]) return true;
+        todo[node]=done[node]=true;
+        for(auto it:adj[node])
+        {
+            if(!acyclic(it,todo,done,adj,s)) return false;
+        }
+        s.push(node);
+        todo[node]=false;
+        return true;
     }
 };
