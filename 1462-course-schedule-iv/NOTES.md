@@ -19,3 +19,13 @@ vector<bool> res;
 for(auto q:queries) res.pb(vis[q[0]][q[1]]);
 }
 2) DFS
+void dfs(int src,vector<int> adj[],vector<vector<bool>> &ispre,vector<bool> &vis,int node)
+{
+vis[node]=true;
+ispre[src][node]=true;
+for(auto it:adj[node])
+{
+if(!vis[it])
+dfs(src,adj,ispre,vis,it);
+}
+}
