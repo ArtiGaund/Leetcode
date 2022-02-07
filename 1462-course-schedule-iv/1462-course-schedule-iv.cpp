@@ -1,35 +1,32 @@
 class Solution {
 public:
-    //BFS
+    //dFS
     vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& pre, vector<vector<int>>& queries) {
         vector<int> adj[n];
-        vector<vector<bool>> vis(n,vector<bool>(n,false));
+        vector<vector<bool>> ispre(n,vector<bool>(n,false));
         for(auto p:pre)
         {
             adj[p[0]].push_back(p[1]);
-            vis[p[0]][p[1]]=true;
+            ispre[p[0]][p[1]]=true;
         }
-        vector<int> in(n,0);
         for(int i=0;i<n;i++)
-            for(auto it:adj[i]) in[it]++;
-        queue<int> q;
-        for(int i=0;i<n;i++)
-            if(in[i]==0) q.push(i);
-        while(!q.empty())
         {
-            int node=q.front();
-            q.pop();
-            for(auto it:adj[node])
-            {
-                for(int i=0;i<n;i++)
-                    if(vis[i][node]) vis[i][it]=true;
-                in[it]--;
-                if(in[it]==0) q.push(it);
-            }
+            vector<bool> vis(n,false);
+            dfs(i,adj,vis,ispre,i);
         }
         vector<bool> res;
         for(auto q:queries)
-            res.push_back(vis[q[0]][q[1]]);
+            res.push_back(ispre[q[0]][q[1]]);
         return res;
+    }
+    void dfs(int src,vector<int> adj[],vector<bool> &vis,vector<vector<bool>> &ispre,int node)
+    {
+        vis[node]=true;
+        ispre[src][node]=true;
+        for(auto it:adj[node])
+        {
+            if(!vis[it])
+                dfs(src,adj,vis,ispre,it);
+        }
     }
 };
