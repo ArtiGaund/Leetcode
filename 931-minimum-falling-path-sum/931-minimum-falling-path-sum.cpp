@@ -3,26 +3,23 @@ public:
     int minFallingPathSum(vector<vector<int>>& matrix) {
         int n=matrix.size();
         int m=matrix[0].size();
-       vector<int> prev(m,0),cur(m,0);
-        for(int j=0;j<m;j++) prev[j]=matrix[0][j];
-        for(int i=1;i<n;i++)
-        {
-            for(int j=0;j<m;j++)
-            {
-                int up=matrix[i][j]+prev[j];
-                int left=matrix[i][j];
-                if(j-1>=0) left+=prev[j-1];
-                else left+=1e9;
-                int right=matrix[i][j];
-                if(j+1<m) right+=prev[j+1];
-                else right+=1e9;
-                cur[j]=min({up,left,right});
-            }
-            prev=cur;
-        }
+        vector<vector<int>> dp(n,vector<int>(m,-1));
         int mini=INT_MAX;
         for(int j=0;j<m;j++)
-            mini=min(mini,prev[j]);
+        {
+            int ans=solve(n-1,j,dp,matrix,m);
+            mini=min(mini,ans);
+        }
         return mini;
+    }
+    int solve(int i,int j,vector<vector<int>> &dp,vector<vector<int>> &mat,int m)
+    {
+        if(j<0 or j>=m) return 1e9;
+        if(i==0) return mat[0][j];
+        if(dp[i][j]!=-1) return dp[i][j];
+        int up=mat[i][j]+solve(i-1,j,dp,mat,m);
+        int left=mat[i][j]+solve(i-1,j-1,dp,mat,m);
+        int right=mat[i][j]+solve(i-1,j+1,dp,mat,m);
+        return dp[i][j]=min({up,left,right});
     }
 };
