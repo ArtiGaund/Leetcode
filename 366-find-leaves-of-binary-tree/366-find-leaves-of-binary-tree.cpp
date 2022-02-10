@@ -13,17 +13,38 @@ class Solution {
 public:
     vector<vector<int>> findLeaves(TreeNode* root) {
         vector<vector<int>> res;
-        dfs(root,res);
+        if(root==nullptr) return res;
+        queue<TreeNode*> q;
+        while(root->left or root->right)
+        {
+            q.push(root);
+            vector<int> temp;
+            while(!q.empty())
+            {
+                int size=q.size();
+                for(int i=0;i<size;i++)
+                {
+                    TreeNode *cur=q.front();
+                    q.pop();
+                    if(cur->left and cur->left->left==nullptr and cur->left->right==nullptr)
+                    {
+                        temp.push_back(cur->left->val);
+                        cur->left=nullptr;
+                    }
+                    else if(cur->left) q.push(cur->left);
+                    if(cur->right and cur->right->left==nullptr and cur->right->right==nullptr)
+                    {
+                        temp.push_back(cur->right->val);
+                        cur->right=nullptr;
+                    }
+                    else if(cur->right) q.push(cur->right);
+                }
+            }
+            res.push_back(temp);
+        }
+        vector<int> temp;
+        temp.push_back(root->val);
+        res.push_back(temp);
         return res;
-    }
-    int dfs(TreeNode* root,vector<vector<int>> &res)
-    {
-        if(root==nullptr) return 0;
-        int left=dfs(root->left,res);
-        int right=dfs(root->right,res);
-        int level=max(left,right)+1;
-        if(level>(int)res.size()) res.push_back({});
-        res[level-1].push_back(root->val);
-        return level;
     }
 };
