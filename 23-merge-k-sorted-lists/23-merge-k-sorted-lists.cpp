@@ -11,29 +11,41 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        if(lists.size()==0) return nullptr;
-        int len=lists.size();
-        while(len>1)
+       int n=lists.size();
+        if(n==0) return nullptr;
+        if(n==1) return lists[0];
+        // ListNode *res=nullptr,*tail;
+        priority_queue<pair<int,ListNode*>> pq;
+        for(int i=0;i<n;i++)
         {
-            for(int i=0;i<len/2;i++)
-                lists[i]=merge(lists[i],lists[len-i-1]);
-            len=(len+1)/2;
+            if(lists[i])
+                pq.push({-lists[i]->val,lists[i]});
         }
-        return lists.front();
-    }
-    ListNode *merge(ListNode* l1,ListNode* l2)
-    {
-        if(l1==nullptr) return l2;
-        if(l2==nullptr) return l1;
-        if(l1->val<=l2->val)
+        if(pq.empty()) return nullptr;
+        ListNode* head=nullptr,*tail;
+        while(!pq.empty())
         {
-            l1->next=merge(l1->next,l2);
-            return l1;
+            auto temp=pq.top();
+            pq.pop();
+            if(head==nullptr)
+            {
+                ListNode *cur=new ListNode(-temp.first);
+                head=cur;
+                tail=cur;
+            }
+            else
+            {
+                ListNode *cur=new ListNode(-temp.first);
+                tail->next=cur;
+                tail=cur;
+            }
+            if(temp.second->next)
+            {
+                temp.second=temp.second->next;
+                pq.push({-temp.second->val,temp.second});
+            }
         }
-        else
-        {
-            l2->next=merge(l1,l2->next);
-            return l2;
-        }
+        return head;
+            
     }
 };
