@@ -1,13 +1,12 @@
 typedef pair<string,int> pii;
 class Solution {
 public:
-    struct compare
-    {
-      bool operator()(pii p1,pii p2)
-      {
-          if(p1.second==p2.second) return p1.first<p2.first;
-          return p1.second>p2.second;
-      }
+    struct compare{
+        bool operator()(pii p1,pii p2)
+        {
+            if(p1.second==p2.second) return p1.first<p2.first;
+            return p1.second>p2.second;
+        }
     };
     vector<string> topKFrequent(vector<string>& words, int k) {
         unordered_map<string,int> mp;
@@ -23,7 +22,6 @@ public:
         vector<string> res;
         while(!pq.empty())
         {
-            
             res.insert(res.begin(),pq.top().first);
             pq.pop();
         }
