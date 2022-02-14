@@ -22,7 +22,7 @@ public:
             int size=q.size();
             for(int i=0;i<size;i++)
             {
-                TreeNode* cur=q.front();
+                TreeNode *cur=q.front();
                 q.pop();
                 if(cur->left) q.push(cur->left);
                 if(cur->right) q.push(cur->right);
