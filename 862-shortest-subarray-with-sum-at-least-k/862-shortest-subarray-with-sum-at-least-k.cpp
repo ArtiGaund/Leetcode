@@ -2,23 +2,21 @@ class Solution {
 public:
     int shortestSubarray(vector<int>& nums, int k) {
         int n=nums.size();
-        vector<long> prefix(n+1,0);
-        for(int i=0;i<n;i++)
-            prefix[i+1]=prefix[i]+(long)nums[i];
-        //want smallest y-x with p[y]-p[x]>=k
-        int ans=n+1; // n+1 is impossible
-        deque<int> dq; // opt for y
-        for(int i=0;i<prefix.size();i++)
+        vector<long> prefix(n+1);
+        for(int j=0;j<n;j++)
+            prefix[j+1]=prefix[j]+(long)nums[j];
+        deque<int> dq;
+        int res=n+1;
+        for(int j=0;j<=n;j++)
         {
-            //want opt(y)=largest x with p[x]<=p[y]-k
-            while(!dq.empty() and prefix[i]<=prefix[dq.back()]) dq.pop_back();
-            while(!dq.empty() and prefix[i]>=prefix[dq.front()]+k)
+            while(!dq.empty() and prefix[j]<=prefix[dq.back()]) dq.pop_back();
+            while(!dq.empty() and prefix[j]>=prefix[dq.front()]+k)
             {
-                ans=min(ans,i-dq.front());
+                res=min(res,j-dq.front());
                 dq.pop_front();
             }
-            dq.push_back(i);
+            dq.push_back(j);
         }
-        return ans<n+1?ans:-1;
+        return res<n+1?res:-1;
     }
 };
