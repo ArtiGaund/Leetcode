@@ -16,39 +16,42 @@ public:
 
 class Solution {
 public:
-    typedef pair<int,pair<int,int>> pii;  
+    typedef pair<Interval,pair<int,int>> pii;
+    struct startCompare
+    {
+        bool operator()(const pii &a,const pii &b)
+        {
+            return a.first.start>b.first.start;
+        }
+    };
     vector<Interval> employeeFreeTime(vector<vector<Interval>> schedule) {
-        //priority_queue Node is pair<start, <employeeIndex, intervalIndex>>
-        //pair.second is used to get to next interval
-        using PQ_Node = pair<int, pair<int, int>>;
-        vector<Interval> ans;
-        if (schedule.empty()) return ans;
-        priority_queue<PQ_Node, vector<PQ_Node>, greater<>> pq;
-        for(int i=0; i<schedule.size(); ++i) {
-            if (schedule[i].size()) {
-                pq.push({schedule[i][0].start, {i, 0}});
+        vector<Interval> res;
+        if(schedule.size()==0) return res;
+        priority_queue<pii,vector<pii>,startCompare> minH; //to store 1 interval from each employee
+        for(int i=0;i<schedule.size();i++) //insert first interval of each employee in minH
+            minH.push({schedule[i][0],{i,0}});
+        Interval prev=minH.top().first;
+        while(!minH.empty())
+        {
+            auto cur=minH.top();
+            minH.pop();
+            //if prev is not overlapped with next interval, insert a free time
+            if(prev.end<cur.first.start)
+            {
+                res.push_back({prev.end,cur.first.start});
+                prev=cur.first;
+            }                
+            else //overlapping, update prev 
+            {
+                if(prev.end<cur.first.end) prev=cur.first;
+            }
+            vector<Interval> employeeSchedule=schedule[cur.second.first];
+            if(employeeSchedule.size()>cur.second.second+1)
+            {
+                minH.push({employeeSchedule[cur.second.second+1],{cur.second.first,cur.second.second+1}});
             }
         }
-        int end = schedule[pq.top().second.first][0].end;
-        while(pq.size()) {
-            auto p = pq.top();
-            pq.pop();
-            int intervalIndex = p.second.second;
-            int employeeIndex = p.second.first;
-            if (p.first > end) {
-                ans.push_back(Interval{end, p.first});
-                end = schedule[employeeIndex][intervalIndex].end;
-            } else {
-                end = max(end, schedule[employeeIndex][intervalIndex].end);
-            }
-            ++intervalIndex;
-            if (intervalIndex < schedule[employeeIndex].size()) {
-            
-                pq.push({schedule[employeeIndex][intervalIndex].start,
-                         {employeeIndex, intervalIndex}});
-            }
-            
-        }
-        return ans;
+        return res;
+        
     }
 };
