@@ -16,42 +16,30 @@ public:
 
 class Solution {
 public:
-    typedef pair<Interval,pair<int,int>> pii;
-    struct startCompare
-    {
-        bool operator()(const pii &a,const pii &b)
-        {
-            return a.first.start>b.first.start;
-        }
-    };
     vector<Interval> employeeFreeTime(vector<vector<Interval>> schedule) {
-        vector<Interval> res;
-        if(schedule.size()==0) return res;
-        priority_queue<pii,vector<pii>,startCompare> minH; //to store 1 interval from each employee
-        for(int i=0;i<schedule.size();i++) //insert first interval of each employee in minH
-            minH.push({schedule[i][0],{i,0}});
-        Interval prev=minH.top().first;
-        while(!minH.empty())
+        int n=schedule.size();
+        // error checking
+        if(n==0) return {};
+        // breaking down into intervals
+        vector<vector<int>> intervals;
+        for(auto employee:schedule)
         {
-            auto cur=minH.top();
-            minH.pop();
-            //if prev is not overlapped with next interval, insert a free time
-            if(prev.end<cur.first.start)
-            {
-                res.push_back({prev.end,cur.first.start});
-                prev=cur.first;
-            }                
-            else //overlapping, update prev 
-            {
-                if(prev.end<cur.first.end) prev=cur.first;
-            }
-            vector<Interval> employeeSchedule=schedule[cur.second.first];
-            if(employeeSchedule.size()>cur.second.second+1)
-            {
-                minH.push({employeeSchedule[cur.second.second+1],{cur.second.first,cur.second.second+1}});
-            }
+            for(auto interval:employee)
+                intervals.push_back({interval.start,interval.end});
+        }
+        //sorting the interval according to start time
+        sort(intervals.begin(),intervals.end());
+        // loop through intervals to find free time
+        vector<Interval> res;
+        int lastend=intervals[0][1];
+        for(int i=1;i<intervals.size();i++)
+        {
+            int curStart=intervals[i][0];
+            int curEnd=intervals[i][1];
+            if(curStart>lastend)
+                res.push_back(Interval(lastend,curStart));
+            lastend=max(lastend,curEnd);
         }
         return res;
-        
     }
 };
