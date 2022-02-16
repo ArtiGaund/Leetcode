@@ -11,22 +11,33 @@
  */
 class Solution {
 public:
-    //DFS without sort
-    vector<vector<int>> res;
-    vector<vector<int>> findLeaves(TreeNode* root) {
-        if(root==nullptr) return res;
-        getheight(root);
-        return res;
-    }
-    int getheight(TreeNode* root)
+    vector<pair<int,int>> pairs;
+    int getHeight(TreeNode *root)
     {
         if(root==nullptr) return -1;
-        int left=getheight(root->left);
-        int right=getheight(root->right);
+        int left=getHeight(root->left);
+        int right=getHeight(root->right);
         int curH=max(left,right)+1;
-        if(curH==res.size())
-            res.push_back({});
-        res[curH].push_back(root->val);
+        pairs.push_back({curH,root->val});
         return curH;
+    }
+    vector<vector<int>> findLeaves(TreeNode* root) {
+        if(root==nullptr) return{};
+        getHeight(root);
+        vector<vector<int>> res;
+        sort(pairs.begin(),pairs.end());
+        int n=pairs.size(),i=0,height=0;
+        while(i<n)
+        {
+            vector<int> temp;
+            while(i<n and pairs[i].first==height)
+            {
+                temp.push_back(pairs[i].second);
+                i++;
+            }
+            res.push_back(temp);
+            height++;
+        }
+        return res;
     }
 };
