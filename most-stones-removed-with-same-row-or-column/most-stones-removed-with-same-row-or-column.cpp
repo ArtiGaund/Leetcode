@@ -1,5 +1,6 @@
 class Solution {
 public:
+    // like no of island problem
     int removeStones(vector<vector<int>>& stones) {
         int n=stones.size();
         if(n==0) return 0;
