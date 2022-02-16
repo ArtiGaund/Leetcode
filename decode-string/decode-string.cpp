@@ -41,7 +41,8 @@ public:
                     str.pop();
                 }
                 if(!str.empty() and str.top()=='[') str.pop();
-                for(int j=0;j<c;j++) res=temp+res;
+                for(int j=0;j<c;j++)
+                    res=temp+res;
                 for(int j=0;j<res.size();j++)
                     str.push(res[j]);
                 res="";
