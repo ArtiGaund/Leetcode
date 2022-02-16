@@ -11,40 +11,35 @@
  */
 class Solution {
 public:
+    //DFS to sorting
+    vector<pair<int,int>> pairs;
+    int getheight(TreeNode* root)
+    {
+        if(root==nullptr) return -1;
+        int left=getheight(root->left);
+        int right=getheight(root->right);
+        int curH=max(left,right)+1;
+        this->pairs.push_back({curH,root->val});
+        return curH;
+    }
     vector<vector<int>> findLeaves(TreeNode* root) {
+        this->pairs.clear();
+        getheight(root);
+        sort(this->pairs.begin(),this->pairs.end());
         vector<vector<int>> res;
-        if(root==nullptr) return res;
-        queue<TreeNode*> q;
-        while(root->left or root->right)
+        int n=this->pairs.size(),height=0,i=0;
+        while(i<n)
         {
-            q.push(root);
             vector<int> temp;
-            while(!q.empty())
+            while(i<n and this->pairs[i].first==height)
             {
-                int size=q.size();
-                for(int i=0;i<size;i++)
-                {
-                    TreeNode *cur=q.front();
-                    q.pop();
-                    if(cur->left and cur->left->left==nullptr and cur->left->right==nullptr)
-                    {
-                        temp.push_back(cur->left->val);
-                        cur->left=nullptr;
-                    }
-                    else if(cur->left) q.push(cur->left);
-                    if(cur->right and cur->right->left==nullptr and cur->right->right==nullptr)
-                    {
-                        temp.push_back(cur->right->val);
-                        cur->right=nullptr;
-                    }
-                    else if(cur->right) q.push(cur->right);
-                }
+                temp.push_back(this->pairs[i].second);
+                i++;
             }
             res.push_back(temp);
+            height++;
         }
-        vector<int> temp;
-        temp.push_back(root->val);
-        res.push_back(temp);
         return res;
+        
     }
 };
