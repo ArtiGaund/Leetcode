@@ -1,5 +1,6 @@
 class Solution {
 public:
+    // DFS
     int m,n;
     void dfs(vector<vector<char>>& board, int i, int j) {
         if(i<0 or j<0 or i>=m or j>=n or board[i][j] != 'O') return;
