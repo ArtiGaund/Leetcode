@@ -1,32 +1,33 @@
 class Solution {
 public:
+    // BFS
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
-        if(image.size()==0) return image;
+        if(image[sr][sc]==newColor) return image;
         int row=image.size();
         int col=image[0].size();
         int old=image[sr][sc];
+        image[sr][sc]=newColor;
         queue<pair<int,int>> q;
         q.push({sr-1,sc});
         q.push({sr+1,sc});
         q.push({sr,sc-1});
         q.push({sr,sc+1});
-        image[sr][sc]=newColor;
         vector<vector<bool>> vis(row,vector<bool>(col,false));
-        vis[sr][col]=true;
+        vis[sr][sc]=true;
         while(!q.empty())
         {
             auto p=q.front();
             q.pop();
-            int x=p.first;
-            int y=p.second;
-            if(x>=0 and x<row and y>=0 and y<col and !vis[x][y] and image[x][y]==old)
+            int l=p.first;
+            int r=p.second;
+            if(l>=0 and l<row and r>=0 and r<col and !vis[l][r] and image[l][r]==old)
             {
-                vis[x][y]=true;
-                image[x][y]=newColor;
-                q.push({x-1,y});
-                q.push({x+1,y});
-                q.push({x,y-1});
-                q.push({x,y+1});
+                image[l][r]=newColor;
+                vis[l][r]=true;
+                q.push({l-1,r});
+                q.push({l+1,r});
+                q.push({l,r-1});
+                q.push({l,r+1});
             }
         }
         return image;
