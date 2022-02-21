@@ -6,13 +6,8 @@ public:
         if(m==0) return;
         queue<pair<int,int>> q;
         for(int i=0;i<m;i++)
-        {
             for(int j=0;j<n;j++)
-            {
-                if(rooms[i][j]==0)
-                    q.push({i,j});
-            }
-        }
+                if(rooms[i][j]==0) q.push({i,j});
         vector<vector<int>> dir={{0,-1},{-1,0},{0,1},{1,0}};
         while(!q.empty())
         {
@@ -20,7 +15,7 @@ public:
             q.pop();
             int row=cur.first;
             int col=cur.second;
-            for(vector<int> d:dir)
+            for(auto d:dir)
             {
                 int r=row+d[0];
                 int c=col+d[1];
