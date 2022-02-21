@@ -1,14 +1,14 @@
 class Solution {
 public:
-    int ladderLength(string begin, string end, vector<string>& word) {
-        unordered_set<string> s;
-        bool present=false; //for checking end word is present or not
-        for(string w:word)
+    int ladderLength(string begin, string end, vector<string>& wordList) {
+        unordered_set<string> set;
+        bool present=false;
+        for(string s:wordList)
         {
-            if(w==end) present=true;
-            s.insert(w);
+            if(s==end) present=true;
+            set.insert(s);
         }
-        if(present==false) return 0; //if end word is not present its impossible
+        if(!present) return 0;
         queue<string> q;
         q.push(begin);
         int depth=0;
@@ -20,18 +20,18 @@ public:
             {
                 string cur=q.front();
                 q.pop();
-                for(int i=0;i<cur.size();i++) //for changing char in a cur word
+                for(int pos=0;pos<cur.size();pos++)
                 {
                     string temp=cur;
                     for(char ch='a';ch<='z';ch++)
                     {
-                        temp[i]=ch;
-                        if(cur==temp) continue; //skip same word
-                        if(temp==end) return depth+1; // found end word
-                        if(s.find(temp)!=s.end()) //found word in set then insert in queue and erase from set
+                        temp[pos]=ch;
+                        if(temp==cur) continue;
+                        if(temp==end) return depth+1;
+                        else if(set.find(temp)!=set.end())
                         {
                             q.push(temp);
-                            s.erase(temp);
+                            set.erase(temp);
                         }
                     }
                 }
