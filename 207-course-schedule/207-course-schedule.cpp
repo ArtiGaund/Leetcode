@@ -1,30 +1,31 @@
 class Solution {
 public:
+    //BFS
     bool canFinish(int n, vector<vector<int>>& pre) {
         vector<int> adj[n];
         for(int i=0;i<pre.size();i++)
             adj[pre[i][1]].push_back(pre[i][0]);
-        vector<int> vis(n,0); //vis[0]=not visited
+        vector<int> indegree(n,0);
         for(int i=0;i<n;i++)
         {
-            if(isCycle(i,adj,vis))
-                return false;
+            for(auto it:adj[i])
+                indegree[it]++;
         }
-        return true;
-    }
-    bool isCycle(int node,vector<int> adj[],vector<int> &vis)
-    {
-        if(vis[node]==1) return true;
-        if(vis[node]==0)
+        queue<int> q;
+        for(int i=0;i<n;i++)
+            if(indegree[i]==0)
+                q.push(i);
+        while(!q.empty())
         {
-             vis[node]=1; //visited but not done with it children
-            for(auto it:adj[node])
+            int cur=q.front();
+            q.pop();
+            n--;
+            for(auto it:adj[cur])
             {
-                if(isCycle(it,adj,vis)) return true;
+                if(--indegree[it]==0)
+                    q.push(it);
             }
         }
-       
-        vis[node]=2; //done with it children
-        return false;
+        return (n==0);
     }
 };
