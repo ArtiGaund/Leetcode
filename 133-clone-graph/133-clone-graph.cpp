@@ -22,7 +22,7 @@ public:
 class Solution {
 public:
     Node* cloneGraph(Node* node) {
-       if(node==nullptr) return node;
+        if(node==nullptr) return node;
         unordered_map<Node*,Node*> clone;
         Node *copy=new Node(node->val,{});
         clone[node]=copy;
