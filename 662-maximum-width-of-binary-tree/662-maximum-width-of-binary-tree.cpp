@@ -13,8 +13,8 @@ class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
         if(root==nullptr) return 0;
-        int res=1;
         queue<pair<TreeNode*,int>> q;
+        int res=1;
         q.push({root,0});
         while(!q.empty())
         {
