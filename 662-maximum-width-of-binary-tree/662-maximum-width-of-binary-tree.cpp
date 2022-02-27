@@ -12,17 +12,27 @@
 class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
-        vector<long long int> left;
-        unsigned long long int widthmax=0;
-        dfs(root,1,0,left,widthmax);
-        return widthmax;
-    }
-    void dfs(TreeNode *root,unsigned long long int index,unsigned long long int depth,vector<long long int> &left,unsigned long long int &widthmax)
-    {
-        if(root==nullptr) return;
-        if(depth>=left.size()) left.push_back(index);
-        widthmax=max(widthmax,index+1-left[depth]);
-        dfs(root->left,2*index,depth+1,left,widthmax);
-        dfs(root->right,2*index+1,depth+1,left,widthmax);
+        if(root==nullptr) return 0;
+        int res=1;
+        queue<pair<TreeNode*,int>> q;
+        q.push({root,0});
+        while(!q.empty())
+        {
+            int size=q.size();
+            int start=q.front().second;
+            int end=q.back().second;
+            res=max(res,end-start+1);
+            for(int i=0;i<size;i++)
+            {
+                auto temp=q.front();
+                q.pop();
+                int index=temp.second-start;
+                if(temp.first->left)
+                    q.push({temp.first->left,(long long)2*index+1});
+                if(temp.first->right)
+                    q.push({temp.first->right,(long long)2*index+2});
+            }
+        }
+        return res;
     }
 };
