@@ -20,10 +20,11 @@ public:
             if(i>=k) maxH.pop();
         }
         vector<int> res(maxH.size());
-	for(int i = res.size()-1; i >= 0; --i) {
-		res[i] = maxH.top().second;
-	    maxH.pop();
-	}
+        for(int i=res.size()-1;i>=0;i--)
+        {
+            res[i]=maxH.top().second;
+            maxH.pop();
+        }
         return res;
     }
 };
