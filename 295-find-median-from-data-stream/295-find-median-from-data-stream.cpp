@@ -1,26 +1,26 @@
+#include<bits/stdc++.h>
 class MedianFinder {
 public:
-    /** initialize your data structure here. */
-    priority_queue<int> maxH; //max heap;
-    priority_queue<int,vector<int>,greater<int>> minH; //min heap
+    priority_queue<int> maxH;
+    priority_queue<int,vector<int>,greater<int>> minH;
     MedianFinder() {
         
     }
     
     void addNum(int num) {
-        maxH.push(num);
-        minH.push(maxH.top());
+        maxH.push(num);                                    // Add to max heap
+
+        minH.push(maxH.top());                               // balancing step
         maxH.pop();
-        if(maxH.size()<minH.size())
-        {
+
+        if (maxH.size() < minH.size()) {                     // maintain size property
             maxH.push(minH.top());
             minH.pop();
         }
     }
     
     double findMedian() {
-        if((minH.size()+maxH.size())%2==0) return((double) minH.top() + maxH.top()) * 0.5;
-        else return maxH.top();
+         return maxH.size() > minH.size() ? maxH.top() : ((double) maxH.top() + minH.top()) * 0.5;
     }
 };
 
