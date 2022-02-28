@@ -12,25 +12,24 @@ class UnionFind
             rank[i]=1;
         }
     }
-    int find(int a)
+    int find(int x)
     {
-        if(parent[a]!=a)
-            parent[a]=find(parent[a]);
-        return parent[a];
+        if(parent[x]!=x)
+            parent[x]=find(parent[x]);
+        return parent[x];
     }
-    void unionSet(int a,int b)
+    void unionset(int a,int b)
     {
         int x=find(a);
         int y=find(b);
         if(x!=y)
         {
-            if(rank[x]>rank[y])
-                parent[y]=x;
+            if(rank[x]>rank[y]) parent[y]=x;
+            else if(rank[x]<rank[y]) parent[x]=y;
             else
             {
-                parent[x]=y;
-                if(rank[x]==rank[y])
-                    rank[y]++;
+                parent[y]=x;
+                rank[x]++;
             }
             count--;
         }
@@ -51,7 +50,7 @@ public:
             for(int j=0;j<n;j++)
             {
                 if(isConnected[i][j]==1)
-                    uf.unionSet(i,j);
+                    uf.unionset(i,j);
             }
         }
         return uf.getCount();
