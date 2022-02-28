@@ -1,22 +1,59 @@
+class UnionFind
+{
+    public: 
+    vector<int> parent;
+    vector<int> rank;
+    int count;
+    UnionFind(int n):parent(n),rank(n),count(n)
+    {
+        for(int i=0;i<n;i++)
+        {
+            parent[i]=i;
+            rank[i]=1;
+        }
+    }
+    int find(int x)
+    {
+        if(parent[x]!=x)
+            parent[x]=find(parent[x]);
+        return parent[x];
+    }
+    bool unionSet(int a,int b)
+    {
+        int x=find(a);
+        int y=find(b);
+        if(x==y) return false;
+        if(x!=y)
+        {
+            if(rank[x]>rank[y])
+                parent[y]=x;
+            else
+            {
+                parent[x]=y;
+                if(rank[x]==rank[y]) rank[y]++;
+            }
+            count--;
+        }
+        return true;
+    }
+    int getCount()
+    {
+        return count;
+    }
+};
 class Solution {
 public:
-    int earliestAcq(vector<vector<int>>& logs, int N) {
-       vector<int> ds(N, -1);
-  sort(begin(logs), end(logs));
-  for (auto &l : logs) {
-      auto i = ds_find(ds, l[1]), j = ds_find(ds, l[2]);
-      if (i != j) {
-        if (ds[i] > ds[j])
-            swap(i, j);
-        ds[i] += ds[j];
-        ds[j] = i;
-        if (-ds[i] == N)
-            return l[0];
-      }      
-  }
-  return -1;
+    int earliestAcq(vector<vector<int>>& logs, int n) {
+        sort(logs.begin(),logs.end());
+        int groupCount=n;
+        UnionFind uf(n);
+        for(auto v:logs)
+        {
+            if(uf.unionSet(v[1],v[2]))
+                groupCount--;
+            if(groupCount==1)
+                return v[0];
+        }
+        return -1;
     }
-   int ds_find(vector<int>& ds, int i) {
-  return ds[i] < 0 ? i : ds[i] = ds_find(ds, ds[i]);
-}
 };
