@@ -43,7 +43,7 @@ class Solution {
 public:
     int findCircleNum(vector<vector<int>>& isConnected) {
         int n=isConnected.size();
-        if(n==0) return 0;
+        if(n==0)  return 0;
         UnionFind uf(n);
         for(int i=0;i<n;i++)
         {
