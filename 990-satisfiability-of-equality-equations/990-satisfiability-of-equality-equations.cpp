@@ -25,35 +25,32 @@ class UnionFind
         if(x!=y)
         {
             if(rank[x]>rank[y]) parent[y]=x;
-            else if(rank[y]>rank[x]) parent[x]=y;
+            else if(rank[x]<rank[y]) parent[x]=y;
             else
             {
                 parent[y]=x;
                 rank[x]++;
             }
+            count--;
             return true;
         }
         return false;
-    }
-    int getCount()
-    {
-        return count;
     }
 };
 class Solution {
 public:
     bool equationsPossible(vector<string>& equations) {
-        UnionFind uf(26);
         int n=equations.size();
-        for(int i=0;i<n;i++)
+        UnionFind uf(26);
+        for(auto e:equations)
         {
-            if(equations[i][1]=='=')
-                uf.unionset(equations[i][0]-'a',equations[i][3]-'a');
+            if(e[1]=='=')
+                uf.unionset(e[0]-'a',e[3]-'a');
         }
-        for(int i=0;i<n;i++)
+        for(auto e:equations)
         {
-            if(equations[i][1]=='!')
-                if(uf.find(equations[i][0]-'a')==uf.find(equations[i][3]-'a')) return false;
+            if(e[1]=='!')
+                if(uf.find(e[0]-'a')==uf.find(e[3]-'a')) return false;
         }
         return true;
     }
