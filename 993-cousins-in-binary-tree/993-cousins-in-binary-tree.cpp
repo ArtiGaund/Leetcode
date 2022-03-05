@@ -12,27 +12,27 @@
 class Solution {
 public:
     bool isCousins(TreeNode* root, int x, int y) {
-        if(root==nullptr) return false;
-        queue<TreeNode*> q;
-        q.push(root);
-        q.push(nullptr);
-        int found=0;
-        while(!q.empty())
-        {
-            TreeNode* cur=q.front();
-            q.pop();
-            if(cur==nullptr)
-            {
-                if(!q.empty()) q.push(nullptr);
-                found=0;
-                continue;
-            }
-            if(cur->left and (cur->left->val==x or cur->left->val==y)) found++;
-            else if(cur->right and (cur->right->val==x or cur->right->val==y)) found++;
-            if(found==2) return true;
-            if(cur->left) q.push(cur->left);
-            if(cur->right) q.push(cur->right);
-        }
+        vector<int> level(2,-1),par(2,-1);
+        TreeNode *cur=new TreeNode(-1);
+        findNode(root,x,y,level,par,0,cur);
+        if(level[0]==level[1] and par[0]!=par[1])
+            return true;
         return false;
+    }
+    void findNode(TreeNode* root,int x,int y,vector<int> &level,vector<int> &par,int curlevel,TreeNode *cur)
+    {
+        if(root==nullptr) return;
+        if(root->val==x)
+        {
+            level[0]=curlevel;
+            par[0]=cur->val;
+        }
+        if(root->val==y)
+        {
+            level[1]=curlevel;
+            par[1]=cur->val;
+        }
+        findNode(root->left,x,y,level,par,curlevel+1,root);
+        findNode(root->right,x,y,level,par,curlevel+1,root);
     }
 };
