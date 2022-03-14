@@ -31,8 +31,7 @@ public:
             s.pop();
             res="/"+res;
         }
-        res.erase(res.size()-1);
+        res.pop_back();
         return res;
-            
     }
 };
