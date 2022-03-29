@@ -14,9 +14,9 @@ public:
         if(head==nullptr or head->next==nullptr) return head;
         return solve(head);
     }
-    ListNode *solve(ListNode* cur,ListNode *prev=nullptr)
+    ListNode *solve(ListNode *cur,ListNode *prev=nullptr)
     {
-        if(cur->next==nullptr)
+        if(cur->next==nullptr) 
         {
             cur->next=prev;
             return cur;
