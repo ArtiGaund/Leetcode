@@ -7,13 +7,13 @@ public:
         int low=0,high=n*m-1;
         while(low<=high)
         {
-            int pivot=low+(high-low)/2;
-            int row=pivot/m;
-            int col=pivot%m;
-            int ele=matrix[row][col];
-            if(ele==target) return true;
-            else if(ele<target) low=pivot+1;
-            else high=pivot-1;
+            int mid=low+(high-low)/2;
+            int row=mid/m;
+            int col=mid%m;
+            int val=matrix[row][col];
+            if(val==target) return true;
+            else if(val<target) low=mid+1;
+            else high=mid-1;
         }
         return false;
     }
