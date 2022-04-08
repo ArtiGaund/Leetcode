@@ -4,9 +4,7 @@ public:
     int k;
     KthLargest(int k, vector<int>& nums) {
         this->k=k;
-        priority_queue<int,vector<int>,greater<int>> temp;
-        pq=temp;
-        for(int a:nums) pq.push(a);
+        for(auto a:nums) pq.push(a);
         while(pq.size()>k) pq.pop();
     }
     
