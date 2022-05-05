@@ -1,24 +1,19 @@
 class Solution {
 public:
-    static bool compare(vector<int> &a,vector<int> &b)
-    {
-        return a[1]<b[1];
-    }
     int findMinArrowShots(vector<vector<int>>& points) {
         int n=points.size();
         if(n==0) return 0;
-        sort(points.begin(),points.end(),compare);
-        vector<int> prev=points[0];
-        int arrow=1;
+        sort(points.begin(),points.end());
+        int count=0,end=points[0][1];
         for(int i=1;i<n;i++)
         {
-            vector<int> cur=points[i];
-            if(cur[0]>prev[1])
+            if(points[i][0]<=end)
             {
-                arrow++;
-                prev=cur;
+                count++;
+                end=min(end,points[i][1]);
             }
+            else end=points[i][1];
         }
-        return arrow;
+        return n-count;
     }
 };
