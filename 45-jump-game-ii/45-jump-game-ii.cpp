@@ -1,16 +1,14 @@
 class Solution {
 public:
     int jump(vector<int>& nums) {
-        int maxReachableDis=0,maxNextAvailableDis=0,minStep=0;
-        for(int i=0;i<nums.size()-1;i++)
+        int n=nums.size();
+        vector<int> dp(n,INT_MAX);
+        dp[0]=0;
+        for(int start=0;start<n-1;start++)
         {
-            maxNextAvailableDis=max(maxNextAvailableDis,i+nums[i]);
-            if(i==maxReachableDis)
-            {
-                minStep+=1;
-                maxReachableDis=maxNextAvailableDis;
-            }
+            for(int end=start+1;end<=start+nums[start] and end<n;end++)
+                dp[end]=min(dp[end],dp[start]+1);
         }
-        return minStep;
+        return dp[n-1];
     }
 };
