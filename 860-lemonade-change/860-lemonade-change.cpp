@@ -8,7 +8,7 @@ public:
             if(bills[i]==5) n5++;
             else if(bills[i]==10)
             {
-                if(n5)
+                if(n5) 
                 {
                     n5--;
                     n10++;
