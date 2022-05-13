@@ -2,17 +2,12 @@ class Solution {
 public:
     int climbStairs(int n) {
         vector<int> dp(n+1,-1);
-        return solve(dp,n);
+        return topDown(n,dp);
     }
-    int solve(vector<int> &dp,int n)
+    int topDown(int n,vector<int> &dp)
     {
-        if(dp[n]==-1)
-        {
-            if(n==1) dp[n]=1;
-            else if(n==2) dp[n]=2;
-            else
-                dp[n]=solve(dp,n-1)+solve(dp,n-2);
-        }
-        return dp[n];
+        if(n<=1) return dp[n]=1;
+        if(dp[n]!=-1) return dp[n];
+        return dp[n]=topDown(n-1,dp)+topDown(n-2,dp);
     }
 };
