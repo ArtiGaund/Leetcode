@@ -11,7 +11,6 @@
  */
 class Solution {
 public:
-   
     int deepestLeavesSum(TreeNode* root) {
         if(root==nullptr) return 0;
         vector<int> sum;
