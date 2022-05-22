@@ -1,7 +1,7 @@
 class Solution {
 public:
     int countSubstrings(string s) {
-        int n=s.size();
+       int n=s.size();
         vector<vector<bool>> dp(n,vector<bool>(n));
         int count=0;
         for(int i=0;i<n;i++)
@@ -23,6 +23,6 @@ public:
                 }
             }
         }
-        return count;
+        return count; 
     }
 };
