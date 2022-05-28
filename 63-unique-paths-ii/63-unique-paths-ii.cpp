@@ -1,23 +1,34 @@
 class Solution {
 public:
+    int mod=(int)(1e9+7);
+   
     int uniquePathsWithObstacles(vector<vector<int>>& grid) {
         int r=grid.size();
         int c=grid[0].size();
-        if(grid[0][0]==1) return 0;
-        grid[0][0]=1;
-        for(int i=1;i<r;i++)
-            grid[i][0]=(grid[i][0]==0 and grid[i-1][0]==1)?1:0;
-        for(int j=1;j<c;j++)
-            grid[0][j]=(grid[0][j]==0 and grid[0][j-1]==1)?1:0;
-        for(int i=1;i<r;i++)
+        for(int i=0;i<r;i++)
         {
-            for(int j=1;j<c;j++)
+            for(int j=0;j<c;j++)
             {
-                if(grid[i][j]==0) 
-                    grid[i][j]=grid[i-1][j]+grid[i][j-1];
-                else grid[i][j]=0;
+                if(grid[i][j]==1)
+                    grid[i][j]=-1;
             }
         }
-        return grid[r-1][c-1];
+        vector<vector<int>> dp(r,vector<int>(c,-1));
+       for(int i=0;i<r;i++)
+       {
+           for(int j=0;j<c;j++)
+           {
+               if(grid[i][j]==-1) dp[i][j]=0;
+               else if(i==0 and j==0) dp[i][j]=1;
+               else 
+               {
+                   int up=0,left=0;
+                   if(i>0) up=dp[i-1][j];
+                   if(j>0) left=dp[i][j-1];
+                   dp[i][j]=(up+left);
+               }
+           }
+       }
+        return dp[r-1][c-1];
     }
 };
