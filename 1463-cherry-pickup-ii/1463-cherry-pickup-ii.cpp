@@ -1,29 +1,42 @@
 class Solution {
 public:
     int cherryPickup(vector<vector<int>>& grid) {
-        int m=grid.size();
-        int n=grid[0].size();
-        vector<vector<vector<int>>> dp(m,vector<vector<int>>(n,vector<int>(n,-1)));
-        return solve(0,0,n-1,grid,dp);
-    }
-    int solve(int row,int col1,int col2,vector<vector<int>> &grid,vector<vector<vector<int>>> &dp)
-    {
-        if(col1<0 or col1>=grid[0].size() or col2<0 or col2>=grid[0].size()) return 0;
-        if(dp[row][col1][col2]!=-1) return dp[row][col1][col2];
-        int res=0;
-        res+=grid[row][col1];
-        if(col1!=col2) res+=grid[row][col2];
-        if(row!=grid.size()-1)
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<int>> front(m,vector<int>(m,0));
+        vector<vector<int>> cur(m,vector<int>(m,0));
+        for(int j1=0;j1<m;j1++)
         {
-            int max_val=0;
-            for(int c1=col1-1;c1<=col1+1;c1++)
+            for(int j2=0;j2<m;j2++)
             {
-                for(int c2=col2-1;c2<=col2+1;c2++)
-                    max_val=max(max_val,solve(row+1,c1,c2,grid,dp));
+                if(j1==j2) front[j1][j2]=grid[n-1][j1];
+                else front[j1][j2]=grid[n-1][j1]+grid[n-1][j2];
             }
-            res+=max_val;
         }
-        dp[row][col1][col2]=res;
-        return res;
+        for(int i=n-2;i>=0;i--)
+        {
+            for(int j1=0;j1<m;j1++)
+            {
+                for(int j2=0;j2<m;j2++)
+                {
+                    int maxi=-1e8;
+                    for(int dj1=-1;dj1<=1;dj1++)
+                    {
+                        for(int dj2=-1;dj2<=1;dj2++)
+                        {
+                            int val=0;
+                            if(j1==j2) val=grid[i][j1];
+                            else val=grid[i][j1]+grid[i][j2];
+                            if(j1+dj1>=0 and j1+dj1<m and j2+dj2>=0 and j2+dj2<m)
+                                val+=front[j1+dj1][j2+dj2];
+                            maxi=max(maxi,val);
+                        }
+                    }
+                    cur[j1][j2]=maxi;
+                }
+            }
+            front=cur;
+        }
+        return front[0][m-1];
     }
 };
