@@ -2,28 +2,17 @@ class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
         int n=nums.size();
-        int tail[n];
-        tail[0]=nums[0];
-        int len=1;
-        for(int i=1;i<n;i++)
+        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        for(int index=n-1;index>=0;index--)
         {
-            if(tail[len-1]<nums[i]) tail[len++]=nums[i];
-            else 
+            for(int prev=index-1;prev>=-1;prev--)
             {
-                int c=ceilIndex(tail,0,len-1,nums[i]);
-                tail[c]=nums[i];
+                int len=0+dp[index+1][prev+1];
+                if(prev==-1 or nums[index]>nums[prev])
+                    len=max(len,1+dp[index+1][index+1]);
+                dp[index][prev+1]=len;
             }
         }
-        return len;
-    }
-    int ceilIndex(int tail[],int l,int h,int val)
-    {
-        while(l<h)
-        {
-            int m=(l+h)/2;
-            if(tail[m]>=val) h=m;
-            else l=m+1;
-        }
-        return h;
+        return dp[0][0];
     }
 };
