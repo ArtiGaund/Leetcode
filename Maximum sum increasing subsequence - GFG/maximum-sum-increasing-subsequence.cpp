@@ -11,19 +11,20 @@ class Solution{
 	{  
 	    // Your code goes here
 	    vector<int> dp(n);
-	    dp[0]=arr[0];
-	    int maxsum=arr[0];
-	    for(int i=1;i<n;i++)
-	    {
+	    for(int i=0;i<n;i++)
 	        dp[i]=arr[i];
-	        for(int j=0;j<i;j++)
-	        {
-	            if(arr[i]>arr[j] and dp[i]<dp[j]+arr[i])
-	                dp[i]=dp[j]+arr[i];
-	        }
-	        maxsum=max(maxsum,dp[i]);
-	    }
-	    return maxsum;
+	   for(int i=1;i<n;i++)
+	   {
+	       for(int j=0;j<i;j++)
+	       {
+	           if(arr[i]>arr[j] and dp[i]<dp[j]+arr[i])
+	           dp[i]=dp[j]+arr[i];
+	       }
+	   }
+	   int maxi=dp[0];
+	   for(int i=1;i<n;i++)
+	    maxi=max(maxi,dp[i]);
+	    return maxi;
 	}  
 };
 
