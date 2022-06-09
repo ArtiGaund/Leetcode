@@ -2,38 +2,29 @@ class Solution {
 public:
     string longestPalindrome(string s) {
         int n=s.size();
-        vector<vector<bool>> dp(n,vector<bool>(n));
-        for(int i=0;i<n;i++) //all substring of len 1 is palindrome
-            dp[i][i]=true;
-        int maxlen=1;
-        int start=0;
-        for(int i=0;i<n-1;i++) // check for len of 2
+        if(n==0) return 0;
+        vector<vector<bool>> dp(n,vector<bool>(n,0));
+        int maxlen=0,start,end;
+        for(int i=n-1;i>=0;i--)
         {
-            if(s[i]==s[i+1])
+            for(int j=i;j<=n-1;j++)
             {
-                start=i;
-                dp[i][i+1]=true;
-                maxlen=2;
-            }
-        }
-        for(int k=3;k<=n;k++) //check of len> 2. k is len
-        {
-            for(int i=0;i<n-k+1;i++) //fixing starting index
-            {
-                int j=i+k-1; // end index by i and k
-                if(dp[i+1][j-1] and s[i]==s[j])
+                if(i==j) dp[i][j]=1;
+                else if(s[i]==s[j])
                 {
-                    dp[i][j]=true;
-                    if(k>maxlen)
-                    {
-                        start=i;
-                        maxlen=k;
-                    }
+                    if(j-i==1) //len 2
+                        dp[i][j]=1;
+                    else dp[i][j]=dp[i+1][j-1];
+                }
+                if(dp[i][j] and maxlen<=j-i)
+                {
+                    maxlen=j-i;
+                    start=i;
+                    end=j;
                 }
             }
         }
-        string res="";
-        for(int i=start;i<start+maxlen;i++) res+=s[i];
+        string res=s.substr(start,end-start+1);
         return res;
     }
 };
