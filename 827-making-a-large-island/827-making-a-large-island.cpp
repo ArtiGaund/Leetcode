@@ -2,7 +2,7 @@ class Solution {
 public:
     int getIslandSize(vector<vector<int>> &grid,int i,int j,int islandId)
     {
-        if(i<0 or i>=grid.size() or j<0 or j>=grid[0].size() or grid[i][j]!=1) return 0;
+        if(i<0 or j<0 or i>=grid.size() or j>=grid[0].size() or grid[i][j]!=1) return 0;
         grid[i][j]=islandId;
         int left=getIslandSize(grid,i,j-1,islandId);
         int right=getIslandSize(grid,i,j+1,islandId);
@@ -11,7 +11,8 @@ public:
         return left+right+up+down+1;
     }
     int largestIsland(vector<vector<int>>& grid) {
-        int m=grid.size(),n=grid[0].size();
+        int m=grid.size();
+        int n=grid[0].size();
         if(m==0 or n==0) return 0;
         int maxlen=0,islandId=2;
         unordered_map<int,int> mp;
@@ -21,13 +22,13 @@ public:
             {
                 if(grid[i][j]==1)
                 {
-                    int len=getIslandSize(grid,i,j,islandId);
-                    maxlen=max(len,maxlen);
-                    mp[islandId++]=len;
+                    int size=getIslandSize(grid,i,j,islandId);
+                    maxlen=max(maxlen,size);
+                    mp[islandId++]=size;
                 }
             }
         }
-        vector<pair<int,int>> dir={{-1,0},{0,-1},{0,1},{1,0}};
+        vector<pair<int,int>> dir={{-1,0},{0,-1},{1,0},{0,1}};
         for(int i=0;i<m;i++)
         {
             for(int j=0;j<n;j++)
