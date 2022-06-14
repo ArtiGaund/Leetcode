@@ -1,10 +1,11 @@
 class Solution {
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        int m=mat.size(),n=mat[0].size();
+        int m=mat.size();
+        int n=mat[0].size();
         if(m==0 or n==0) return mat;
-        queue<pair<int,int>> q;
         vector<pair<int,int>> dir={{-1,0},{0,-1},{0,1},{1,0}};
+        queue<pair<int,int>> q;
         for(int i=0;i<m;i++)
         {
             for(int j=0;j<n;j++)
@@ -21,10 +22,10 @@ public:
             }
         }
         vector<vector<bool>> vis(m,vector<bool>(n,0));
-        int step=0;
+        int steps=0;
         while(!q.empty())
         {
-            step++;
+            steps++;
             int size=q.size();
             for(int i=0;i<size;i++)
             {
@@ -35,10 +36,11 @@ public:
                 if(x>=0 and x<m and y>=0 and y<n and !vis[x][y] and mat[x][y]==1)
                 {
                     vis[x][y]=1;
-                    mat[x][y]=step;
+                    mat[x][y]=steps;
                     for(auto d:dir)
                     {
-                        int new_x=x+d.first,new_y=y+d.second;
+                        int new_x=x+d.first;
+                        int new_y=y+d.second;
                         q.push({new_x,new_y});
                     }
                 }
