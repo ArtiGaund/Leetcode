@@ -7,15 +7,16 @@ public:
         {
             auto cur=q.front();
             q.pop();
-            int x=cur.first,y=cur.second;
+            int x=cur.first;
+            int y=cur.second;
             for(auto d:dir)
             {
                 int new_x=x+d.first,new_y=y+d.second;
                 if(new_x<0 or new_x>=m or new_y<0 or new_y>=n or vis[new_x][new_y]==1) continue;
                 if(heights[new_x][new_y]>=heights[x][y])
                 {
-                    q.push({new_x,new_y});
                     vis[new_x][new_y]=1;
+                    q.push({new_x,new_y});
                 }
             }
         }
@@ -28,25 +29,25 @@ public:
         queue<pair<int,int>> q;
         for(int i=0;i<m;i++)
         {
-            q.push({i,0});
             vis1[i][0]=1;
+            q.push({i,0});
         }
         for(int j=0;j<n;j++)
         {
-            q.push({0,j});
             vis1[0][j]=1;
+            q.push({0,j});
         }
         bfs(heights,q,m,n,vis1);
         while(!q.empty()) q.pop();
         for(int i=0;i<m;i++)
         {
-            q.push({i,n-1});
             vis2[i][n-1]=1;
+            q.push({i,n-1});
         }
         for(int j=0;j<n;j++)
         {
-            q.push({m-1,j});
             vis2[m-1][j]=1;
+            q.push({m-1,j});
         }
         bfs(heights,q,m,n,vis2);
         vector<vector<int>> res;
