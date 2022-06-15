@@ -1,40 +1,39 @@
 class Solution {
 public:
     vector<int> colors;
-    bool isPossible(vector<int> graph[],int n,int cur,int col)
+    bool isPossible(vector<int> graph[],int n,int cur,int color)
     {
         for(auto it:graph[cur])
         {
-            if(colors[it]==col) return false;
+            if(colors[it]==color) return false;
         }
         return true;
     }
-    bool dfs(vector<int> graph[],int cur,int n)
+    bool dfs(vector<int> graph[],int n,int cur)
     {
         if(cur==n+1) return true;
-        for(int col=1;col<=4;col++)
+        for(int color=1;color<=4;color++)
         {
-            if(isPossible(graph,n,cur,col))
+            if(isPossible(graph,n,cur,color))
             {
-                colors[cur]=col;
-                if(dfs(graph,cur+1,n)) return true;
+                colors[cur]=color;
+                if(dfs(graph,n,cur+1)) return true;
                 colors[cur]=0;
             }
         }
         return false;
     }
     vector<int> gardenNoAdj(int n, vector<vector<int>>& paths) {
-        //convert it into graph
         vector<int> graph[n+1];
-        for(int i=0;i<paths.size();i++)
+        for(auto p:paths)
         {
-            graph[paths[i][0]].push_back(paths[i][1]);
-            graph[paths[i][1]].push_back(paths[i][0]);
+            graph[p[0]].push_back(p[1]);
+            graph[p[1]].push_back(p[0]);
         }
         colors=vector<int>(n+1,0);
         for(int i=0;i<=n;i++)
         {
-            if(colors[i]==0) dfs(graph,i,n);
+            if(colors[i]==0) dfs(graph,n,i);
         }
         colors.erase(colors.begin());
         return colors;
