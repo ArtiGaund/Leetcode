@@ -1,6 +1,10 @@
 class Solution {
 public:
-    bool checkpossible(string &s1,string &s2)
+    static bool comp(string &s1,string &s2)
+    {
+        return s1.size()<s2.size();
+    }
+    bool checkPossible(string &s1,string &s2)
     {
         if(s1.size()!=s2.size()+1) return false;
         int first=0,sec=0;
@@ -16,10 +20,6 @@ public:
         if(first==s1.size() and sec==s2.size()) return true;
         return false;
     }
-    static bool comp(string &s1,string &s2)
-    {
-        return s1.size()<s2.size();
-    }
     int longestStrChain(vector<string>& words) {
         int n=words.size();
         sort(words.begin(),words.end(),comp);
@@ -29,8 +29,8 @@ public:
         {
             for(int prev=0;prev<i;prev++)
             {
-                if(checkpossible(words[i],words[prev]) and dp[i]<1+dp[prev])
-                    dp[i]=1+dp[prev];
+                if(checkPossible(words[i],words[prev]) and dp[i]<dp[prev]+1)
+                    dp[i]=dp[prev]+1;
             }
             maxi=max(maxi,dp[i]);
         }
