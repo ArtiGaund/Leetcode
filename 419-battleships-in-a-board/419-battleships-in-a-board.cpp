@@ -1,14 +1,6 @@
 class Solution {
 public:
-    void dfs(vector<vector<char>> &board,int i,int j,int m,int n)
-    {
-        if(i<0 or i>=m or j<0 or j>=n or board[i][j]!='X') return;
-        board[i][j]='.';
-        dfs(board,i-1,j,m,n);
-        dfs(board,i+1,j,m,n);
-        dfs(board,i,j-1,m,n);
-        dfs(board,i,j+1,m,n);
-    }
+    
     int countBattleships(vector<vector<char>>& board) {
         int battleship=0;
         int m=board.size();
@@ -17,11 +9,10 @@ public:
         {
             for(int j=0;j<n;j++)
             {
-                if(board[i][j]=='X')
-                {
-                    battleship++;
-                    dfs(board,i,j,m,n);
-                }
+                if(board[i][j]=='.') continue;
+                if(i>0 and board[i-1][j]=='X') continue;
+                if(j>0 and board[i][j-1]=='X') continue;
+                battleship++;
             }
         }
         return battleship;
