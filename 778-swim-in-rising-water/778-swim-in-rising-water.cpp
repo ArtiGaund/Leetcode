@@ -20,6 +20,7 @@ public:
             {
                 int new_x=x+d.first;
                 int new_y=y+d.second;
+                
                 if(new_x>=0 and new_x<m and new_y>=0 and new_y<n and vis[new_x][new_y]==0)
                 {
                     vis[new_x][new_y]=1;
