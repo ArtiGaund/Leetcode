@@ -1,49 +1,39 @@
 class Solution {
 public:
-    int dx[4]={0,0,-1,1};
-    int dy[4]={-1,1,0,0};
-    int m,n;
-    bool isValid(int x,int y)
-    {
-        if(x>=0 and x<m and y>=0 and y<n) return true;
-        return false;
-    }
-    bool bfs(vector<vector<int>> path,int k)
-    {
-        queue<pair<int,int>> q;
-        vector<vector<bool>> visited(101,vector<bool>(101,false));
-        q.push({0,0});
-        while(!q.empty())
+    #define tu tuple<int,int,int>
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int m=heights.size();
+        int n=heights[0].size();
+        vector<vector<bool>> vis(m,vector<bool>(n,0));
+        vector<vector<int>> dis(m,vector<int>(n,INT_MAX));
+        priority_queue<tu,vector<tu>,greater<tu>> pq;
+        pq.push({0,0,0});
+        dis[0][0]=0;
+        vector<pair<int,int>> dir={{-1,0},{0,-1},{0,1},{1,0}};
+        while(!pq.empty())
         {
-            auto p=q.front();
-            q.pop();
-            if(p.first==m-1 and p.second==n-1) return true;
-            for(int i=0;i<4;i++)
+            int curDis=get<0>(pq.top());
+            int x=get<1>(pq.top());
+            int y=get<2>(pq.top());
+            pq.pop();
+            if(vis[x][y]) continue;
+            vis[x][y]=1;
+            int diff=0;
+            for(auto d:dir)
             {
-                int x=p.first+dx[i];
-                int y=p.second+dy[i];
-                if(isValid(x,y) and !visited[x][y])
+                int new_x=x+d.first;
+                int new_y=y+d.second;
+                if(new_x>=0 and new_x<m and new_y>=0 and new_y<n and !vis[new_x][new_y])
                 {
-                    if(abs(path[x][y]-path[p.first][p.second])<=k)
+                    diff=abs(heights[x][y]-heights[new_x][new_y]);
+                    if(dis[new_x][new_y]>diff)
                     {
-                        visited[x][y]=true;
-                        q.push({x,y});
+                        dis[new_x][new_y]=max(diff,dis[x][y]);
+                        pq.push({dis[new_x][new_y],new_x,new_y});
                     }
                 }
             }
         }
-        return false;
-    }
-    int minimumEffortPath(vector<vector<int>>& heights) {
-        m=heights.size();
-        n=heights[0].size();
-        int low=0,high=10e6;
-        while(low<high)
-        {
-            int mid=low+(high-low)/2;
-            if(bfs(heights,mid)) high=mid;
-            else low=mid+1;
-        }
-        return low;
+        return dis[m-1][n-1];
     }
 };
