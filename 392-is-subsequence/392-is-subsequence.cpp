@@ -1,19 +1,17 @@
 class Solution {
 public:
     bool isSubsequence(string s, string t) {
-        int n=t.size(),m=s.size();
-        vector<vector<int>> dp(n+1,vector<int>(m+1));
-        for(int i=0;i<=n;i++) dp[i][0]=1;
-        for(int i=1;i<=n;i++)
+        int i=0,j=0;
+        while(i<s.size() and j<t.size())
         {
-            for(int j=1;j<=m;j++)
+            if(s[i]==t[j])
             {
-                if(t[i-1]==s[j-1])
-                    dp[i][j]=dp[i-1][j-1];
-                dp[i][j]+=dp[i-1][j];
+                i++;
+                j++;
             }
+            else j++;
         }
-        if(dp[n][m]>0) return true;
-        return false;
+        if(i==s.size()) return true;
+        return  false;
     }
 };
