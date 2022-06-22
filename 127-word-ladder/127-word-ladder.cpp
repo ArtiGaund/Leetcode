@@ -13,7 +13,7 @@ public:
             q.pop();
             string str=cur.first;
             int wt=cur.second;
-            if(str==end) 
+            if(str==end)
             {
                 ans=min(ans,wt);
                 break;
@@ -21,12 +21,12 @@ public:
             for(int i=0;i<str.size();i++)
             {
                 char c=str[i];
-                for(char ch='a';ch<='z';ch++)
+                for(char j='a';j<='z';j++)
                 {
-                    if(ch!=c)
+                    if(c!=j)
                     {
-                        str[i]=ch;
-                        if(s.find(str)!=s.end() and vis.find(str)==vis.end())
+                        str[i]=j;
+                        if(s.find(str)!=s.end() and vis.count(str)==0)
                         {
                             q.push({str,wt+1});
                             vis.insert(str);
