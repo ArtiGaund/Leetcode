@@ -2,25 +2,29 @@ class Solution {
 public:
     bool isBipartite(vector<vector<int>>& graph) {
         int n=graph.size();
-        vector<int> color(n,0);
+        vector<int> color(n,-1);
         queue<int> q;
         for(int i=0;i<n;i++)
         {
-            if(color[i]) continue;
-            color[i]=1;
-            q.push(i);
-            while(!q.empty())
+            if(color[i]==-1)
             {
-                int u=q.front();
-                q.pop();
-                for(auto v:graph[u])
+                q.push(i);
+                color[i]=1;
+                // vis[i]=1;
+                while(!q.empty())
                 {
-                    if(!color[v])
+                    int cur=q.front();
+                    q.pop();
+                    for(int it:graph[cur])
                     {
-                        color[v]=-color[u];
-                        q.push(v);
+                        if(color[it]==-1)
+                        {
+                            color[it]=1-color[cur];
+                            // vis[it]=1;
+                            q.push(it);
+                        }
+                        else if(color[it]==color[cur]) return false;
                     }
-                    else if(color[v]==color[u]) return false;
                 }
             }
         }
