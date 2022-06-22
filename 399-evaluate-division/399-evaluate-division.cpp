@@ -1,60 +1,35 @@
 class Solution {
-unordered_map<string, vector<pair<string, double>>> adjList;
-    unordered_map<string, bool> visited;
-    double queryAns;
 public:
-    
-    bool dfs(string startNode, string endNode, double runningProduct){
-        
-        if(startNode == endNode and adjList.find(startNode)!=adjList.end()) {
-            queryAns = runningProduct;
-            return true;
-            
+    void dfs(string &s,string &d,unordered_map<string,vector<pair<string,double>>> &mp,unordered_set<string> &vis,double &ans,double temp)
+    {
+        if(vis.count(s)>0) return;
+        vis.insert(s);
+        if(s==d)
+        {
+            ans=temp;
+            return;
         }
-        
-        bool tempAns = false;
-        visited[startNode] = true;
-        
-        for(int i = 0; i < adjList[startNode].size(); i++){
-            if(!visited[adjList[startNode][i].first]){
-                tempAns = dfs(adjList[startNode][i].first, endNode, runningProduct*adjList[startNode][i].second);
-                if(tempAns){
-                    break;
-                }
-            }
-        }
-        
-        visited[startNode] = false;
-        
-        return tempAns;
-        
+        for(auto a:mp[s])
+            dfs(a.first,d,mp,vis,ans,temp*a.second);
     }
-    
-    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
-        
-        
-        int n = equations.size(), m = queries.size();
-        vector<double> ans(m);
-        
-        for(int i = 0; i < n ; i++){
-            
-            adjList[equations[i][0]].push_back({equations[i][1], values[i]});
-            adjList[equations[i][1]].push_back({equations[i][0], 1/values[i]});
-            visited[equations[i][0]] = false;
-            visited[equations[i][1]] = false;
-
+    vector<double> calcEquation(vector<vector<string>>& eq, vector<double>& val, vector<vector<string>>& queries) {
+        unordered_map<string,vector<pair<string,double>>> mp;
+        for(int i=0;i<eq.size();i++)
+        {
+            mp[eq[i][0]].push_back({eq[i][1],val[i]});
+            mp[eq[i][1]].push_back({eq[i][0],1/val[i]});
         }
-        
-        for(int i = 0; i < m ; i++){
-            
-            queryAns = 1;
-            bool pathFound = dfs(queries[i][0], queries[i][1], 1);            
-            if(pathFound) ans[i] = queryAns;
-            else ans[i] = -1;
-            
+        vector<double> res;
+        for(auto q:queries)
+        {
+            string s=q[0];
+            string d=q[1];
+            unordered_set<string> vis;
+            double ans=-1.0;
+            if(mp.find(s)!=mp.end())
+                dfs(s,d,mp,vis,ans,1.0);
+            res.push_back(ans);
         }
-        
-        return ans;
-        
+        return res;
     }
 };
