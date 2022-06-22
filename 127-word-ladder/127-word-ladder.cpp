@@ -1,42 +1,41 @@
 class Solution {
 public:
     int ladderLength(string begin, string end, vector<string>& wordList) {
-        unordered_set<string> set;
-        bool present=false;
-        for(string s:wordList)
-        {
-            if(s==end) present=true;
-            set.insert(s);
-        }
-        if(!present) return 0;
-        queue<string> q;
-        q.push(begin);
-        int depth=0;
+        unordered_set<string> s(wordList.begin(),wordList.end());
+        queue<pair<string,int>> q;
+        q.push({begin,0});
+        unordered_set<string> vis;
+        vis.insert(begin);
+        int ans=INT_MAX;
         while(!q.empty())
         {
-            depth++;
-            int size=q.size();
-            while(size--)
+            auto cur=q.front();
+            q.pop();
+            string str=cur.first;
+            int wt=cur.second;
+            if(str==end) 
             {
-                string cur=q.front();
-                q.pop();
-                for(int pos=0;pos<cur.size();pos++)
+                ans=min(ans,wt);
+                break;
+            }
+            for(int i=0;i<str.size();i++)
+            {
+                char c=str[i];
+                for(char ch='a';ch<='z';ch++)
                 {
-                    string temp=cur;
-                    for(char ch='a';ch<='z';ch++)
+                    if(ch!=c)
                     {
-                        temp[pos]=ch;
-                        if(temp==cur) continue;
-                        if(temp==end) return depth+1;
-                        else if(set.find(temp)!=set.end())
+                        str[i]=ch;
+                        if(s.find(str)!=s.end() and vis.find(str)==vis.end())
                         {
-                            q.push(temp);
-                            set.erase(temp);
+                            q.push({str,wt+1});
+                            vis.insert(str);
                         }
                     }
                 }
+                str[i]=c;
             }
         }
-        return 0;
+        return (ans==INT_MAX?0:ans+1);
     }
 };
