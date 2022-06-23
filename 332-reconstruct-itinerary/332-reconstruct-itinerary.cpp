@@ -20,14 +20,14 @@ public:
     }
     vector<string> findItinerary(vector<vector<string>>& tickets) {
         unordered_map<string,vector<string>> adj;
-        for(auto t:tickets) adj[t[0]].push_back(t[1]);
-        for(auto it:adj)
-            sort(adj[it.first].begin(),adj[it.first].end());
+        for(auto &t:tickets) adj[t[0]].push_back(t[1]);
+        for(auto x:adj)
+            sort(adj[x.first].begin(),adj[x.first].end());
         vector<string> res;
-        string str="JFK";
-        res.push_back(str);
+        string s="JFK";
+        res.push_back(s);
         int size=tickets.size();
-        dfs(adj,res,str,size);
+        dfs(adj,res,s,size);
         return res;
     }
 };
