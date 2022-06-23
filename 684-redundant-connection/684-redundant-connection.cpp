@@ -1,56 +1,29 @@
-class UnionFind
-{
-    public:
-    vector<int> parent;
-    vector<int> rank;
-    int count;
-    UnionFind(int n):parent(n),rank(n),count(n)
+class Solution {
+public:
+    bool dfs(int node,vector<int> graph[],int n,vector<int> &vis,int parent,int x,int y)
     {
-        for(int i=0;i<n;i++)
+        vis[node]=1;
+        for(auto it:graph[node])
         {
-            parent[i]=i;
-            rank[i]=1;
-        }
-    }
-    int find(int x)
-    {
-        if(parent[x]!=x)
-            parent[x]=find(parent[x]);
-        return parent[x];
-    }
-    bool unionset(int a,int b)
-    {
-        int x=find(a);
-        int y=find(b);
-        if(x!=y)
-        {
-            if(rank[x]>rank[y]) parent[y]=x;
-            else if(rank[x]<rank[y]) parent[x]=y;
-            else
-            {
-                parent[y]=x;
-                rank[x]++;
-            }
-            count--;
-            return true;
+            if(vis[it]==-1 and dfs(it,graph,n,vis,node,x,y)) return true;
+            else if(vis[it]==1 and it!=parent and it==x and node==y) return true;
         }
         return false;
     }
-    int getCount()
-    {
-        return count;
-    }
-};
-class Solution {
-public:
-    int max_val=1000;
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
-       UnionFind uf(max_val+1);
+        int n=edges.size();
+        vector<int> graph[n+1];
         for(auto e:edges)
         {
-            if(!uf.unionset(e[0],e[1])) return e;
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+        for(int i=n-1;i>=0;i--)
+        {
+            vector<int> vis(n+1,-1);
+            if(dfs(edges[i][0],graph,n,vis,-1,edges[i][0],edges[i][1])) 
+                return {edges[i][0],edges[i][1]};
         }
         return {};
     }
-    
 };
