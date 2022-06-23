@@ -1,7 +1,6 @@
 class Solution {
 public:
     vector<string> watchedVideosByFriends(vector<vector<string>>& watchedVideos, vector<vector<int>>& friends, int id, int level) {
-        // part 1: bfs to get frnds of id at level k
         queue<int> q;
         unordered_set<int> vis;
         q.push(id);
@@ -16,7 +15,7 @@ public:
                 q.pop();
                 for(int x:friends[j])
                 {
-                    if(vis.count(x)==0)
+                    if(vis.count(x)==0) 
                     {
                         q.push(x);
                         vis.insert(x);
@@ -24,8 +23,6 @@ public:
                 }
             }
         }
-        // q contains frnds at level k
-        // part 2: get watched movies of level k frnds and sort them
         unordered_map<string,int> mp;
         while(!q.empty())
         {
@@ -37,15 +34,12 @@ public:
                 else mp[str]++;
             }
         }
-      vector<pair<int, string>> pairs;
-        for (auto it = mp.begin(); it!=mp.end(); it++){
-            pairs.push_back({it->second, it->first});
-        }
-        sort(pairs.begin(), pairs.end());
-        vector<string> result(pairs.size());
-        for (int i = 0; i < pairs.size(); i++){
-            result[i] = pairs[i].second;
-        }
-        return result;
+        vector<pair<int,string>> temp;
+        for(auto it=mp.begin();it!=mp.end();it++) temp.push_back({it->second,it->first});
+        sort(temp.begin(),temp.end());
+        vector<string> res(temp.size());
+        for(int i=0;i<temp.size();i++)
+            res[i]=temp[i].second;
+        return res;
     }
 };
