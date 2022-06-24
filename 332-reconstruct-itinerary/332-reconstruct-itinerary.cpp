@@ -20,9 +20,9 @@ public:
     }
     vector<string> findItinerary(vector<vector<string>>& tickets) {
         unordered_map<string,vector<string>> adj;
-        for(auto &t:tickets) adj[t[0]].push_back(t[1]);
-        for(auto x:adj)
-            sort(adj[x.first].begin(),adj[x.first].end());
+        for(auto t:tickets) adj[t[0]].push_back(t[1]);
+        for(auto it:adj)
+            sort(adj[it.first].begin(),adj[it.first].end());
         vector<string> res;
         string s="JFK";
         res.push_back(s);
