@@ -10,13 +10,13 @@ public:
         vis[0][k]=1;
         while(!pq.empty())
         {
-            auto [cost,u,stops]=pq.top();
+            auto [cost,node,stops]=pq.top();
             pq.pop();
-            if(u==dst) return cost;
+            if(node==dst) return cost;
             if(!stops) continue;
-            if(vis[u][stops]) continue;
-            vis[u][stops]=1;
-            for(auto it:graph[u])
+            if(vis[node][stops]) continue;
+            vis[node][stops]=1;
+            for(auto it:graph[node])
                 pq.push({cost+it.second,it.first,stops-1});
         }
         return -1;
