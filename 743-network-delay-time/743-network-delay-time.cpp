@@ -1,22 +1,22 @@
 class Solution {
 public:
-    void bfs(vector<int> &signal,vector<pair<int,int>> adj[],int k,int time)
+    void dijkstra(vector<int> &signal,vector<pair<int,int>> adj[],int k,int n)
     {
-        queue<int> q;
-        q.push(k);
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        pq.push({0,k});
         signal[k]=0;
-        while(!q.empty())
+        while(!pq.empty())
         {
-            int node=q.front();
-            q.pop();
+            auto [time,node]=pq.top();
+            pq.pop();
+            if(time>signal[node]) continue;
             for(auto e:adj[node])
             {
                 int t=e.first,neighbor=e.second;
-                int arrivalTime=t+signal[node];
-                if(signal[neighbor]>arrivalTime)
+                if(signal[neighbor]>time+t)
                 {
-                    signal[neighbor]=arrivalTime;
-                    q.push(neighbor);
+                    signal[neighbor]=time+t;
+                    pq.push({signal[neighbor],neighbor});
                 }
             }
         }
@@ -27,9 +27,9 @@ public:
         {
             adj[t[0]].push_back({t[2],t[1]});
         }
-        for(int i=1;i<=n;i++) sort(adj[i].begin(),adj[i].end());
+        // for(int i=1;i<=n;i++) sort(adj[i].begin(),adj[i].end());
         vector<int> signal(n+1,INT_MAX);
-        bfs(signal,adj,k,0);
+        dijkstra(signal,adj,k,n);
         int ans=INT_MIN;
         for(int node=1;node<=n;node++) ans=max(ans,signal[node]);
         return ans==INT_MAX?-1:ans;
