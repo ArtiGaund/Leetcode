@@ -1,34 +1,30 @@
+#define tu tuple<int,int,int>
 class Solution {
 public:
-    #define tu tuple<int,int,int>
     int minimumEffortPath(vector<vector<int>>& heights) {
-        int m=heights.size();
-        int n=heights[0].size();
+        int m=heights.size(),n=heights[0].size();
         vector<vector<int>> dist(m,vector<int>(n,INT_MAX));
         vector<vector<bool>> vis(m,vector<bool>(n,0));
         priority_queue<tu,vector<tu>,greater<tu>> pq;
         pq.push({0,0,0});
         dist[0][0]=0;
-        vector<pair<int,int>> dir={{-1,0},{0,-1},{1,0},{0,1}};
+        vector<pair<int,int>> dir={{-1,0},{0,-1},{0,1},{1,0}};
         while(!pq.empty())
         {
-            int curDis=get<0>(pq.top());
-            int x=get<1>(pq.top());
-            int y=get<2>(pq.top());
+            auto [dis,i,j]=pq.top();
             pq.pop();
-            if(vis[x][y]) continue;
-            vis[x][y]=1;
+            if(vis[i][j]) continue;
+            vis[i][j]=1;
             for(auto d:dir)
             {
-                int new_x=x+d.first;
-                int new_y=y+d.second;
-                if(new_x>=0 and new_x<m and new_y>=0 and new_y<n and !vis[new_x][new_y])
+                int x=i+d.first,y=j+d.second;
+                if(x>=0 and x<m and y>=0 and y<n and !vis[x][y])
                 {
-                    int diff=abs(heights[x][y]-heights[new_x][new_y]);
-                    if(dist[new_x][new_y]>diff)
+                    int diff=abs(heights[i][j]-heights[x][y]);
+                    if(dist[x][y]>diff)
                     {
-                        dist[new_x][new_y]=max(dist[x][y],diff);
-                        pq.push({dist[new_x][new_y],new_x,new_y});
+                        dist[x][y]=max(dist[i][j],diff);
+                        pq.push({dist[x][y],x,y});
                     }
                 }
             }
