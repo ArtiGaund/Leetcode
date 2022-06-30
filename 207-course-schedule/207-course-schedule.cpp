@@ -1,27 +1,28 @@
 class Solution {
 public:
-    //BFS
+    // bfs
     bool canFinish(int n, vector<vector<int>>& pre) {
         vector<int> adj[n];
         for(int i=0;i<pre.size();i++)
             adj[pre[i][1]].push_back(pre[i][0]);
-        vector<int> vis(n,0);
+        vector<int> indegree(n,0);
         for(int i=0;i<n;i++)
+            for(auto it:adj[i]) indegree[it]++;
+        queue<int> q;
+        for(int i=0;i<n;i++)
+            if(indegree[i]==0) q.push(i);
+        while(!q.empty())
         {
-            if(iscyclic(i,adj,vis)) return false;
+            auto cur=q.front();
+            q.pop();
+            n--;
+            for(auto it:adj[cur])
+            {
+                indegree[it]--;
+                if(indegree[it]==0)
+                    q.push(it);
+            }
         }
-        return true;
-    }
-    bool iscyclic(int node,vector<int> adj[],vector<int> &vis)
-    {
-        if(vis[node]==1) return true;
-        if(vis[node]==0)
-        {
-            vis[node]=1;
-            for(auto it:adj[node])
-                if(iscyclic(it,adj,vis)) return true;
-        }
-        vis[node]=2;
-        return false;
+        return (n==0);
     }
 };
