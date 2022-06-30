@@ -1,30 +1,33 @@
 class Solution {
 public:
-    // bfs
+    // dfs
+    bool isCycle(int node,vector<int> adj[],vector<bool> &todo,vector<bool> &done,stack<int> &s)
+    {
+        if(todo[node]) return false;
+        if(done[node]) return true;
+        todo[node]=done[node]=true;
+        for(auto it:adj[node])
+            if(!isCycle(it,adj,todo,done,s)) return false;
+        s.push(node);
+        todo[node]=false;
+        return true;
+    }
     vector<int> findOrder(int n, vector<vector<int>>& pre) {
         vector<int> adj[n];
         for(int i=0;i<pre.size();i++)
             adj[pre[i][1]].push_back(pre[i][0]);
-        vector<int> indegree(n,0);
+        vector<bool> todo(n,0),done(n,0);
+        stack<int> s;
         for(int i=0;i<n;i++)
-            for(auto it:adj[i]) indegree[it]++;
-        queue<int> q;
-        for(int i=0;i<n;i++)
-            if(indegree[i]==0) q.push(i);
-        vector<int> res(n);
-        int i=0;
-        while(!q.empty())
         {
-            auto cur=q.front();
-            q.pop();
-            res[i++]=cur;
-            for(auto it:adj[cur])
-            {
-                indegree[it]--;
-                if(indegree[it]==0) q.push(it);
-            }
+            if(!todo[i] and !isCycle(i,adj,todo,done,s)) return {};
         }
-        if(i==n) return res;
-        return {};
+        vector<int> res;
+        while(!s.empty())
+        {
+            res.push_back(s.top());
+            s.pop();
+        }
+        return res;
     }
 };
