@@ -2,32 +2,40 @@ class Solution {
 public:
     int minCostConnectPoints(vector<vector<int>>& points) {
         int n=points.size();
-        int mstCost=0,edgesUsed=0;
-        vector<bool> inMST(n);
-        vector<int> minDis(n,INT_MAX);
-        minDis[0]=0;
-        while(edgesUsed<n)
+        vector<pair<int,int>> adj[n+1];
+        for(int i=0;i<n;i++)
         {
-            int curMinEdge=INT_MAX;
-            int curNode=-1;
-            for(int node=0;node<n;node++)
+            int x1=points[i][0];
+            int y1=points[i][1];
+            for(int j=i+1;j<n;j++)
             {
-                if(!inMST[node] and curMinEdge>minDis[node])
-                {
-                    curMinEdge=minDis[node];
-                    curNode=node;
-                }
-            }
-            mstCost+=curMinEdge;
-            edgesUsed++;
-            inMST[curNode]=true;
-            for(int nextNode=0;nextNode<n;nextNode++)
-            {
-                int weight=abs(points[curNode][0]-points[nextNode][0])+abs(points[curNode][1]-points[nextNode][1]);
-                if(!inMST[nextNode] and minDis[nextNode]>weight)
-                    minDis[nextNode]=weight;
+                int x2=points[j][0];
+                int y2=points[j][1];
+                int dis=abs(x1-x2)+abs(y1-y2);
+                adj[i].push_back({dis,j});
+                adj[j].push_back({dis,i});
             }
         }
-        return mstCost;
+        // Prim's
+        int res=0;
+        unordered_set<int> vis;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        pq.push({0,0}); // (cost,point)
+        while(vis.size()<n)
+        {
+            auto [cost,i]=pq.top();
+            pq.pop();
+            if(vis.count(i)) continue;
+            res+=cost;
+            vis.insert(i);
+            for(auto [neiCost,nei]:adj[i])
+            {
+                if(vis.count(nei)==0)
+                {
+                    pq.push({neiCost,nei});
+                }
+            }
+        }
+        return res;
     }
 };
