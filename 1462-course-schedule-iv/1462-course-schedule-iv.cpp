@@ -2,8 +2,8 @@ class Solution {
 public:
     void dfs(int src,vector<int> &vis,vector<int> adj[],vector<vector<bool>> &ispre,int node)
     {
-        vis[node]=true;
-        ispre[src][node]=true;
+        vis[node]=1;
+        ispre[src][node]=1;
         for(auto it:adj[node])
             if(!vis[it])
                 dfs(src,vis,adj,ispre,it);
@@ -14,7 +14,7 @@ public:
         for(auto p:pre)
         {
             adj[p[0]].push_back(p[1]);
-            ispre[p[0]][p[1]]=true;
+            ispre[p[0]][p[1]]=1;
         }
         for(int i=0;i<n;i++)
         {
