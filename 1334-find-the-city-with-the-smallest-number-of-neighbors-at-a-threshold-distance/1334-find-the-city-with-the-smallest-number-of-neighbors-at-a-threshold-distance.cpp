@@ -1,9 +1,8 @@
 class Solution {
 public:
     int findTheCity(int n, vector<vector<int>>& edges, int d) {
-        vector<vector<int>> dist(n+1,vector<int>(n+1,INT_MAX));
-        for(int i=0;i<n;i++)
-            dist[i][i]=0;
+        vector<vector<int>> dist(n,vector<int>(n,INT_MAX));
+        for(int i=0;i<n;i++) dist[i][i]=0;
         for(auto e:edges)
         {
             dist[e[0]][e[1]]=e[2];
