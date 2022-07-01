@@ -1,34 +1,70 @@
-class Solution {
-public:
-    unordered_map<string,vector<int>> mp;
-    vector<bool> vis;
-    void dfs(vector<vector<string>> &accounts,int i,set<string> &emails)
+class UnionFind
+{
+    public:vector<int> parent,rank;
+    UnionFind(int n):parent(n),rank(n)
     {
-        if(vis[i]) return;
-        vis[i]=true;
-        for(int j=1;j<accounts[i].size();j++)
+        for(int i=0;i<n;i++)
         {
-            string cur=accounts[i][j];
-            emails.insert(cur);
-            for(auto it:mp[cur]) dfs(accounts,it,emails);
+            parent[i]=i;
+            rank[i]=1;
         }
     }
-    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
-        for(int i=0;i<accounts.size();i++)
+    int find(int x)
+    {
+        if(x!=parent[x]) 
+            x=find(parent[x]);
+        return x;
+    }
+    void unionset(int a,int b)
+    {
+        int x=find(a);
+        int y=find(b);
+        if(x!=y)
         {
-            for(int j=0;j<accounts[i].size();j++)
-                mp[accounts[i][j]].push_back(i);
+            if(rank[x]>rank[y]) parent[y]=x;
+            else if(rank[x]<rank[y]) parent[x]=y;
+            else
+            {
+                parent[y]=x;
+                rank[x]++;
+            }
         }
-        vis.assign(accounts.size(),0);
-        vector<vector<string>> res;
-        for(int i=0;i<accounts.size();i++)
+    }
+};
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        int n=accounts.size();
+        UnionFind uf(n);
+        unordered_map<string,int> emailGroup; // email->index
+        for(int i=0;i<n;i++)
         {
-            if(vis[i]) continue;
-            set<string> emails;
-            dfs(accounts,i,emails);
-            vector<string> temp={accounts[i][0]};
-            for(auto str:emails) temp.push_back(str);
-            res.push_back(temp);
+            int size=accounts[i].size();
+            for(int j=1;j<size;j++)
+            {
+                string email=accounts[i][j];
+                string accName=accounts[i][0];
+                if(emailGroup.count(email)==0) //not present
+                    emailGroup[email]=i;
+                else 
+                    uf.unionset(i,emailGroup[email]); 
+            }
+        }
+        unordered_map<int,vector<string>> components; //store email corresponding to comp
+        for(auto it:emailGroup)
+        {
+            string email=it.first;
+            int group=it.second;
+            components[uf.find(group)].push_back(email);
+        }
+        vector<vector<string>> res;
+        for(auto it:components)
+        {
+            int group=it.first;
+            vector<string> component={accounts[group][0]};
+            for(string s:it.second) component.push_back(s);
+            sort(component.begin()+1,component.end());
+            res.push_back(component);
         }
         return res;
     }
