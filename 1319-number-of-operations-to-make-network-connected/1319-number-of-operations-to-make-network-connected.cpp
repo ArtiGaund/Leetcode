@@ -1,36 +1,33 @@
 class Solution {
 public:
-    void dfs(vector<int> graph[],int node,vector<int> &vis)
+    void dfs(int node,vector<int> &vis,vector<int> graph[])
     {
         if(vis[node]) return;
         vis[node]=1;
         for(auto it:graph[node])
         {
-            if(!vis[it])
-            {
-                dfs(graph,it,vis);
-            }
+            if(!vis[it]) dfs(it,vis,graph);
         }
     }
     int makeConnected(int n, vector<vector<int>>& connections) {
-        int m=connections.size();
-        if(m<n-1) return -1;
+        int size=connections.size();
+        if(size<n-1) return -1;
         vector<int> graph[n+1];
         for(auto c:connections)
         {
             graph[c[0]].push_back(c[1]);
             graph[c[1]].push_back(c[0]);
         }
-        int count=0;
+        int component=0;
         vector<int> vis(n,0);
         for(int i=0;i<n;i++)
         {
             if(!vis[i])
             {
-                count++;
-                dfs(graph,i,vis);
+                component++;
+                dfs(i,vis,graph);
             }
         }
-        return count-1;
+        return component-1;
     }
 };
