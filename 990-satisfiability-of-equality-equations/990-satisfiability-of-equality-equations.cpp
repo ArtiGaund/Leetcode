@@ -36,12 +36,12 @@ public:
                 }
             }
         }
-        for(string &eq:equations)
+        for(string &s:equations)
         {
-            if(eq[1]=='!')
+            if(s[1]=='!')
             {
-                int x=eq[0]-'a';
-                int y=eq[3]-'a';
+                int x=s[0]-'a';
+                int y=s[3]-'a';
                 if(x==y or (color[x]!=0 and color[x]==color[y])) return false;
             }
         }
