@@ -1,57 +1,27 @@
 class Solution {
 public:
-    struct subset
+    void dfs(int node,vector<int> &vis,vector<vector<int>> &stones)
     {
-        int parent;
-        int rank;
-    };
-    int find(vector<subset> &Parent,int x)
-    {
-        if(Parent[x].parent==-1) return x;
-        return find(Parent,Parent[x].parent);
-    }
-    void Union(vector<subset> &Parent,int x,int y)
-    {
-        if(Parent[x].rank<Parent[y].rank) Parent[x].parent=y;
-        else if(Parent[x].rank>Parent[y].rank) Parent[y].parent=x;
-        else
+        vis[node]=1;
+        int x=stones[node][0],y=stones[node][1];
+        for(int i=0;i<stones.size();i++)
         {
-            Parent[x].parent=y;
-            Parent[y].rank++;
+            if((stones[i][0]==x or stones[i][1]==y) and !vis[i])
+                dfs(i,vis,stones);
         }
-        return;
-    }
-    bool isSameRow(vector<vector<int>> &stones,int i,int j)
-    {
-        return stones[i][0]==stones[j][0];
-    }
-    bool isSameCol(vector<vector<int>> &stones,int i,int j)
-    {
-        return stones[i][1]==stones[j][1];
     }
     int removeStones(vector<vector<int>>& stones) {
-      int n = stones.size();
-        // vector<vector<int>> edges;
-        vector<subset> Parent(n,{-1,0});
-        for(int i = 0;i<n;i++){
-            for(int j = 0;j<i;j++){
-                if(isSameRow(stones, i, j) or isSameCol(stones,i, j)){
-                    int x = find(Parent, i);
-                    int y = find(Parent, j);
-                    if(x!=y){
-                        Union(Parent,x,y);
-                    }
-                }
+        int n=stones.size();
+        int group=0;
+        vector<int> vis(n,0);
+        for(int i=0;i<n;i++)
+        {
+            if(!vis[i])
+            {
+                group++;
+                dfs(i,vis,stones);
             }
         }
-       
-    
-        int co = 0;
-        for(int i =0;i<n;i++){
-            if(Parent[i].parent==-1){
-                co++;
-            }
-        }
-        return n-co;
+        return n-group;
     }
 };
