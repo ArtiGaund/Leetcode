@@ -1,56 +1,49 @@
-class UnionFind
-{
-    public:
-    vector<int> parent;
-    vector<int> rank;
-    int count;
-    UnionFind(int n):parent(n),rank(n),count(n)
-    {
-        for(int i=0;i<n;i++)
-        {
-            parent[i]=i;
-            rank[i]=1;
-        }
-    }
-    int find(int x)
-    {
-        if(parent[x]!=x)
-            parent[x]=find(parent[x]);
-        return parent[x];
-    }
-    bool unionset(int a,int b)
-    {
-        int x=find(a);
-        int y=find(b);
-        if(x!=y)
-        {
-            if(rank[x]>rank[y]) parent[y]=x;
-            else if(rank[x]<rank[y]) parent[x]=y;
-            else
-            {
-                parent[y]=x;
-                rank[x]++;
-            }
-            count--;
-            return true;
-        }
-        return false;
-    }
-};
 class Solution {
 public:
     bool equationsPossible(vector<string>& equations) {
-        int n=equations.size();
-        UnionFind uf(26);
-        for(auto e:equations)
+        vector<int> graph[26];
+        for(string &s:equations)
         {
-            if(e[1]=='=')
-                uf.unionset(e[0]-'a',e[3]-'a');
+            if(s[1]=='=')
+            {
+                int x=s[0]-'a';
+                int y=s[3]-'a';
+                graph[x].push_back(y);
+                graph[y].push_back(x);
+            }
         }
-        for(auto e:equations)
+        vector<int> color(26,0);
+        int t=0;
+        for(int start=0;start<26;start++)
         {
-            if(e[1]=='!')
-                if(uf.find(e[0]-'a')==uf.find(e[3]-'a')) return false;
+            if(color[start]==0)
+            {
+                t++;
+                stack<int> st;
+                st.push(start);
+                while(!st.empty())
+                {
+                    int node=st.top();
+                    st.pop();
+                    for(int nei:graph[node])
+                    {
+                        if(color[nei]==0)
+                        {
+                            color[nei]=t;
+                            st.push(nei);
+                        }
+                    }
+                }
+            }
+        }
+        for(string &eq:equations)
+        {
+            if(eq[1]=='!')
+            {
+                int x=eq[0]-'a';
+                int y=eq[3]-'a';
+                if(x==y or (color[x]!=0 and color[x]==color[y])) return false;
+            }
         }
         return true;
     }
