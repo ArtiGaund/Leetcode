@@ -11,7 +11,7 @@ class UnionFind
     }
     int find(int x)
     {
-        if(x!=parent[x]) 
+        if(x!=parent[x])
             x=find(parent[x]);
         return x;
     }
@@ -36,21 +36,18 @@ public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
         int n=accounts.size();
         UnionFind uf(n);
-        unordered_map<string,int> emailGroup; // email->index
+        unordered_map<string,int> emailGroup;
         for(int i=0;i<n;i++)
         {
-            int size=accounts[i].size();
-            for(int j=1;j<size;j++)
+            for(int j=1;j<accounts[i].size();j++)
             {
                 string email=accounts[i][j];
-                string accName=accounts[i][0];
-                if(emailGroup.count(email)==0) //not present
+                if(emailGroup.count(email)==0)
                     emailGroup[email]=i;
-                else 
-                    uf.unionset(i,emailGroup[email]); 
+                else uf.unionset(i,emailGroup[email]);
             }
         }
-        unordered_map<int,vector<string>> components; //store email corresponding to comp
+        unordered_map<int,vector<string>> components;
         for(auto it:emailGroup)
         {
             string email=it.first;
@@ -61,10 +58,10 @@ public:
         for(auto it:components)
         {
             int group=it.first;
-            vector<string> component={accounts[group][0]};
-            for(string s:it.second) component.push_back(s);
-            sort(component.begin()+1,component.end());
-            res.push_back(component);
+            vector<string> email={accounts[group][0]};
+            for(auto &s:it.second) email.push_back(s);
+            sort(email.begin()+1,email.end());
+            res.push_back(email);
         }
         return res;
     }
