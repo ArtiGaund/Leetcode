@@ -1,33 +1,53 @@
-class Solution {
-public:
-    void dfs(int node,vector<int> &vis,vector<int> graph[])
+class UnionFind
+{
+    public:
+    vector<int> parent,rank;
+    int count;
+    UnionFind(int n):parent(n),rank(n),count(n)
     {
-        if(vis[node]) return;
-        vis[node]=1;
-        for(auto it:graph[node])
+        for(int i=0;i<n;i++)
         {
-            if(!vis[it]) dfs(it,vis,graph);
+            parent[i]=i;
+            rank[i]=1;
         }
     }
+    int find(int x)
+    {
+        if(x!=parent[x])
+            x=find(parent[x]);
+        return x;
+    }
+    void unionset(int a,int b)
+    {
+        int x=find(a);
+        int y=find(b);
+        if(x!=y)
+        {
+            if(rank[x]>rank[y]) parent[y]=x;
+            else if(rank[x]<rank[y]) parent[x]=y;
+            else
+            {
+                parent[y]=x;
+                rank[x]++;
+            }
+            count--;
+        }
+    }
+    int getCount()
+    {
+        return count;
+    }
+};
+class Solution {
+public:
     int makeConnected(int n, vector<vector<int>>& connections) {
         int size=connections.size();
         if(size<n-1) return -1;
-        vector<int> graph[n+1];
+        UnionFind uf(n);
         for(auto c:connections)
         {
-            graph[c[0]].push_back(c[1]);
-            graph[c[1]].push_back(c[0]);
+            uf.unionset(c[0],c[1]);
         }
-        int component=0;
-        vector<int> vis(n,0);
-        for(int i=0;i<n;i++)
-        {
-            if(!vis[i])
-            {
-                component++;
-                dfs(i,vis,graph);
-            }
-        }
-        return component-1;
+        return uf.getCount()-1;
     }
 };
