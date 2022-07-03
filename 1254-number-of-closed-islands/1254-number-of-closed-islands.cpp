@@ -1,38 +1,34 @@
 class Solution {
 public:
-    bool isOnPerimeter(int i,int j,int rows,int cols)
+    bool isOnPerimeter(int i,int j,int m,int n)
     {
-        return (i==0 or j==0 or i==rows-1 or j==cols-1);
+        return (i==0 or j==0 or i==m-1 or j==n-1);
     }
-    bool isClosedIsland(vector<vector<int>> &grid,int i,int j,int rows,int cols)
+    bool dfs(vector<vector<int>> &grid,int i,int j,int m,int n)
     {
-        // -1= visited, 1=water, 0= land
         if(grid[i][j]==-1 or grid[i][j]==1) return true;
-        if(isOnPerimeter(i,j,rows,cols)) return false;
+        if(isOnPerimeter(i,j,m,n)) return false;
         grid[i][j]=-1;
-        // check directions
-        bool left=isClosedIsland(grid,i,j-1,rows,cols);
-         bool right=isClosedIsland(grid,i,j+1,rows,cols);
-         bool up=isClosedIsland(grid,i-1,j,rows,cols);
-         bool down=isClosedIsland(grid,i+1,j,rows,cols);
+        int up=dfs(grid,i-1,j,m,n);
+        int down=dfs(grid,i+1,j,m,n);
+        int left=dfs(grid,i,j-1,m,n);
+        int right=dfs(grid,i,j+1,m,n);
         return (left and right and up and down);
     }
     int closedIsland(vector<vector<int>>& grid) {
-        int rows=grid.size();
-        int cols=grid[0].size();
-        if(rows==0 or cols==0) return 0;
-        int closedIsland=0;
-        for(int i=1;i<rows-1;i++)
+        int m=grid.size();
+        int n=grid[0].size();
+        int island=0;
+        for(int i=1;i<m-1;i++)
         {
-            for(int j=1;j<cols-1;j++)
+            for(int j=1;j<n-1;j++)
             {
                 if(grid[i][j]==0)
                 {
-                    if(isClosedIsland(grid,i,j,rows,cols))
-                        closedIsland++;
+                    if(dfs(grid,i,j,m,n)) island++;
                 }
             }
         }
-        return closedIsland;
+        return island;
     }
 };
