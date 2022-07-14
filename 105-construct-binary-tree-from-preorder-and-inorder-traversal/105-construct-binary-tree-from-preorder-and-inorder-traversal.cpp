@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    unordered_map<int,int> mp;
+     unordered_map<int,int> mp;
     int index;
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
         index=0;
