@@ -1,6 +1,6 @@
 class Solution {
 public:
-    vector<int> searchRange(vector<int>& nums, int target) {
+   vector<int> searchRange(vector<int>& nums, int target) {
         int first=findBound(nums,target,true);
         if(first==-1) return {-1,-1};
         int last=findBound(nums,target,false);
