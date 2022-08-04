@@ -5,39 +5,60 @@ public:
         if(n<=1) return 0;
         unordered_map<int,vector<int>> graph;
         for(int i=0;i<n;i++) graph[arr[i]].push_back(i);
-        queue<int> q;
-        vector<bool> vis(n);
-        q.push(0);
-        vis[0]=1;
-        int step=1;
-        while(!q.empty())
+        queue<int> lq,rq;
+        vector<int> left(n),right(n);
+        lq.push(0);
+        rq.push(n-1);
+        left[0]=1;
+        right[n-1]=1;
+        while(!lq.empty() and !rq.empty())
         {
-            int size=q.size();
-            while(size--)
+            int node=lq.front();
+            lq.pop();
+            if(node-1>=0 and !left[node-1])
             {
-                int node=q.front();
-                q.pop();
-               if(node+1<n and !vis[node+1]){
-                    if(node+1==n-1) return step;
-                    q.push(node+1);
-                    vis[node+1]=true;
-                }
-                if(node-1>=0 and !vis[node-1]){
-                    if(node-1==n-1) return step;
-                    q.push(node-1);
-                    vis[node-1]=true;
-                }
-
-                for(auto i:graph[arr[node]])
-                {
-                    if(i==node or vis[i]) continue;
-                    if(i==n-1) return step;
-                    q.push(i);
-                    vis[i]=1;
-                }
-                graph[arr[node]].clear();
+                left[node-1]=left[node]+1;
+                lq.push(node-1);
+                if(right[node-1]) return left[node-1]+right[node-1]-2;
             }
-            step++;
+            if(node+1<n and !left[node+1])
+            {
+                left[node+1]=left[node]+1;
+                lq.push(node+1);
+                if(right[node+1]) return left[node+1]+right[node+1]-2;
+            }
+            for(auto i:graph[arr[node]])
+            {
+                if(!left[i])
+                {
+                    left[i]=left[node]+1;
+                    lq.push(i);
+                    if(right[i]) return left[i]+right[i]-2;
+                }
+            }
+            node=rq.front();
+            rq.pop();
+            if(node-1>=0 and !right[node-1])
+            {
+                right[node-1]=right[node]+1;
+                rq.push(node-1);
+                if(left[node-1]) return left[node-1]+right[node-1]-2;
+            }
+            if(node+1<n and !right[node+1])
+            {
+                right[node+1]=right[node]+1;
+                rq.push(node+1);
+                if(left[node+1]) return left[node+1]+right[node+1]-2;
+            }
+            for(auto i:graph[arr[node]])
+            {
+                if(!right[i])
+                {
+                    right[i]=right[node]+1;
+                    rq.push(i);
+                    if(left[i]) return left[i]+right[i]-2;
+                }
+            }
         }
         return -1;
     }
