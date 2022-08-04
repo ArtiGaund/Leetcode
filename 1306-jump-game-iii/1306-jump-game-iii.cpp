@@ -4,7 +4,7 @@ public:
        int n=arr.size();
         queue<int> q;
         q.push(start);
-        set<int> vis;
+        unordered_set<int> vis;
         vis.insert(start);
         while(!q.empty())
         {
