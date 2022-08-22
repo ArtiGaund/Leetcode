@@ -1,27 +1,26 @@
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
+        int start=0,match=0;
         unordered_map<char,int> mp;
-        for(char c:s1) mp[c]++;
-        int start=0,end=0,count=mp.size();
-        while(end<s2.size())
+        for(char ch:s1) mp[ch]++;
+        for(int end=0;end<s2.size();end++)
         {
-            char ch=s2[end];
-            if(mp.count(ch))
+            char right=s2[end];
+            if(mp.count(right))
             {
-                mp[ch]--;
-                if(mp[ch]==0) count--;
+                mp[right]--;
+                if(mp[right]==0) match++;
             }
-            end++;
-            while(count==0)
+            if(match==(int)mp.size()) return true;
+            if(end>=s1.size()-1)
             {
-                char temp=s2[start];
-                if(mp.count(temp))
+                char left=s2[start];
+                if(mp.count(left))
                 {
-                    mp[temp]++;
-                    if(mp[temp]>0) count++;
+                    if(mp[left]==0) match--;
+                    mp[left]++;
                 }
-                if(end-start==s1.size()) return true;
                 start++;
             }
         }
