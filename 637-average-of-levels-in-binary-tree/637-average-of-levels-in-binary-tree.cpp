@@ -19,17 +19,16 @@ public:
         while(!q.empty())
         {
             int size=q.size();
-            double sum=0;
+            long long int sum=0;
             for(int i=0;i<size;i++)
             {
-                TreeNode* cur=q.front();
+                TreeNode *cur=q.front();
                 q.pop();
                 sum+=cur->val;
                 if(cur->left) q.push(cur->left);
                 if(cur->right) q.push(cur->right);
             }
-            double avg=sum/size;
-            res.push_back(avg);
+            res.push_back(sum*1.0/size);
         }
         return res;
     }
