@@ -21,13 +21,13 @@ public:
 class Solution {
 public:
     vector<vector<int>> levelOrder(Node* root) {
-        vector<vector<int>> res;
+         vector<vector<int>> res;
         if(root==nullptr) return res;
         queue<Node*> q;
         q.push(root);
         while(!q.empty())
         {
-           int size=q.size();
+            int size=q.size();
             vector<int> temp;
             for(int i=0;i<size;i++)
             {
