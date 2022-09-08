@@ -3,10 +3,10 @@ public:
     void sortColors(vector<int>& nums) {
         if(nums.size()==0) return;
         int zero=0,one=0,two=0;
-        for(int a:nums)
+        for(int i=0;i<nums.size();i++)
         {
-            if(a==0) zero++;
-            else if(a==1) one++;
+            if(nums[i]==0) zero++;
+            else if(nums[i]==1) one++;
             else two++;
         }
         int i=0;
