@@ -1,6 +1,5 @@
 class Solution {
 public:
-   
     int maxProfit(int k, vector<int>& prices) {
         int n=prices.size();
         vector<int> prev(2*k+1,0),cur(2*k+1,0);
