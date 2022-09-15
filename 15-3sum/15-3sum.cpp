@@ -5,7 +5,7 @@ public:
         sort(nums.begin(),nums.end());
         for(int i=0;i<nums.size();i++)
         {
-            if(i>0 and nums[i-1]==nums[i]) continue;
+            if(i>0 and nums[i]==nums[i-1]) continue;
             searchPair(nums,-nums[i],i+1);
         }
         return res;
