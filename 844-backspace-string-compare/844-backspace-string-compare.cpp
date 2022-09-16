@@ -1,35 +1,30 @@
 class Solution {
 public:
-    bool backspaceCompare(string S, string T) {
-         deque<char> q1,q2;
-        for(int i=0;i<S.size();i++)
+    bool backspaceCompare(string s, string t) {
+        int index1=s.size()-1;
+        int index2=t.size()-1;
+        while(index1>=0 or index2>=0)
         {
-            if(S[i]!='#')
-                q1.push_back(S[i]);
-            else if(!q1.empty())
-                q1.pop_back();
+            int a=getNextValidChar(s,index1);
+            int b=getNextValidChar(t,index2);
+            if(a<0 and b<0) return true;
+            if(a<0 or b<0) return false;
+            if(s[a]!=t[b]) return false;
+            index1=a-1;
+            index2=b-1;
         }
-        for(int i=0;i<T.size();i++)
+        return true;
+    }
+    int getNextValidChar(string &s,int index)
+    {
+        int backspace=0;
+        while(index>=0)
         {
-            if(T[i]!='#')
-                q2.push_back(T[i]);
-            else if(!q2.empty())
-                q2.pop_back();
+            if(s[index]=='#') backspace++;
+            else if(backspace>0) backspace--;
+            else break;
+            index--;
         }
-        string s1="",s2="";
-        while(!q1.empty())
-        {
-            s1+=q1.front();
-            q1.pop_front();
-        }
-        while(!q2.empty())
-        {
-            s2+=q2.front();
-            q2.pop_front();
-        }
-        if(s1==s2)
-            return true;
-        else
-            return false;
+        return index;
     }
 };
