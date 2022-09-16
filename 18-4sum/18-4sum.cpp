@@ -27,13 +27,10 @@ public:
                 res.push_back({nums[first],nums[second],nums[left],nums[right]});
                 left++;
                 right--;
-                while(left<right and nums[left]==nums[left-1])
-                    left++;
-                while(left<right and nums[right]==nums[right+1])
-                    right--;
+                while(left<right and nums[left]==nums[left-1]) left++;
+                while(left<right and nums[right]==nums[right+1]) right--;
             }
-            else if(cursum<target)
-                left++;
+            else if(cursum<target) left++;
             else right--;
         }
     }
