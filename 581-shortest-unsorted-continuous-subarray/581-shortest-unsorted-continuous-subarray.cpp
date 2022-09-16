@@ -1,45 +1,19 @@
 class Solution {
 public:
     int findUnsortedSubarray(vector<int>& nums) {
-         int n=nums.size();
-        int s=0,e=n-1,i,max_i,min_i;
-        for(s=0;s<n-1;s++)
+        int low=0,high=nums.size()-1;
+        while(low<nums.size()-1 and nums[low]<=nums[low+1]) low++;
+        if(low==nums.size()-1) return 0;
+        while(high>=0 and nums[high]>=nums[high-1]) high--;
+        int submax=INT_MIN;
+        int submin=INT_MAX;
+        for(int i=low;i<=high;i++)
         {
-            if(nums[s]>nums[s+1])
-                break;
+            submax=max(submax,nums[i]);
+            submin=min(submin,nums[i]);
         }
-        if(s==n-1)
-            return 0;
-        for(e=n-1;e>0;e--)
-        {
-            if(nums[e]<nums[e-1])
-                break;
-        }
-        max_i=nums[s];
-        min_i=nums[s];
-        for(i=s+1;i<=e;i++)
-        {
-            if(nums[i]<min_i)
-                min_i=nums[i];
-            if(nums[i]>max_i)
-                max_i=nums[i];
-        }
-        for(i=0;i<s;i++)
-        {
-            if(nums[i]>min_i)
-            {
-                s=i;
-                break;
-            }
-        }
-        for(i=n-1;i>=e+1;i--)
-        {
-            if(nums[i]<max_i)
-            {
-                e=i;
-                break;
-            }
-        }
-        return (e-s+1);
+        while(low>0 and nums[low-1]>submin) low--;
+        while(high<nums.size()-1 and nums[high+1]<submax) high++;
+        return high-low+1;
     }
 };
