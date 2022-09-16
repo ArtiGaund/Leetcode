@@ -1,8 +1,7 @@
 class Solution {
 public:
     bool backspaceCompare(string s, string t) {
-        int index1=s.size()-1;
-        int index2=t.size()-1;
+        int index1=s.size()-1,index2=t.size()-1;
         while(index1>=0 or index2>=0)
         {
             int a=getNextValidChar(s,index1);
