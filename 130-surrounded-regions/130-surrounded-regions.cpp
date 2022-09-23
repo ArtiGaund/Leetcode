@@ -1,33 +1,42 @@
 class Solution {
 public:
-    void dfs(int i,int j,vector<vector<char>> &board,int m,int n)
+    int n,m;
+    vector<pair<int,int>> dir={{-1,0},{0,-1},{0,1},{1,0}};
+    void dfs(int row,int col,vector<vector<int>> &vis,vector<vector<char>> &board)
     {
-        if(i<0 or i>=m or j<0 or j>=n or board[i][j]!='O') return;
-        board[i][j]='#';
-        dfs(i-1,j,board,m,n);
-        dfs(i+1,j,board,m,n);
-        dfs(i,j-1,board,m,n);
-        dfs(i,j+1,board,m,n);
+        vis[row][col]=1;
+        for(auto d:dir)
+        {
+            int r=row+d.first;
+            int c=col+d.second;
+            if(r>=0 and r<n and c>=0 and c<m and !vis[r][c] and board[r][c]=='O')
+                dfs(r,c,vis,board);
+        }
     }
     void solve(vector<vector<char>>& board) {
-        int m=board.size();
-        int n=board[0].size();
-        for(int i=0;i<m;i++)
+        n=board.size();
+        m=board[0].size();
+        vector<vector<int>> vis(n,vector<int>(m,0));
+        for(int i=0;i<n;i++)
         {
-            if(board[i][0]=='O') dfs(i,0,board,m,n);
-            if(board[i][n-1]=='O') dfs(i,n-1,board,m,n);
+            if(!vis[i][0] and board[i][0]=='O')
+                dfs(i,0,vis,board);
+            if(!vis[i][m-1] and board[i][m-1]=='O')
+                dfs(i,m-1,vis,board);
         }
-        for(int j=0;j<n;j++)
+        for(int j=0;j<m;j++)
         {
-            if(board[0][j]=='O') dfs(0,j,board,m,n);
-            if(board[m-1][j]=='O') dfs(m-1,j,board,m,n);
+            if(!vis[0][j] and board[0][j]=='O')
+                dfs(0,j,vis,board);
+            if(!vis[n-1][j] and board[n-1][j]=='O')
+                dfs(n-1,j,vis,board);
         }
-        for(int i=0;i<m;i++)
+        for(int i=0;i<n;i++)
         {
-            for(int j=0;j<n;j++)
+            for(int j=0;j<m;j++)
             {
-                if(board[i][j]=='#') board[i][j]='O';
-                else if(board[i][j]=='O') board[i][j]='X';
+                if(!vis[i][j] and board[i][j]=='O')
+                    board[i][j]='X';
             }
         }
     }
