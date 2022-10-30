@@ -1,7 +1,7 @@
 class Solution {
 public:
     int shortestPath(vector<vector<int>>& grid, int k) {
-        int m=grid.size();
+         int m=grid.size();
         int n=grid[0].size();
         if(m==1 and n==1) return 0;
         queue<tuple<int,int,int>> q;
