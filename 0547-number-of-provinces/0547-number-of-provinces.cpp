@@ -1,48 +1,59 @@
-class Solution {
-public:
-    void bfs(int node,vector<int> adj[],vector<int> &vis)
+class UnionFind
+{
+    public:
+    vector<int> parent,rank;
+    int count;
+    UnionFind(int n):parent(n),rank(n),count(n)
     {
-        vis[node]=1;
-        queue<int> q;
-        q.push(node);
-        while(!q.empty())
+        for(int i=0;i<n;i++)
         {
-            int cur=q.front();
-            q.pop();
-            for(auto it:adj[cur])
-            {
-                if(!vis[it])
-                {
-                    vis[it]=1;
-                    q.push(it);
-                }
-            }
+            parent[i]=i;
+            rank[i]=1;
         }
     }
-    int findCircleNum(vector<vector<int>>& isConnected) {
-        int m=isConnected.size(),n=isConnected[0].size();
-        vector<int> adj[m];
-        for(int i=0;i<m;i++)
+    int find(int x)
+    {
+        if(x!=parent[x])
+            x=find(parent[x]);
+        return x;
+    }
+    void unionset(int a,int b)
+    {
+        int x=find(a);
+        int y=find(b);
+        if(x!=y)
         {
-            for(int j=0;j<n;j++)
+            if(rank[x]>rank[y]) parent[y]=x;
+            else if(rank[x]<rank[y]) parent[x]=y;
+            else
             {
-                if(isConnected[i][j]==1 and i!=j)
+                parent[y]=x;
+                rank[x]++;
+            }
+            count--;
+        }
+    }
+    int getCount()
+    {
+        return count;
+    }
+};
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n=isConnected.size();
+        UnionFind uf(n);
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<isConnected[i].size();j++)
+            {
+                if(isConnected[i][j]==1)
                 {
-                    adj[i].push_back(j);
-                    adj[j].push_back(i);
+                    if(uf.find(i)!=uf.find(j))
+                        uf.unionset(i,j);
                 }
             }
         }
-        vector<int> vis(m,0);
-        int connected=0;
-        for(int i=0;i<m;i++)
-        {
-            if(!vis[i])
-            {
-                connected++;
-                bfs(i,adj,vis);
-            }
-        }
-        return connected;
+        return uf.getCount();
     }
 };
