@@ -1,24 +1,34 @@
 class Solution {
 public:
-    int m,n;
-    vector<pair<int,int>> dir={{-1,0},{0,-1},{1,0},{0,1}};
-    void dfs(int row,int col,vector<vector<int>> &image,vector<vector<int>> &res,int color,int old)
-    {
-        res[row][col]=color;
-        m=image.size();
-        n=image[0].size();
-        for(auto d:dir)
-        {
-            int r=row+d.first;
-            int c=col+d.second;
-            if(r>=0 and r<m and c>=0 and c<n and image[r][c]==old and res[r][c]!=color)
-                dfs(r,c,image,res,color,old);
-        }
-    }
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        if(image[sr][sc]==color) return image;
+        int m=image.size();
+        int n=image[0].size();
         int old=image[sr][sc];
-        vector<vector<int>> res=image;
-        dfs(sr,sc,image,res,color,old);
-        return res;
+        image[sr][sc]=color;
+        queue<pair<int,int>> q;
+        q.push({sr-1,sc});
+        q.push({sr+1,sc});
+        q.push({sr,sc-1});
+        q.push({sr,sc+1});
+        vector<vector<int>> vis(m,vector<int>(n,0));
+        vis[sr][sc]=1;
+        while(!q.empty())
+        {
+            auto cur=q.front();
+            q.pop();
+            int r=cur.first;
+            int c=cur.second;
+            if(r>=0 and r<m and c>=0 and c<n and !vis[r][c] and image[r][c]==old)
+            {
+                image[r][c]=color;
+                vis[r][c]=1;
+                q.push({r-1,c});
+                q.push({r+1,c});
+                q.push({r,c-1});
+                q.push({r,c+1});
+            }
+        }
+        return image;
     }
 };
