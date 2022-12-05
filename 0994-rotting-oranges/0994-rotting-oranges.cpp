@@ -1,8 +1,7 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        int m=grid.size();
-        int n=grid[0].size();
+        int m=grid.size(),n=grid[0].size();
         queue<pair<int,int>> q;
         int fresh=0;
         for(int i=0;i<m;i++)
