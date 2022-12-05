@@ -7,22 +7,23 @@ using namespace std;
 
 // } Driver Code Ends
 //User function Template for C++
-#include<bits/stdc++.h>
+
 class Solution {
   public:
-    int shotestPath(vector<vector<int>> grid, int m, int n, int k) {
+    int shotestPath(vector<vector<int>> grid, int n, int m, int k) {
         // code here
-        if(m==1 and n==1) return 0;
+        if(n==1 and m==1) return 0;
         queue<pair<pair<int,int>,int>> q;
         q.push({{0,0},k});
-        vector<vector<vector<bool>>> vis(m,vector<vector<bool>>(n,vector<bool>(k+1,0)));
+        vector<vector<vector<bool>>> vis(n,vector<vector<bool>>(m,vector<bool>(k+1,0)));
         vis[0][0][k]=1;
-        vector<pair<int,int>> dir={{-1,0},{0,-1},{0,1},{1,0}};
+        vector<pair<int,int>> dir={{-1,0},{0,-1},{1,0},{0,1}};
         int steps=0;
         while(!q.empty())
         {
             steps++;
-            for(int i=q.size();i>0;i--)
+            int size=q.size();
+            while(size--)
             {
                 int x=q.front().first.first;
                 int y=q.front().first.second;
@@ -32,8 +33,8 @@ class Solution {
                 {
                     int new_x=x+d.first;
                     int new_y=y+d.second;
-                    if(new_x==m-1 and new_y==n-1) return steps;
-                    if(new_x<0 or new_x>=m or new_y<0 or new_y>=n) continue;
+                    if(new_x==n-1 and new_y==m-1) return steps;
+                    if(new_x<0 or new_x>=n or new_y<0 or new_y>=m) continue;
                     if(grid[new_x][new_y]==1 and eliminate==0) continue;
                     int new_eliminate=eliminate-grid[new_x][new_y];
                     if(vis[new_x][new_y][new_eliminate]) continue;
