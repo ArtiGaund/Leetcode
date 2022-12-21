@@ -1,40 +1,42 @@
 class Solution {
 public:
-    int r,c;
     int orangesRotting(vector<vector<int>>& grid) {
-        r=grid.size();
-        c=grid[0].size();
-        for(int i=0;i<r;i++)
+        int m=grid.size();
+        int n=grid[0].size();
+        queue<pair<int,int>> q;
+        int fresh=0;
+        for(int i=0;i<m;i++)
         {
-            for(int j=0;j<c;j++)
+            for(int j=0;j<n;j++)
             {
                 if(grid[i][j]==2)
-                    dfs(grid,i,j,0,true);
+                    q.push({i,j});
+                else if(grid[i][j]==1) fresh++;
             }
         }
-        int res=0;
-        for(int i=0;i<r;i++)
+        vector<pair<int,int>> dir={{-1,0},{0,-1},{1,0},{0,1}};
+        int time=0;
+        while(!q.empty())
         {
-            for(int j=0;j<c;j++)
+            int size=q.size();
+            while(size--)
             {
-                if(grid[i][j]==1) return -1;
-                res=max(abs(grid[i][j]),res);
+                auto cur=q.front();
+                q.pop();
+                for(auto d:dir)
+                {
+                    int r=cur.first+d.first;
+                    int c=cur.second+d.second;
+                    if(r>=0 and r<m and c>=0 and c<n and grid[r][c]==1)
+                    {
+                        q.push({r,c});
+                        grid[r][c]=2;
+                        fresh--;
+                    }
+                }
             }
+            if(!q.empty()) time++;
         }
-        return res;
-    }
-    void dfs(vector<vector<int>> &grid,int x,int y,int count,bool start)
-    {
-        if(x<0 || x>=r || y<0 || y>=c || grid[x][y]==0|| grid[x][y]<0 && -grid[x][y]<count )
-            return;
-        if(grid[x][y]==2 && !start)
-            return;
-            
-        grid[x][y]=-count;
-        
-        dfs(grid,x+1,y,count+1,false);
-        dfs(grid,x,y+1,count+1,false);
-        dfs(grid,x-1,y,count+1,false);
-        dfs(grid,x,y-1,count+1,false);
+        return (fresh==0?time:-1);
     }
 };
