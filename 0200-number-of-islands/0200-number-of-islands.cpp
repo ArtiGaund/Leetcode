@@ -1,80 +1,43 @@
-class UnionFind
-{
-    public:
-    vector<int> parent,rank;
-    int count;
-    UnionFind(vector<vector<char>> &grid)
-    {
-        count=0;
-        int m=grid.size();
-        int n=grid[0].size();
-        for(int i=0;i<m;i++)
-        {
-            for(int j=0;j<n;j++)
-            {
-                if(grid[i][j]=='1')
-                {
-                    parent.push_back(i*n+j);
-                    count++;
-                }
-                else parent.push_back(-1);
-                rank.push_back(0);
-            }
-        }
-    }
-    int find(int x)
-    {
-        if(x!=parent[x])
-            x=find(parent[x]);
-        return x;
-    }
-    void unionset(int a,int b)
-    {
-        int x=find(a);
-        int y=find(b);
-        if(x!=y)
-        {
-            if(rank[x]>rank[y]) parent[y]=x;
-            else if(rank[x]<rank[y]) parent[x]=y;
-            else
-            {
-                parent[y]=x;
-                rank[x]++;
-            }
-            count--;
-        }
-    }
-    int getCount()
-    {
-        return count;
-    }
-};
 class Solution {
 public:
-    int numIslands(vector<vector<char>>& grid) {
-        int m=grid.size();
-        int n=grid[0].size();
-        if(m==0) return 0;
-        UnionFind uf(grid);
+    void bfs(vector<vector<char>> &grid,int row,int col,vector<vector<int>> &vis)
+    {
+        vis[row][col]=1;
+        queue<pair<int,int>> q;
+        q.push({row,col});
+        int n=grid.size(),m=grid[0].size();
         vector<pair<int,int>> dir={{-1,0},{0,-1},{1,0},{0,1}};
-        for(int i=0;i<m;i++)
+        while(!q.empty())
         {
-            for(int j=0;j<n;j++)
+            auto cur=q.front();
+            q.pop();
+            for(auto d:dir)
             {
-                if(grid[i][j]=='1')
+                int r=cur.first+d.first;
+                int c=cur.second+d.second;
+                if(r>=0 and r<n and c>=0 and c<m and !vis[r][c] and grid[r][c]=='1')
                 {
-                    grid[i][j]='0';
-                    for(auto d:dir)
-                    {
-                        int r=i+d.first,c=j+d.second;
-                        if(r>=0 and r<m and c>=0 and c<n and grid[r][c]=='1')
-                        {
-                            uf.unionset(i*n+j,r*n+c);
-                        }
-                    }
+                    q.push({r,c});
+                    vis[r][c]=1;
                 }
             }
         }
-        return uf.getCount();
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        int n=grid.size(),m=grid[0].size();
+        vector<vector<int>> vis(n,vector<int>(m,0));
+        int count=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]=='1' and !vis[i][j])
+                {
+                    count++;
+                    bfs(grid,i,j,vis);
+                }
+            }
+        }
+        return count;
     }
 };
