@@ -1,12 +1,22 @@
 class Solution {
 public:
-    void dfs(int node,vector<int> graph[],vector<int> &vis)
+    void bfs(int node,vector<int> graph[],vector<int> &vis)
     {
         vis[node]=1;
-        for(auto it:graph[node])
+        queue<int> q;
+        q.push(node);
+        while(!q.empty())
         {
-            if(!vis[it])
-                dfs(it,graph,vis);
+            auto cur=q.front();
+            q.pop();
+            for(auto it:graph[cur])
+            {
+                if(!vis[it])
+                {
+                    q.push(it);
+                    vis[it]=1;
+                }
+            }
         }
     }
     int findCircleNum(vector<vector<int>>& isConnected) {
@@ -30,7 +40,7 @@ public:
             if(!vis[i])
             {
                 count++;
-                dfs(i,graph,vis);
+                bfs(i,graph,vis);
             }
         }
         return count;
