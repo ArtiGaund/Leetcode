@@ -2,38 +2,25 @@ class Solution {
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
         int n=mat.size(),m=mat[0].size();
-        vector<vector<int>> vis(n,vector<int>(m,0));
-        vector<vector<int>> dist(n,vector<int>(m,0));
-        queue<pair<pair<int,int>,int>> q;
+        vector<vector<int>> dist(n,vector<int>(m,INT_MAX-100000));
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<m;j++)
             {
-                if(mat[i][j]==0)
+                if(mat[i][j]==0) dist[i][j]=0;
+                else
                 {
-                    q.push({{i,j},0});
-                    vis[i][j]=1;
+                    if(i>0) dist[i][j]=min(dist[i][j],dist[i-1][j]+1);
+                    if(j>0) dist[i][j]=min(dist[i][j],dist[i][j-1]+1);
                 }
             }
         }
-        vector<pair<int,int>> dir={{-1,0},{0,-1},{1,0},{0,1}};
-        while(!q.empty())
+        for(int i=n-1;i>=0;i--)
         {
-            auto cur=q.front();
-            q.pop();
-            int row=cur.first.first;
-            int col=cur.first.second;
-            int steps=cur.second;
-            dist[row][col]=steps;
-            for(auto d:dir)
+            for(int j=m-1;j>=0;j--)
             {
-                int r=row+d.first;
-                int c=col+d.second;
-                if(r>=0 and r<n and c>=0 and c<m and !vis[r][c] and mat[r][c]==1)
-                {
-                    q.push({{r,c},steps+1});
-                    vis[r][c]=1;
-                }
+                if(i<n-1) dist[i][j]=min(dist[i][j],dist[i+1][j]+1);
+                if(j<m-1) dist[i][j]=min(dist[i][j],dist[i][j+1]+1);
             }
         }
         return dist;
