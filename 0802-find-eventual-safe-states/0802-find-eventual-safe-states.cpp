@@ -1,13 +1,11 @@
 class Solution {
 public:
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-       int n=graph.size();
+        int n=graph.size();
         vector<int> adjRev[n];
         for(int i=0;i<n;i++)
-        {
             for(int j=0;j<graph[i].size();j++)
                 adjRev[graph[i][j]].push_back(i);
-        }
         vector<int> indegree(n,0);
         for(int i=0;i<n;i++)
             for(auto it:adjRev[i])
