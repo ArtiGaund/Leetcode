@@ -2,10 +2,10 @@ class Solution {
 public:
     bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
         vector<int> graph[n+1];
-        for(int i=0;i<dislikes.size();i++)
+        for(auto d:dislikes)
         {
-            graph[dislikes[i][0]].push_back(dislikes[i][1]);
-            graph[dislikes[i][1]].push_back(dislikes[i][0]);
+            graph[d[0]].push_back(d[1]);
+            graph[d[1]].push_back(d[0]);
         }
         vector<int> color(n+1,-1);
         queue<int> q;
@@ -17,16 +17,16 @@ public:
                 color[i]=1;
                 while(!q.empty())
                 {
-                    auto cur=q.front();
+                    int node=q.front();
                     q.pop();
-                    for(auto it:graph[cur])
+                    for(auto it:graph[node])
                     {
                         if(color[it]==-1)
                         {
+                            color[it]=1-color[node];
                             q.push(it);
-                            color[it]=1-color[cur];
                         }
-                        else if(color[it]==color[cur]) return false;
+                        else if(color[it]==color[node]) return false;
                     }
                 }
             }
