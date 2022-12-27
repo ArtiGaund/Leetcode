@@ -1,34 +1,35 @@
-#define tu tuple<int,int,int>
 class Solution {
 public:
     int minimumEffortPath(vector<vector<int>>& heights) {
-        int m=heights.size(),n=heights[0].size();
-        vector<vector<int>> dist(m,vector<int>(n,INT_MAX));
-        vector<vector<bool>> vis(m,vector<bool>(n,0));
-        priority_queue<tu,vector<tu>,greater<tu>> pq;
-        pq.push({0,0,0});
+       priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
+        int n=heights.size();
+        int m=heights[0].size();
+        vector<vector<int>> dist(n,vector<int>(m,1e9));
         dist[0][0]=0;
-        vector<pair<int,int>> dir={{-1,0},{0,-1},{0,1},{1,0}};
+        pq.push({0,{0,0}});
+        vector<pair<int,int>> dir={{-1,0},{0,-1},{1,0},{0,1}};
         while(!pq.empty())
         {
-            auto [dis,i,j]=pq.top();
+            auto it=pq.top();
             pq.pop();
-            if(vis[i][j]) continue;
-            vis[i][j]=1;
+            int diff=it.first;
+            int row=it.second.first;
+            int col=it.second.second;
+            if(row==n-1 and col==m-1) return diff;
             for(auto d:dir)
             {
-                int x=i+d.first,y=j+d.second;
-                if(x>=0 and x<m and y>=0 and y<n and !vis[x][y])
+                int r=row+d.first;
+                int c=col+d.second;
+                if(r>=0 and r<n and c>=0 and c<m)
                 {
-                    int diff=abs(heights[i][j]-heights[x][y]);
-                    if(dist[x][y]>diff)
-                    {
-                        dist[x][y]=max(dist[i][j],diff);
-                        pq.push({dist[x][y],x,y});
+                    int newEffort=max(abs(heights[row][col]-heights[r][c]),diff);
+                    if(newEffort<dist[r][c]){
+                        dist[r][c]=newEffort;
+                        pq.push({newEffort,{r,c}});
                     }
                 }
             }
         }
-        return dist[m-1][n-1];
+        return 0;
     }
 };
