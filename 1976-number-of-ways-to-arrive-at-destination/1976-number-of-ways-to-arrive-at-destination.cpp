@@ -1,13 +1,14 @@
+#define pp pair<long long int,long long int>
 class Solution {
 public:
     int countPaths(int n, vector<vector<int>>& roads) {
-         vector<pair<long long int,long long int>> adj[n];
+         vector<pp> adj[n];
         for(auto r:roads)
         {
             adj[r[0]].push_back({r[1],r[2]});
             adj[r[1]].push_back({r[0],r[2]});
         }
-        priority_queue<pair<long long int,long long int>,vector<pair<long long int,long long int>>,greater<pair<long long int,long long int>>> pq;
+        priority_queue<pp,vector<pp>,greater<pp>> pq;
         vector<long long int> dist(n,LONG_MAX),ways(n,0);
         dist[0]=0;
         ways[0]=1;
