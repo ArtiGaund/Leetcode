@@ -1,42 +1,43 @@
 class Solution {
 public:
     int findTheCity(int n, vector<vector<int>>& edges, int Threshold) {
-        vector<vector<int>> dist(n,vector<int>(n,INT_MAX));
+        vector<pair<int,int>> adj[n];
         for(auto e:edges)
         {
-            dist[e[0]][e[1]]=e[2];
-            dist[e[1]][e[0]]=e[2];
+            adj[e[0]].push_back({e[1],e[2]});
+            adj[e[1]].push_back({e[0],e[2]});
         }
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        int cityno,cntCity=1e9;
         for(int i=0;i<n;i++)
-            dist[i][i]=0;
-        for(int k=0;k<n;k++)
         {
-            for(int i=0;i<n;i++)
+            vector<int> dist(n,1e9);
+            dist[i]=0;
+            pq.push({0,i});
+            while(!pq.empty())
             {
-                if(dist[i][k]!=INT_MAX)
+                int dis=pq.top().first;
+                int node=pq.top().second;
+                pq.pop();
+                for(auto it:adj[node])
                 {
-                    for(int j=0;j<n;j++)
+                    int adjNode=it.first;
+                    int edgeW=it.second;
+                    if(dis+edgeW<dist[adjNode])
                     {
-                        if(dist[k][j]!=INT_MAX and i!=j)
-                            dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]);
+                        dist[adjNode]=dis+edgeW;
+                        pq.push({dis+edgeW,adjNode});
                     }
                 }
             }
-        }
-        int cntCity=n;
-        int cityno=-1;
-        for(int city=0;city<n;city++)
-        {
             int cnt=0;
-            for(int neigh=0;neigh<n;neigh++)
-            {
-                if(dist[city][neigh]<=Threshold and dist[city][neigh]!=INT_MAX)
+            for(int j=0;j<n;j++)
+                if(dist[j]<=Threshold and dist[j]!=1e9)
                     cnt++;
-            }
             if(cnt<=cntCity)
             {
                 cntCity=cnt;
-                cityno=city;
+                cityno=i;
             }
         }
         return cityno;
