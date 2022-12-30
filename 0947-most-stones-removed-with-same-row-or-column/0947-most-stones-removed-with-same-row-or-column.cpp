@@ -1,54 +1,60 @@
+class DisjointSet
+{
+    public:
+    vector<int> size,parent;
+    DisjointSet(int n)
+    {
+        size.resize(n+1,1);
+        parent.resize(n+1);
+        for(int i=0;i<=n;i++)
+            parent[i]=i;
+    }
+    int findParent(int u)
+    {
+        if(u==parent[u]) return u;
+        return parent[u]=findParent(parent[u]);
+    }
+    void unionset(int u,int v)
+    {
+        int ulp_u=findParent(u);
+        int ulp_v=findParent(v);
+        if(ulp_u==ulp_v) return;
+        if(size[ulp_u]<size[ulp_v])
+        {
+            parent[ulp_u]=ulp_v;
+            size[ulp_v]+=size[ulp_u];
+        }
+        else
+        {
+            parent[ulp_v]=ulp_u;
+            size[ulp_u]+=size[ulp_v];
+        }
+        
+    }
+};
 class Solution {
 public:
-    struct subset
-    {
-        int parent,rank;
-    };
-    int find(vector<subset> &Parent,int x)
-    {
-        if(Parent[x].parent==-1) return x;
-        return find(Parent,Parent[x].parent);
-    }
-    void unionset(vector<subset> &Parent,int a,int b)
-    {
-        int x=find(Parent,a);
-        int y=find(Parent,b);
-        if(x!=y)
-        {
-            if(Parent[x].rank>Parent[y].rank) Parent[y].parent=x;
-            else if(Parent[x].rank<Parent[y].rank) Parent[x].parent=y;
-            else
-            {
-                Parent[y].parent=x;
-                Parent[x].rank++;
-            }
-        }
-        return;
-    }
-    bool isSameRow(vector<vector<int>> &stones,int i,int j)
-    {
-        return stones[i][0]==stones[j][0];
-    }
-    bool isSameCol(vector<vector<int>> &stones,int i,int j)
-    {
-        return stones[i][1]==stones[j][1];
-    }
     int removeStones(vector<vector<int>>& stones) {
         int n=stones.size();
-        vector<subset> Parent(n,{-1,0});
-        for(int i=0;i<n;i++)
+        int maxRow=0,maxCol=0;
+        for(auto it:stones)
         {
-            for(int j=0;j<i;j++)
-            {
-                if(isSameRow(stones,i,j) or isSameCol(stones,i,j))
-                {
-                    unionset(Parent,i,j);
-                }
-            }
+            maxRow=max(maxRow,it[0]);
+            maxCol=max(maxCol,it[1]);
         }
-        int group=0;
-        for(int i=0;i<n;i++)
-            if(Parent[i].parent==-1) group++;
-        return n-group;
+        DisjointSet ds(maxRow+maxCol+1);
+        unordered_map<int,int> stoneNodes;
+        for(auto it:stones)
+        {
+            int nodeRow=it[0];
+            int nodeCol=it[1]+maxRow+1;
+            ds.unionset(nodeRow,nodeCol);
+            stoneNodes[nodeRow]=1;
+            stoneNodes[nodeCol]=1;
+        }
+        int cnt=0;
+        for(auto it:stoneNodes)
+            if(ds.findParent(it.first)==it.first) cnt++;
+        return n-cnt;
     }
 };
