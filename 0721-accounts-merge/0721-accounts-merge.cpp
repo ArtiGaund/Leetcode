@@ -6,7 +6,7 @@ class DisjointSet
     {
         rank.resize(n+1,0);
         parent.resize(n+1);
-        for(int i=0;i<n;i++)
+        for(int i=0;i<=n;i++)
             parent[i]=i;
     }
     int findParent(int u)
@@ -25,14 +25,14 @@ class DisjointSet
         else
         {
             parent[ulp_u]=ulp_v;
-            rank[ulp_v]++;
+            rank[ulp_u]++;
         }
     }
 };
 class Solution {
 public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
-        int n=accounts.size();
+     int n=accounts.size();
         DisjointSet ds(n);
         unordered_map<string,int> mapMailNode;
         for(int i=0;i<n;i++)
@@ -42,10 +42,7 @@ public:
                 string mail=accounts[i][j];
                 if(mapMailNode.find(mail)==mapMailNode.end())
                     mapMailNode[mail]=i;
-                else
-                {
-                    ds.unionset(i,mapMailNode[mail]);
-                }
+                else ds.unionset(i,mapMailNode[mail]);
             }
         }
         vector<string> mergeMail[n];
