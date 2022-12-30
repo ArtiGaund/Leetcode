@@ -30,7 +30,7 @@ class DisjointSet
             size[ulp_u]+=size[ulp_v];
         }
     }
-}; 
+};
 class Solution {
 public:
     bool isValid(int r,int c,int n)
@@ -40,7 +40,7 @@ public:
     int largestIsland(vector<vector<int>>& grid) {
         int n=grid.size();
         DisjointSet ds(n*n);
-        //step 1:
+        // step1:
         for(int row=0;row<n;row++)
         {
             for(int col=0;col<n;col++)
