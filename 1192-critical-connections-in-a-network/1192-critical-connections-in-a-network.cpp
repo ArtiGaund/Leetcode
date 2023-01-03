@@ -1,40 +1,39 @@
 class Solution {
-public:
-    vector<vector<int>> bridge;
-    vector<int> time,low;
-    vector<bool> vis;
-    void dfs(int node,int parent,int &timer,vector<int> graph[])
+    int timer=1;
+    void dfs(int node,int parent,vector<int> &vis,vector<int> adj[],vector<int> &tin,vector<int> &low,vector<vector<int>> &bridges)
     {
         vis[node]=1;
-        low[node]=time[node]=timer++;
-        for(auto it:graph[node])
+        tin[node]=low[node]=timer;
+        timer++;
+        for(auto it:adj[node])
         {
             if(it==parent) continue;
             if(!vis[it])
             {
-                dfs(it,node,timer,graph);
+                dfs(it,node,vis,adj,tin,low,bridges);
                 low[node]=min(low[node],low[it]);
-                if(low[it]>time[node]) bridge.push_back({node,it});
+                //node--- it is bridge
+                if(low[it]>tin[node])
+                    bridges.push_back({it,node});
             }
-            else low[node]=min(low[node],time[it]);
+            else
+            {
+                low[node]=min(low[node],low[it]);
+            }
         }
     }
+public:
     vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
-        vector<int> graph[n+1];
-        for(auto &c:connections)
+        vector<int> adj[n];
+        for(auto it:connections)
         {
-            graph[c[0]].push_back(c[1]);
-            graph[c[1]].push_back(c[0]);
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
         }
-        time.resize(n,-1);
-        low.resize(n,-1);
-        vis.resize(n,false);
-        int timer=0;
-        for(int i=0;i<n;i++)
-        {
-            if(!vis[i])
-                dfs(i,-1,timer,graph);
-        }
-        return bridge;
+        vector<int> vis(n,0);
+        vector<int> tin(n,-1),low(n,-1);
+        vector<vector<int>> bridges;
+        dfs(0,-1,vis,adj,tin,low,bridges);
+        return bridges;
     }
 };
