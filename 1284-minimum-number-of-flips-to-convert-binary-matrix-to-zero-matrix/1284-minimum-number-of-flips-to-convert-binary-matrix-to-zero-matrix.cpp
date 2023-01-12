@@ -9,7 +9,7 @@ public:
         if(j-1>=0) mat[i][j-1]^=1;
         if(j+1<n) mat[i][j+1]^=1;
     }
-    bool all_zero(vector<vector<int>> &mat)
+    bool all_zeros(vector<vector<int>> &mat)
     {
         int sum=0;
         for(int i=0;i<mat.size();i++)
@@ -18,13 +18,13 @@ public:
         return sum==0;
     }
     int minFlips(vector<vector<int>>& mat) {
-        if(all_zero(mat)) return 0;
+        if(all_zeros(mat)) return 0;
         map<vector<vector<int>>,int> mp;
         queue<vector<vector<int>>> q;
         set<vector<vector<int>>> vis;
+        mp[mat]=0;
         q.push(mat);
         vis.insert(mat);
-        mp[mat]=0;
         while(!q.empty())
         {
             auto cur=q.front();
@@ -35,7 +35,7 @@ public:
                 for(int j=0;j<adj[0].size();j++)
                 {
                     flip(i,j,adj);
-                    if(all_zero(adj)) return mp[cur]+1;
+                    if(all_zeros(adj)) return mp[cur]+1;
                     if(vis.find(adj)==vis.end())
                     {
                         vis.insert(adj);
