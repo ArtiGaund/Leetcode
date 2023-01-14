@@ -10,20 +10,20 @@ class UnionFind
             rank[i]=1;
         }
     }
-    int find(int x)
+    int findParent(int x)
     {
         if(parent[x]!=x)
-            parent[x]=find(parent[x]);
+            parent[x]=findParent(parent[x]);
         return parent[x];
     }
     void unionset(int a,int b)
     {
-        int x=find(a);
-        int y=find(b);
+        int x=findParent(a);
+        int y=findParent(b);
         if(x!=y)
         {
             if(rank[x]>rank[y]) parent[y]=x;
-            else if(rank[y]>rank[x]) parent[x]=y;
+            else if(rank[x]<rank[y]) parent[x]=y;
             else
             {
                 parent[y]=x;
@@ -47,7 +47,7 @@ public:
         {
             for(int j=0;j<26;j++)
             {
-                if(uf.find(j)==uf.find(baseStr[i]-'a'))
+                if(uf.findParent(j)==uf.findParent(baseStr[i]-'a'))
                 {
                     ans+=(j+'a');
                     break;
@@ -55,6 +55,5 @@ public:
             }
         }
         return ans;
-        
     }
 };
