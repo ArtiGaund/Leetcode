@@ -10,16 +10,6 @@
  */
 class Solution {
 public:
-    ListNode *findMiddle(ListNode *head)
-    {
-        ListNode *slow=head,*fast=head;
-        while(fast->next and fast->next->next)
-        {
-            slow=slow->next;
-            fast=fast->next->next;
-        }
-        return slow;
-    }
     ListNode *reverse(ListNode *head)
     {
         ListNode *prev=nullptr,*cur=head;
@@ -31,6 +21,16 @@ public:
             cur=next;
         }
         return prev;
+    }
+    ListNode *findMiddle(ListNode *head)
+    {
+        ListNode *slow=head,*fast=head;
+        while(fast->next and fast->next->next)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        return slow;
     }
     bool isPalindrome(ListNode* head) {
         if(head==nullptr) return true;
