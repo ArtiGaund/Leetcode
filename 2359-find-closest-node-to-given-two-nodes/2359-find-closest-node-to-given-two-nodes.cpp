@@ -5,7 +5,7 @@ public:
         int n=edges.size();
         queue<int> q;
         q.push(node);
-        vector<bool> vis(n,0);
+        vector<bool> vis(n,false);
         dist[node]=0;
         while(!q.empty())
         {
