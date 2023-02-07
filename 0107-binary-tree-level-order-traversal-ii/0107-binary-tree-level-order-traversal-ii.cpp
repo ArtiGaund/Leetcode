@@ -28,9 +28,8 @@ public:
                 if(cur->left) q.push(cur->left);
                 if(cur->right) q.push(cur->right);
             }
-            res.push_back(temp);
+            res.insert(res.begin(),temp);
         }
-        reverse(res.begin(),res.end());
         return res;
     }
 };
