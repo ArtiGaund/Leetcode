@@ -17,22 +17,23 @@ public:
     int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
         int n=profits.size();
         priority_queue<pair<int,int>,vector<pair<int,int>>,capitalComp> minHeap;
-        priority_queue<pair<int,int>,vector<pair<int,int>>,profitComp>maxHeap;
-        for(int i=0;i<n;i++) 
+        priority_queue<pair<int,int>,vector<pair<int,int>>,profitComp> maxHeap;
+        for(int i=0;i<n;i++)
             minHeap.push({capital[i],i});
-        int availableCap=w;
+        int availCap=w;
         for(int i=0;i<k;i++)
         {
-            while(!minHeap.empty() and minHeap.top().first<=availableCap)
+            while(!minHeap.empty() and minHeap.top().first<=availCap)
             {
-                auto capIndex=minHeap.top().second;
+                int capIndex=minHeap.top().second;
                 minHeap.pop();
                 maxHeap.push({profits[capIndex],capIndex});
             }
             if(maxHeap.empty()) break;
-            availableCap+=maxHeap.top().first;
+            availCap+=maxHeap.top().first;
             maxHeap.pop();
+
         }
-        return availableCap;
+        return availCap;
     }
 };
