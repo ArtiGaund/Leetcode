@@ -24,6 +24,6 @@ public:
                 }
             }
         }
-        return (maxdis>0?maxdis-1:-1);
+        return maxdis>0?maxdis-1:-1;
     }
 };
