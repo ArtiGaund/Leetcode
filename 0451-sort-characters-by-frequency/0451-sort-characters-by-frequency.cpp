@@ -1,26 +1,26 @@
-typedef pair<char,int> pii;
 class Solution {
 public:
-    struct compare
+    struct valComp
     {
-      bool operator()(pii p1,pii p2)
-      {
-          return p1.second<p2.second;
-      }
+        bool operator()(const pair<char,int> &x,const pair<char,int> &y)
+        {
+            return y.second>x.second;
+        }
     };
     string frequencySort(string s) {
         unordered_map<char,int> mp;
-        for(char c:s) mp[c]++;
-        priority_queue<pii,vector<pii>,compare> pq;
+        for(char ch:s) mp[ch]++;
+        priority_queue<pair<char,int>,vector<pair<char,int>>,valComp> minHeap;
         for(auto it:mp)
-        {
-            pq.push({it.first,it.second});
-        }
+            minHeap.push({it.first,it.second});
         string res="";
-        while(!pq.empty())
+        while(!minHeap.empty())
         {
-            for(int i=0;i<pq.top().second;i++) res+=pq.top().first;
-            pq.pop();
+            char ch=minHeap.top().first;
+            int size=minHeap.top().second;
+            minHeap.pop();
+            for(int i=0;i<size;i++)
+                res+=ch;
         }
         return res;
     }
