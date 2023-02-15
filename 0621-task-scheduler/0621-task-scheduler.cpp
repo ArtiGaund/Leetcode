@@ -28,10 +28,7 @@ public:
                     waitList.push_back(cur);
                 }
             }
-            for(auto it:waitList)
-            {
-                maxHeap.push(it);
-            }
+            for(auto it:waitList) maxHeap.push(it);
             if(!maxHeap.empty()) intervalCount+=n;
         }
         return intervalCount;
