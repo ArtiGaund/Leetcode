@@ -11,25 +11,24 @@ public:
         while(left<right)
         {
             int mid=left+(right-left)/2;
-            if(isfeasible(mid,weights,days))
+            if(isFeasible(mid,weights,days))
                 right=mid;
             else left=mid+1;
         }
         return left;
     }
-    bool isfeasible(int cap,vector<int> &weights,int D)
+    bool isFeasible(int cap,vector<int> &weights,int days)
     {
         int d=1,total=0;
         for(int w:weights)
         {
             total+=w;
-            if(total>cap)// wait for next day
-            {
-                total=w;
-                d++;
-                if(d>D) //cannot ship in D days
-                    return false;
-            }
+           if(total>cap)
+           {
+               total=w;
+               d++;
+               if(d>days) return false;
+           }
         }
         return true;
     }
