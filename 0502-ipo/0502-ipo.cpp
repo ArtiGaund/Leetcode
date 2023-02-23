@@ -15,7 +15,7 @@ public:
         }
     };
     int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
-        int n=profits.size();
+         int n=profits.size();
         priority_queue<pair<int,int>,vector<pair<int,int>>,capitalComp> minHeap;
         priority_queue<pair<int,int>,vector<pair<int,int>>,profitComp> maxHeap;
         for(int i=0;i<n;i++)
