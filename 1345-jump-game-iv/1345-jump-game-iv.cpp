@@ -1,7 +1,7 @@
 class Solution {
 public:
     int minJumps(vector<int>& arr) {
-        int n=arr.size();
+         int n=arr.size();
         if(n<=1) return 0;
         unordered_map<int,vector<int>> graph;
         for(int i=0;i<n;i++) graph[arr[i]].push_back(i);
