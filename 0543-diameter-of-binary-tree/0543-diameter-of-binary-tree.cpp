@@ -11,21 +11,19 @@
  */
 class Solution {
 public:
-    pair<int,int> dia(TreeNode *root)
+    int solve(TreeNode *root,int &res)
     {
-        pair<int,int> p{0,0};
-        if(root==nullptr) return p;
-        pair<int,int> left=dia(root->left);
-        pair<int,int> right=dia(root->right);
-        int op1=left.first;
-        int op2=right.first;
-        int op3=1+left.second+right.second;
-        p.first=max(op1,max(op2,op3));
-        p.second=1+max(left.second,right.second);
-        return p;
+        if(root==nullptr) return 0;
+        int l=solve(root->left,res);
+        int r=solve(root->right,res);
+        int temp=max(l,r)+1;
+        int ans=max(temp,l+r+1);
+        res=max(res,ans);
+        return temp;
     }
     int diameterOfBinaryTree(TreeNode* root) {
-        int res=dia(root).first;
+        int res=INT_MIN;
+        solve(root,res);
         return res-1;
     }
 };
