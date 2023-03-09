@@ -13,9 +13,10 @@ public:
         ListNode *slow=head->next,*fast=head->next->next;
         while(fast and fast->next)
         {
-            if(slow==fast) break;
+             if(slow==fast) break;
             slow=slow->next;
             fast=fast->next->next;
+           
         }
         if(slow!=fast) return nullptr;
         slow=head;
