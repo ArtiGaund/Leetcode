@@ -12,14 +12,14 @@ class Solution {
 public:
     struct valComp
     {
-        bool operator()(const ListNode *x,const ListNode *y)
+        bool operator()(ListNode *x,ListNode *y)
         {
             return x->val>y->val;
         }
     };
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         if(lists.size()==0) return nullptr;
-      priority_queue<ListNode*,vector<ListNode*>,valComp> minHeap;
+        priority_queue<ListNode*,vector<ListNode*>,valComp> minHeap;
         for(auto root:lists)
         {
             if(root!=nullptr) minHeap.push(root);
@@ -27,7 +27,7 @@ public:
         ListNode *resHead=nullptr,*resTail=nullptr;
         while(!minHeap.empty())
         {
-            ListNode *node=minHeap.top();
+            auto node=minHeap.top();
             minHeap.pop();
             if(resHead==nullptr) resHead=resTail=node;
             else
@@ -38,6 +38,5 @@ public:
             if(node->next!=nullptr) minHeap.push(node->next);
         }
         return resHead;
-        
     }
 };
