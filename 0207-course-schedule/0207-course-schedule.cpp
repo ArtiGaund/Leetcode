@@ -1,40 +1,29 @@
 class Solution {
 public:
-    bool canFinish(int num, vector<vector<int>>& pre) {
+    bool canFinish(int n, vector<vector<int>>& pre) {
+        if(n<=0) return false;
+        vector<int> graph[n];
+        for(auto p:pre)
+            graph[p[0]].push_back(p[1]);
+        vector<int> indegree(n,0);
+        for(int i=0;i<n;i++)
+            for(auto it:graph[i])
+                indegree[it]++;
+        queue<int> q;
+        for(int i=0;i<n;i++)
+            if(indegree[i]==0) q.push(i);
         vector<int> topo;
-        if(num<=0) return false;
-        unordered_map<int,int> indegree;
-        unordered_map<int,vector<int>> graph;
-        for(int i=0;i<num;i++)
+        while(!q.empty())
         {
-            indegree[i]=0;
-            graph[i]=vector<int>();
-        }
-        for(int i=0;i<pre.size();i++)
-        {
-            int parent=pre[i][0],child=pre[i][1];
-            graph[parent].push_back(child);
-            indegree[child]++;
-        }
-        queue<int> source;
-        for(auto it:indegree)
-        {
-            if(it.second==0)
-                source.push(it.first);
-        }
-        while(!source.empty())
-        {
-            int vertex=source.front();
-            source.pop();
-            topo.push_back(vertex);
-            for(auto child:graph[vertex])
+            auto node=q.front();
+            q.pop();
+            topo.push_back(node);
+            for(auto it:graph[node])
             {
-                indegree[child]--;
-                if(indegree[child]==0)
-                    source.push(child);
+                indegree[it]--;
+                if(indegree[it]==0) q.push(it);
             }
         }
-        if(topo.size()!=num) return false;
-        return true;
+        return topo.size()==n;
     }
 };
