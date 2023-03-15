@@ -16,17 +16,15 @@ public:
         while(left<right)
         {
             int curSum=nums[left]+nums[right];
-           if(curSum==target)
+            if(curSum==target)
             {
                 res.push_back({-target,nums[left],nums[right]});
                 left++;
                 right--;
-                while(left<right and nums[left]==nums[left-1])
-                    left++;
-                while(left<right and nums[right]==nums[right+1])
-                    right--;
+                while(left<right and nums[left]==nums[left-1]) left++;
+                while(left<right and nums[right]==nums[right+1]) right--;
             }
-           else if(target>curSum) left++;
+            else if(target>curSum) left++;
             else right--;
         }
     }
