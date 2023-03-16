@@ -5,11 +5,10 @@ public:
         bool end;
         trie *child[26];
     };
-    vector<string> res;
-    void insert(trie* root,string s)
+    void insert(trie *root,string word)
     {
         trie *cur=root;
-        for(char ch:s)
+        for(char ch:word)
         {
             int index=ch-'a';
             if(cur->child[index]==nullptr)
@@ -18,12 +17,13 @@ public:
         }
         cur->end=true;
     }
+    vector<string> res;
     vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
         trie *root=new trie();
-        for(string &s:words) insert(root,s);
+        for(string s:words) insert(root,s);
         string s;
         for(int i=0;i<board.size();i++)
-            for(int j=0;j<board[0].size();j++)
+            for(int j=0;j<board[i].size();j++)
                 dfs(i,j,board,root,s);
         return res;
     }
