@@ -3,7 +3,7 @@ class trie_node
 {
     public:
     bool isLeaf;
-    trie_node *children[26];
+    trie_node *children[SIZE];
     trie_node(bool leaf)
     {
         isLeaf=leaf;
@@ -22,7 +22,7 @@ public:
         trie_node *cur=root;
         for(char ch:word)
         {
-            if(cur->children[ch-'a']==nullptr) 
+            if(cur->children[ch-'a']==nullptr)
                 cur->children[ch-'a']=new trie_node(false);
             cur=cur->children[ch-'a'];
         }
@@ -30,12 +30,13 @@ public:
     }
     
     bool search(string word) {
-        trie_node *cur = root;
-        for(char c : word) {
-            if(cur == nullptr) break;
-            cur = cur->children[c-'a'];
+        trie_node *cur=root;
+        for(char ch:word)
+        {
+            if(cur==nullptr) break;
+            cur=cur->children[ch-'a'];
         }
-        return (cur != nullptr && cur->isLeaf == true);
+        return (cur!=nullptr and cur->isLeaf==true);
     }
     
     bool startsWith(string prefix) {
