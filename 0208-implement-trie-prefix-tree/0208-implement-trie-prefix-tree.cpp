@@ -1,13 +1,12 @@
-#define SIZE 26
 class trie_node
 {
     public:
     bool isLeaf;
-    trie_node *children[SIZE];
+    trie_node *children[26];
     trie_node(bool leaf)
     {
         isLeaf=leaf;
-        for(int i=0;i<SIZE;i++)
+        for(int i=0;i<26;i++)
             children[i]=nullptr;
     }
 };
