@@ -10,12 +10,39 @@
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(root==nullptr) return root;
-        if(root==p or root==q) return root;
-        TreeNode *l=lowestCommonAncestor(root->left,p,q);
-        TreeNode *r=lowestCommonAncestor(root->right,p,q);
-        if(l!=nullptr and r!=nullptr) return root;
-        else if(l==nullptr and r==nullptr) return nullptr;
-        else return (l==nullptr?r:l);
+        if(root==nullptr or p==nullptr or q==nullptr) return root;
+        stack<TreeNode*> st;
+        bool findOne=false;
+        TreeNode *prev=nullptr,*res=root;
+        while(true)
+        {
+            if(root)
+            {
+                st.push(root);
+                root=root->left;
+            }
+            else
+            {
+                if(st.empty()) break;
+                TreeNode *cur=st.top();
+                if(cur->right==nullptr or cur->right==prev)
+                {
+                    if(cur==p or cur==q)
+                    {
+                        if(findOne) break;
+                        else
+                        {
+                            findOne=true;
+                            res=cur;
+                        }
+                    }
+                    st.pop();
+                    if(cur==res) res=st.top();
+                    prev=cur;
+                }
+                else root=cur->right;
+            }
+        }
+        return res;
     }
 };
