@@ -31,6 +31,7 @@ public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
         int n=accounts.size();
         DisjointSet ds(n);
+        
         unordered_map<string,int> mapMailNode;
         for(int i=0;i<n;i++)
         {
