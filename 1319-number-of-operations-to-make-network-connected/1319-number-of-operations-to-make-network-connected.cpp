@@ -1,50 +1,47 @@
-class DisjointSet
+class UnionSet
 {
     public:
-    vector<int> rank,parent;
-    DisjointSet(int n)
+    vector<int> parent,rank;
+    UnionSet(int n)
     {
         rank.resize(n+1,0);
         parent.resize(n+1);
-        for(int i=0;i<=n;i++)
-            parent[i]=i;
+        for(int i=0;i<=n;i++) parent[i]=i;
     }
     int findParent(int u)
     {
-        if(u==parent[u]) return u;
-        return parent[u]=findParent(parent[u]);
+        if(parent[u]==u) return u;
+        else return parent[u]=findParent(parent[u]);
     }
     void unionset(int u,int v)
     {
-        int ulp_u=findParent(u);
-        int ulp_v=findParent(v);
-        if(rank[ulp_u]<rank[ulp_v])
-            parent[ulp_u]=ulp_v;
-        else if(rank[ulp_v]<rank[ulp_u])
-            parent[ulp_v]=ulp_u;
+        int x=findParent(u);
+        int y=findParent(v);
+        if(rank[x]<rank[y]) parent[x]=y;
+        else if(rank[x]>rank[y]) parent[y]=x;
         else
         {
-            parent[ulp_v]=ulp_u;
-            rank[ulp_u]++;
+            parent[x]=y;
+            rank[y]++;
         }
     }
 };
 class Solution {
 public:
     int makeConnected(int n, vector<vector<int>>& connections) {
-        DisjointSet ds(n);
+        UnionSet us(n);
         int extra=0;
-        for(auto e:connections)
+        for(auto c:connections)
         {
-            int u=e[0];
-            int v=e[1];
-            if(ds.findParent(u)==ds.findParent(v)) extra++;
-            else ds.unionset(u,v);
+            int a=c[0];
+            int b=c[1];
+            if(us.findParent(a)==us.findParent(b)) extra++;
+            else us.unionset(a,b);
         }
-        int cnt=0;
+        int count=0;
         for(int i=0;i<n;i++)
-            if(ds.parent[i]==i) cnt++;
-        if(extra>=cnt-1) return cnt-1;
+            if(us.parent[i]==i) count++;
+        if(extra>=count-1) return count-1;
         return -1;
     }
 };
