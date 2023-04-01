@@ -6,7 +6,7 @@ public:
         if(sum%2!=0) return false;
         int k=sum/2;
         int n=nums.size();
-        vector<vector<int>> dp(n,vector<int>(k+1));
+        vector<vector<int>> dp(n,vector<int>(k+1,0));
         if(k>=nums[0]) dp[0][nums[0]]=true;
         for(int index=1;index<n;index++)
         {
@@ -14,8 +14,8 @@ public:
             {
                 int nottaken=dp[index-1][target];
                 int taken=false;
-                if(target>=nums[index]) taken=dp[index-1][target-nums[index]];
-                dp[index][target]=(taken or nottaken);
+                if(nums[index]<=target) taken=dp[index-1][target-nums[index]];
+                dp[index][target]=(nottaken or taken);
             }
         }
         return dp[n-1][k];
