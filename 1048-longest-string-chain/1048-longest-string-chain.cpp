@@ -1,26 +1,44 @@
 class Solution {
 public:
-    static bool comp(string &s1,string &s2)
-    {
-        return s1.size()<s2.size();
-    }
     int longestStrChain(vector<string>& words) {
         int n=words.size();
-        unordered_map<string,int> dp;
-        sort(words.begin(),words.end(),comp);
-        int res=1;
+        unordered_map<string,int> mp;
+        for(int i=0;i<n;i++)
+            mp[words[i]]=i;
+        //build graph
+        vector<int> graph[n];
         for(int i=0;i<n;i++)
         {
-            dp[words[i]]=1;
-            int maxPosSubChain=0;
             for(int j=0;j<words[i].size();j++)
             {
-                string predecessor=words[i].substr(0,j)+words[i].substr(j+1);
-                if(dp.find(predecessor)!=dp.end())
-                    maxPosSubChain=max(maxPosSubChain,dp[predecessor]);
+                auto temp=words[i].substr(0,j)+words[i].substr(j+1);
+                if(mp.count(temp)) graph[mp[temp]].push_back(i);
             }
-            dp[words[i]]+=maxPosSubChain;
-            res=max(res,dp[words[i]]);
+        }
+        //topo sort
+        vector<int> indegree(n,0);
+        for(auto it:graph)
+        {
+            for(int x:it) indegree[x]++;
+        }
+        queue<int> q;
+        for(int i=0;i<n;i++)
+            if(indegree[i]==0) q.push(i);
+        int res=0;
+        while(!q.empty())
+        {
+            int num=q.size();
+            res++;
+            while(num--)
+            {
+                int t=q.front();
+                q.pop();
+                for(auto it:graph[t])
+                {
+                    indegree[it]--;
+                    if(indegree[it]==0) q.push(it);
+                }
+            }
         }
         return res;
     }
