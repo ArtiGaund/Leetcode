@@ -9,10 +9,8 @@ public:
             max_h.pop();
             int sec=max_h.top();
             max_h.pop();
-            if(first!=sec)
-                max_h.push(abs(first-sec));
+            if(first!=sec) max_h.push(abs(first-sec));
         }
-        int res=max_h.empty()?0:max_h.top();
-        return res;
+        return (max_h.empty()?0:max_h.top());
     }
 };
