@@ -1,7 +1,6 @@
 class Solution {
 public:
-   
-    vector<pair<int,int>> dir={{0,1},{1,0},{-1,0},{0,-1}};
+    vector<pair<int,int>> dir={{-1,0},{0,-1},{1,0},{0,1}};
     int mod=1000000007;
     int dfs(vector<vector<int>> &grid,int i,int j,vector<vector<int>> &dp)
     {
@@ -20,7 +19,8 @@ public:
         return res;
     }
     int countPaths(vector<vector<int>>& grid) {
-        int m=grid.size(),n=grid[0].size();
+        int m=grid.size();
+        int n=grid[0].size();
         vector<vector<int>> dp(m,vector<int>(n));
         int res=0;
         for(int i=0;i<m;i++)
