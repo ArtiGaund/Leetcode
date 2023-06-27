@@ -8,10 +8,10 @@ public:
         }
     };
     vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
-      vector<pair<int,int>> maxHeap;
-        for(int i=0;i<nums1.size() and i<k;i++)
+        vector<pair<int,int>> maxHeap;
+        for(int i=0;i<nums1.size();i++)
         {
-            for(int j=0;j<nums2.size() and j<k;j++)
+            for(int j=0;j<nums2.size();j++)
             {
                 if(maxHeap.size()<k)
                 {
@@ -21,7 +21,7 @@ public:
                 else
                 {
                     if(nums1[i]+nums2[j]>maxHeap.front().first+maxHeap.front().second) break;
-                    else 
+                    else
                     {
                         pop_heap(maxHeap.begin(),maxHeap.end(),sumComp());
                         maxHeap.pop_back();
