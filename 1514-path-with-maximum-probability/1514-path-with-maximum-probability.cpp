@@ -7,7 +7,6 @@ public:
             int a=edges[i][0];
             int b=edges[i][1];
             double w=succProb[i];
-            
             adj[a].push_back({w,b});
             adj[b].push_back({w,a});
         }
@@ -22,11 +21,11 @@ public:
             if(w<prob[node]) continue;
             for(auto it:adj[node])
             {
-               if(prob[it.second]<w*it.first)
-               {
-                   prob[it.second]=w*it.first;
-                   pq.push({prob[it.second],it.second});
-               }
+                if(prob[it.second]<w*it.first)
+                {
+                    prob[it.second]=w*it.first;
+                    pq.push({prob[it.second],it.second});
+                }
             }
         }
         return prob[end];
