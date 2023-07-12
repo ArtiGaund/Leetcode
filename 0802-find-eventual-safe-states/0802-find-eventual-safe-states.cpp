@@ -12,8 +12,7 @@ public:
                 indegree[it]++;
         queue<int> q;
         for(int i=0;i<n;i++)
-            if(indegree[i]==0)
-                q.push(i);
+            if(indegree[i]==0) q.push(i);
         vector<int> safe;
         while(!q.empty())
         {
@@ -23,8 +22,7 @@ public:
             for(auto it:adjRev[node])
             {
                 indegree[it]--;
-                if(indegree[it]==0)
-                    q.push(it);
+                if(indegree[it]==0) q.push(it);
             }
         }
         sort(safe.begin(),safe.end());
