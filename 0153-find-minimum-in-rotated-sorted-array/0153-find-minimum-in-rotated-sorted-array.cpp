@@ -1,15 +1,27 @@
 class Solution {
 public:
-    int findMin(vector<int>& arr) {
-        int start=0,end=arr.size()-1;
-        while(start<end)
+    int findMin(vector<int>& nums) {
+        int n=nums.size();
+        int low=0,high=n-1,res=INT_MAX;
+        while(low<=high)
         {
-            int mid=start+(end-start)/2;
-            if(mid<end and arr[mid]>arr[mid+1]) return arr[mid+1];
-            if(mid>start and arr[mid-1]>arr[mid]) return arr[mid];
-            if(arr[start]<arr[mid]) start=mid+1;
-            else end=mid-1;
+            int mid=(low+high)/2;
+            if(nums[low]<=nums[high])
+            {
+                res=min(res,nums[low]);
+                break;
+            }
+            if(nums[low]<=nums[mid])
+            {
+                res=min(res,nums[low]);
+                low=mid+1;
+            }
+            else
+            {
+                res=min(res,nums[mid]);
+                high=mid-1;
+            }
         }
-        return arr[0];
+        return res;
     }
 };
