@@ -7,8 +7,7 @@ public:
             graph[p[0]].push_back(p[1]);
         vector<int> indegree(n,0);
         for(int i=0;i<n;i++)
-            for(auto it:graph[i])
-                indegree[it]++;
+            for(auto it:graph[i]) indegree[it]++;
         queue<int> q;
         for(int i=0;i<n;i++)
             if(indegree[i]==0) q.push(i);
