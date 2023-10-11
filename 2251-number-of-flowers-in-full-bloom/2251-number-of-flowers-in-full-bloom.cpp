@@ -1,27 +1,22 @@
 class Solution {
 public:
-    
     vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& people) {
-        vector<int> sortedPeople(people.begin(),people.end());
-        sort(sortedPeople.begin(),sortedPeople.end());
-        sort(flowers.begin(),flowers.end());
-        priority_queue<int,vector<int>,greater<int>> pq;
-        int i=0;
-        unordered_map<int,int> dict;
-        for(int p:sortedPeople)
+        vector<int> starts;
+        vector<int> ends;
+        for(auto f:flowers)
         {
-            while(i<flowers.size() and flowers[i][0]<=p)
-            {
-                pq.push(flowers[i][1]);
-                i++;
-            }
-            while(!pq.empty() and pq.top()<p)
-                pq.pop();
-            dict[p]=pq.size();
+            starts.push_back(f[0]);
+            ends.push_back(f[1]+1);
         }
+        sort(starts.begin(),starts.end());
+        sort(ends.begin(),ends.end());
         vector<int> res;
-        for(int p:people)
-            res.push_back(dict[p]);
+        for(auto p:people)
+        {
+            int i=upper_bound(starts.begin(),starts.end(),p)-starts.begin();
+            int j=upper_bound(ends.begin(),ends.end(),p)-ends.begin();
+            res.push_back(i-j);
+        }
         return res;
     }
 };
