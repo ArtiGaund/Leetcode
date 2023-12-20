@@ -1,8 +1,19 @@
 class Solution {
 public:
+    int findMinIndex(vector<int> &arr){
+        int minIndex=0;
+        for(int i=1;i<arr.size();i++){
+            if(arr[i]<arr[minIndex]) minIndex=i;
+        }
+        return minIndex;
+    }
     int buyChoco(vector<int>& prices, int money) {
-        sort(prices.begin(),prices.end());
-        int sum=prices[0]+prices[1];
-        return money>=sum?money-sum:money;
+        int minIndex=findMinIndex(prices);
+        int minCost=prices[minIndex];
+        prices[minIndex]=INT_MAX;
+        int secMinIndex=findMinIndex(prices);
+        minCost+=prices[secMinIndex];
+        if(minCost<=money) return money-minCost;
+        return money;
     }
 };
