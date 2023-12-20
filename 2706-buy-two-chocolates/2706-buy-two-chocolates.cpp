@@ -1,19 +1,15 @@
 class Solution {
 public:
-    int findMinIndex(vector<int> &arr){
-        int minIndex=0;
-        for(int i=1;i<arr.size();i++){
-            if(arr[i]<arr[minIndex]) minIndex=i;
-        }
-        return minIndex;
-    }
     int buyChoco(vector<int>& prices, int money) {
-        int minIndex=findMinIndex(prices);
-        int minCost=prices[minIndex];
-        prices[minIndex]=INT_MAX;
-        int secMinIndex=findMinIndex(prices);
-        minCost+=prices[secMinIndex];
-        if(minCost<=money) return money-minCost;
-        return money;
+        int mini=min(prices[0],prices[1]);
+        int secMini=max(prices[0],prices[1]);
+        for(int i=2;i<prices.size();i++){
+            if(prices[i]<mini){
+                secMini=mini;
+                mini=prices[i];
+            }else if(prices[i]<secMini) secMini=prices[i];
+        }
+        int minCost=mini+secMini;
+        return money>=minCost?money-minCost:money;
     }
 };
