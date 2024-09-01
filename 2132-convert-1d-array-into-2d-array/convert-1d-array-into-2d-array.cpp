@@ -1,14 +1,11 @@
 class Solution {
 public:
     vector<vector<int>> construct2DArray(vector<int>& original, int m, int n) {
-        if(m*n!=original.size()) return {};
+        int size=original.size();
+        if(m*n!=size) return {};
         vector<vector<int>> res(m,vector<int>(n));
-        
-        int index=0;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                res[i][j]=original[index++];
-            }
+        for(int i=0;i<size;i++){
+            res[i/n][i%n]=original[i];
         }
         return res;
     }
